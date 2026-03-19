@@ -1,149 +1,145 @@
 import React from "react";
+import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail, ChevronRight } from "lucide-react";
 
 const QUICK_LINKS = [
   { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
   { label: "Destinations", href: "#destination" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Tour Packages", href: "#packages" },
+  { label: "About Us", href: "#about" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Contact Us", href: "#contact", active: true },
 ];
 
 const DESTINATIONS = [
+  { label: "Kedarnath", href: "#" },
+  { label: "Badrinath", href: "#" },
   { label: "Nainital", href: "#" },
   { label: "Rishikesh", href: "#" },
   { label: "Mussoorie", href: "#" },
-  { label: "Auli", href: "#" },
-  { label: "Kedarnath", href: "#" },
   { label: "Jim Corbett", href: "#" },
-];
-
-const SERVICES = [
-  { label: "Flight Booking", href: "#" },
-  { label: "Hotel Reservations", href: "#" },
-  { label: "Tour Packages", href: "#" },
-  { label: "Travel Insurance", href: "#" },
-  { label: "Visa Assistance", href: "#" },
-  { label: "Airport Transfers", href: "#" },
-];
-
-const SOCIALS = [
-  { label: "Facebook", href: "#", icon: <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /> },
-  { label: "Instagram", href: "#", icon: <><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" /></> },
-  { label: "Twitter", href: "#", icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /> },
 ];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const brandGold = "#BFA13B";
-  const brandDark = "#1c1917"; // Stone-900/950 for warmth
+  const brandGold = "#C69E3D";
+  const brandLight = "#FCFBF7";
 
   return (
-    <>
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-
-      <footer className="relative text-stone-300 overflow-hidden" style={{ backgroundColor: brandDark, fontFamily: "'DM Sans', sans-serif" }}>
+    <footer className="w-full border-t border-gray-100 font-sans" style={{ backgroundColor: brandLight }}>
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
         
-        {/* ── NEWSLETTER SECTION (Mobile Optimized) ── */}
-        <div className="relative border-b border-stone-800">
-          <div className="max-w-7xl mx-auto px-6 py-12 lg:py-16">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
-              <div className="max-w-md">
-                <h3 className="text-3xl font-bold text-white mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Plan Your Next Journey
-                </h3>
-                <p className="text-stone-400 text-sm">
-                  Join our newsletter for exclusive Uttarakhand travel guides and seasonal tour offers.
-                </p>
-              </div>
-              <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3 min-w-0 md:min-w-100">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="w-full px-5 py-4 rounded-xl bg-stone-800/50 border border-stone-700 text-white focus:outline-none focus:ring-1 transition-all"
-                  style={{ focusBorderColor: brandGold }}
-                />
-                <button 
-                  className="px-8 py-4 rounded-xl text-white font-bold shadow-lg transition-all active:scale-95 whitespace-nowrap"
-                  style={{ background: `linear-gradient(to right, ${brandGold}, #8e7421)` }}
+        {/* Responsive Grid System */}
+        {/* Mobile: 1 col for Brand, 2 col for Links, 1 col for Contact */}
+        {/* Tablet/Desktop: 4 columns */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
+          
+          {/* Column 1: Brand Info (Full width on mobile) */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-1 space-y-6">
+            <h2 className="text-3xl font-serif font-bold text-[#0B1D48]">
+              Uttarakhand <span style={{ color: brandGold }}>Tours</span>
+            </h2>
+            <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
+              Your premium travel partner for exploring the divine beauty of Uttarakhand. 
+              Creating unforgettable journeys since 2009.
+            </p>
+            <div className="flex gap-3">
+              {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
+                <a 
+                  key={i} 
+                  href="#" 
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all hover:scale-110 shadow-sm"
+                  style={{ backgroundColor: brandGold }}
                 >
-                  Subscribe
-                </button>
-              </div>
+                  <Icon size={18} />
+                </a>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* ── MAIN GRID (Mobile First) ── */}
-        <div className="max-w-7xl mx-auto px-6 py-16 lg:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-            
-            {/* Brand Col */}
-            <div className="space-y-6">
-              <a href="#home" className="inline-block group">
-                <span className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Uttarakhand <span style={{ color: brandGold }}>Tours</span>
-                </span>
-                <p className="text-[10px] uppercase tracking-[0.3em] text-stone-500 font-semibold mt-1">Authentic Experiences</p>
-              </a>
-              <p className="text-stone-400 text-sm leading-relaxed max-w-sm">
-                Specializing in spiritual journeys, Himalayan treks, and luxury escapes across the Land of Gods since 2010.
-              </p>
-              <div className="flex gap-4">
-                {SOCIALS.map((soc) => (
-                  <a key={soc.label} href={soc.href} className="p-3 rounded-full bg-stone-800/50 border border-stone-700 hover:text-white transition-all" style={{ '--hover-bg': brandGold }}>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">{soc.icon}</svg>
+          {/* Column 2: Quick Links (Parallel on mobile) */}
+          <div className="col-span-1">
+            <h4 className="text-[#0B1D48] font-bold text-base md:text-lg mb-6 flex items-center gap-2">
+              <span className="w-1 h-5 rounded-full" style={{ backgroundColor: brandGold }} />
+              Quick Links
+            </h4>
+            <ul className="space-y-3.5">
+              {QUICK_LINKS.map((link) => (
+                <li key={link.label}>
+                  <a 
+                    href={link.href} 
+                    className={`text-[13px] font-medium transition-colors flex items-center gap-2 ${link.active ? 'text-[#C69E3D]' : 'text-gray-500 hover:text-[#0B1D48]'}`}
+                  >
+                    {link.active ? <span className="w-1.5 h-1.5 rounded-full bg-[#C69E3D]" /> : <ChevronRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
+                    {link.label}
                   </a>
-                ))}
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            {/* Links Columns */}
-            {[
-              { title: "Explore", links: QUICK_LINKS },
-              { title: "Popular Places", links: DESTINATIONS },
-              { title: "Services", links: SERVICES }
-            ].map((section) => (
-              <div key={section.title}>
-                <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-6 flex items-center gap-3">
-                  <span className="w-6 h-0.5 rounded-full" style={{ backgroundColor: brandGold }} />
-                  {section.title}
-                </h4>
-                <ul className="space-y-4">
-                  {section.links.map((link) => (
-                    <li key={link.label}>
-                      <a href={link.href} className="text-stone-400 hover:text-white text-sm transition-colors flex items-center gap-2 group">
-                         <span className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-xs" style={{ color: brandGold }}>→</span>
-                         {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Column 3: Destinations (Parallel on mobile) */}
+          <div className="col-span-1">
+            <h4 className="text-[#0B1D48] font-bold text-base md:text-lg mb-6 flex items-center gap-2">
+              <span className="w-1 h-5 rounded-full" style={{ backgroundColor: brandGold }} />
+              Destinations
+            </h4>
+            <ul className="space-y-3.5">
+              {DESTINATIONS.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-gray-500 hover:text-[#0B1D48] text-[13px] font-medium transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Contact Us (Full width on mobile/tablet) */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-1 pt-4 lg:pt-0 border-t border-gray-100 lg:border-none">
+            <h4 className="text-[#0B1D48] font-bold text-base md:text-lg mb-6 flex items-center gap-2">
+              <span className="w-1 h-5 rounded-full" style={{ backgroundColor: brandGold }} />
+              Contact Us
+            </h4>
+            <ul className="space-y-5">
+              <li className="flex items-start gap-4">
+                <MapPin className="shrink-0 mt-1" size={18} style={{ color: brandGold }} />
+                <span className="text-gray-500 text-[13px] leading-snug">
+                  123 Mall Road, Dehradun, Uttarakhand 248001, India
+                </span>
+              </li>
+              <li className="flex items-center gap-4">
+                <Phone className="shrink-0" size={18} style={{ color: brandGold }} />
+                <a href="tel:+919876543210" className="text-gray-500 text-[13px] hover:text-[#0B1D48] transition-colors">
+                  +91 98765 43210
+                </a>
+              </li>
+              <li className="flex items-center gap-4">
+                <Mail className="shrink-0" size={18} style={{ color: brandGold }} />
+                <a href="mailto:info@uttarakhandtours.com" className="text-gray-500 text-[13px] hover:text-[#0B1D48] transition-colors truncate">
+                  info@uttarakhandtours.com
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        {/* ── BOTTOM BAR ── */}
-        <div className="border-t border-stone-800 bg-stone-950/50">
-          <div className="max-w-7xl mx-auto px-6 py-8">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-6 text-xs text-stone-500">
-              <p className="text-center lg:text-left">
-                © {currentYear} <span style={{ color: brandGold }} className="font-semibold">Uttarakhand Tours</span>. 
-                Designed for the Himalayan Explorer.
-              </p>
-              <div className="flex flex-wrap justify-center gap-6">
-                <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-white transition-colors">Support</a>
-              </div>
+      {/* ── COPYRIGHT BAR ── */}
+      <div className="border-t border-gray-200/60">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-[11px] text-gray-400 text-center md:text-left font-medium uppercase tracking-wider">
+              © {currentYear} <span className="text-gray-600 font-bold">Uttarakhand Tours</span>. 
+              Crafted with <span className="text-red-400 animate-pulse">❤</span> for travelers.
+            </p>
+            <div className="flex gap-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+              <a href="#" className="hover:text-[#C69E3D] transition-colors">Privacy</a>
+              <a href="#" className="hover:text-[#C69E3D] transition-colors">Terms</a>
+              <a href="#" className="hover:text-[#C69E3D] transition-colors">Sitemap</a>
             </div>
           </div>
         </div>
-
-        {/* Visual Brand Accent */}
-        <div className="h-1 w-full" style={{ background: `linear-gradient(to right, #e2d194, ${brandGold}, #8e7421)` }} />
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 }

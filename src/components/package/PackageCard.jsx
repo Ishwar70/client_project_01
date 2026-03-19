@@ -1,59 +1,52 @@
 import React from 'react';
+import { Star, Clock, CheckCircle2, Send, ChevronRight } from 'lucide-react';
 
 const PackageCard = ({ title, duration, rating, highlights, price }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col h-full border border-gray-100 transition-transform duration-300 hover:-translate-y-2">
-      {/* Top Header Section */}
-      <div className="bg-[#C4A036] p-6 text-white relative">
-        <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 text-xs font-bold">
-          <span className="text-yellow-300 text-sm">★</span> {rating}
+    <div className="group relative bg-white rounded-[2.5rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] overflow-hidden border border-gray-100 flex flex-col transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_rgba(196,160,54,0.2)]">
+      
+      {/* Sleek Compact Header */}
+      <div className="bg-[#C4A036] p-5 text-white relative">
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold">
+            <Star size={10} className="fill-yellow-300 text-yellow-300" /> {rating}
+          </div>
+          <Clock size={16} className="text-white/40" />
         </div>
-        <h3 className="text-2xl font-serif font-bold mb-2 leading-tight pr-12">
-          {title}
-        </h3>
-        <div className="flex items-center gap-2 text-sm opacity-90">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          {duration}
-        </div>
+        <h3 className="text-xl md:text-2xl font-serif font-bold leading-tight mb-2 truncate">{title}</h3>
+        <p className="text-[11px] font-bold tracking-widest opacity-80 uppercase">{duration}</p>
       </div>
 
-      {/* Highlights Section */}
-      <div className="p-6 flex-grow">
-        <h4 className="text-[#0B1D48] font-bold text-sm uppercase tracking-widest mb-4 border-l-4 border-[#C4A036] pl-3">
-          Package Highlights
-        </h4>
-        <ul className="space-y-2">
+      {/* Highlights Section - Compact 2-Col Layout */}
+      <div className="p-5 flex-grow">
+        <h4 className="text-[#0B1D48] font-black text-[9px] uppercase tracking-[0.2em] mb-4 opacity-40">What's Included</h4>
+        <ul className="grid grid-cols-2 gap-x-2 gap-y-3">
           {highlights.map((item, index) => (
-            <li key={index} className="flex items-start gap-2 text-gray-600 text-sm">
-              <span className="text-[#C4A036] mt-1">•</span>
-              {item}
+            <li key={index} className="flex items-center gap-1.5 text-gray-500 text-[11px] font-semibold leading-tight">
+              <CheckCircle2 size={12} className="text-[#C4A036] shrink-0" />
+              <span className="truncate">{item}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Bottom Pricing Section */}
-      <div className="p-6 pt-0 mt-auto">
-        <div className="border-t border-gray-100 pt-4 mb-4 flex justify-between items-end">
+      {/* Pricing & Premium Button */}
+      <div className="px-5 pb-5">
+        <div className="flex justify-between items-end mb-5 bg-gray-50 p-4 rounded-3xl border border-gray-100/50">
           <div>
-            <p className="text-gray-400 text-xs uppercase font-bold tracking-tighter">Starting from</p>
-            <p className="text-3xl font-black text-[#C4A036]">₹{price.toLocaleString()}</p>
-            <p className="text-gray-400 text-[10px]">per person</p>
+            <span className="text-[8px] text-gray-400 uppercase font-black tracking-[0.2em]">Package Starts</span>
+            <p className="text-2xl font-black text-[#0B1D48]">
+              <span className="text-[#C4A036] text-xs mr-0.5">₹</span>{price.toLocaleString()}
+            </p>
           </div>
-          <div className="text-gray-300">
-             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-             </svg>
-          </div>
+          <p className="text-[9px] font-bold text-gray-300 uppercase italic mb-1">per guest</p>
         </div>
         
-        <button className="w-full bg-[#C4A036] hover:bg-[#b08f2e] text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform rotate-45" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-          </svg>
-          Send Enquiry
+        <button className="relative w-full group/btn bg-[#0B1D48] text-white font-bold py-4 rounded-2xl overflow-hidden transition-all duration-300 shadow-lg active:scale-95 text-[11px] tracking-[0.2em] uppercase">
+          <div className="absolute inset-0 bg-[#C4A036] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
+          <span className="relative flex items-center justify-center gap-2">
+            Send Enquiry <Send size={12} className="group-hover/btn:translate-x-1 transition-transform" />
+          </span>
         </button>
       </div>
     </div>

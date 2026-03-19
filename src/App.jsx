@@ -18,7 +18,7 @@ function App() {
         <Route path="/destinations/:slug" element={<DestinationDetail />} />
         <Route path="/packages" element={<Packages />} />
       </Routes>
-
+       
       <Footer />
     </BrowserRouter>
   );
