@@ -1,15 +1,15 @@
 import PopularDestinations from "../pages/PopularDestinations";
 import HeroSection from '../components/hero/HeroSection'
-import WhyTravelMagica from '../components/WhyUs/WhyUs'
-import Testimonials from '../components/testonamials/Testimonials'
+import Packages from "../components/package/Packages";
+
 
 const HomePage = () => {
   return (
     <div>
       <HeroSection />
-      <WhyTravelMagica />
-      <Testimonials />
       <PopularDestinations />
+
+      <Packages />
     </div>
   );
 };
