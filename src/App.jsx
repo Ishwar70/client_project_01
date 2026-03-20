@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Packages from './components/package/Packages';
 import WorldDestinationsExplorer from './pages/Worlddestinationsexplorer';
+// import Destinationdetailpage from "./Destinationdetailpage";
 
 function App() {
   return (
