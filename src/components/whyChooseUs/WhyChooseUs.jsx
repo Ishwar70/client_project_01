@@ -27,13 +27,13 @@ const FeatureCard = ({ Icon, title, description, animationDelay }) => {
       <div className="relative h-full flex flex-col p-8 md:p-10 bg-white border border-gray-100 rounded-[2.5rem] shadow-[0_15px_40px_-20px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-3 group-hover:shadow-[0_30px_60px_-15px_rgba(198,158,61,0.2)] overflow-hidden">
         
         {/* Border Beam Animation Layer */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-[#C69E3D]/10 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-[slide_3s_linear_infinite] -translate-x-full" />
+        <div className="absolute inset-0 z-0 bg-linear-to-r from-transparent via-[#C69E3D]/10 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-[slide_3s_linear_infinite] -translate-x-full" />
 
         <div className="relative z-10 w-16 h-16 md:w-20 md:h-20 mb-6 md:mb-8 flex items-center justify-center">
             {/* Pulsing Ring for Mobile Premium feel */}
             <div className="absolute inset-0 rounded-2xl bg-[#C69E3D]/10 animate-pulse"></div>
             
-            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#C69E3D] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 shadow-[0_10px_25px_rgba(198,158,61,0.4)]">
+            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#C69E3D] flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-[0_10px_25px_rgba(198,158,61,0.4)]">
                 {Icon}
             </div>
         </div>
@@ -114,7 +114,7 @@ const WhyChooseUs = () => {
         {/* Bottom Gold Stats Bar - UPDATED FOR MOBILE */}
         <div className="mt-20 md:mt-32 relative">
            {/* Mobile: Squared glass, Desktop: Pill bar */}
-           <div className="relative grid grid-cols-2 md:flex md:items-center md:justify-around gap-2 md:gap-0 p-4 md:py-10 md:px-16 w-full max-w-5xl mx-auto bg-gradient-to-br from-[#A6883F] to-[#C69E3D] rounded-[2.5rem] md:rounded-full shadow-2xl overflow-hidden">
+           <div className="relative grid grid-cols-2 md:flex md:items-center md:justify-around gap-2 md:gap-0 p-4 md:py-10 md:px-16 w-full max-w-5xl mx-auto bg-linear-to-br from-[#A6883F] to-[#C69E3D] rounded-[2.5rem] md:rounded-full shadow-2xl overflow-hidden">
               
               {/* Background light streak */}
               <div className="absolute top-0 left-0 w-full h-full bg-white/10 skew-x-[-20deg] -translate-x-full animate-[slide_5s_infinite]" />
@@ -131,7 +131,7 @@ const WhyChooseUs = () => {
 
       </div>
 
-      <style jsx global>{`
+      <style jsx="true" global="true">{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
