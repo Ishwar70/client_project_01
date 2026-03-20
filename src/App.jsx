@@ -3,8 +3,6 @@ import Footer from './components/footer/Footer'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
-import DestinationsPage from "./pages/DestinationsPage";
-import DestinationDetail from "./pages/DestinationDetail";
 import Packages from './components/package/Packages';
 
 function App() {
@@ -14,8 +12,6 @@ function App() {
       <Routes>
         
         <Route path="/" element={<HomePage />} />
-        <Route path="/destinations" element={<DestinationsPage />} />
-        <Route path="/destinations/:slug" element={<DestinationDetail />} />
         <Route path="/packages" element={<Packages />} />
       </Routes>
        
