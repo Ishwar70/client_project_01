@@ -22,7 +22,7 @@ export const destinations = [
     tagline: "Beautiful lake town surrounded by mountains, perfect for family getaways",
     description:
       "Nainital, the 'Lake District of India', is a charming hill station set around the emerald Naini Lake. Surrounded by mountains on three sides, this colonial-era town offers breathtaking views, boating, and a relaxed atmosphere. The Mall Road, bustling with shops and eateries, is the heart of the town's social life.",
-    image: "https://images.unsplash.com/photo-1586974135060-5a1be46faf7f?w=800&q=80",
+    image: "https://stampedmoments.com/wp-content/uploads/2025/10/boating-naini-lake.jpg",
     category: "Hill Station",
     altitude: "2,084 m",
     bestTime: "March – June, Sep – Nov",
