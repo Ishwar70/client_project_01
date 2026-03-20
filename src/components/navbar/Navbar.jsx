@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Destination", href: "#destination" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "about" },
+  { label: "Services", href: "services" },
+  { label: "Destination", href: "destination" },
   { label: "Packages", href: "packages" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Blog", href: "blog" },
+  { label: "Contact", href: "contact" },
 ];
 
 export default function Navbar() {
@@ -62,11 +62,10 @@ export default function Navbar() {
 
       <nav
         id="navbar"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.05)]"
-            : "bg-white/80 backdrop-blur-sm"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.05)]"
+          : "bg-white/80 backdrop-blur-sm"
+          }`}
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         <div
@@ -77,22 +76,16 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* LOGO */}
-            <a href="#home" className="flex items-center gap-2.5 group shrink-0" onClick={() => setActive("Home")}>
-              <div
-                className="relative w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
-                style={{ background: `linear-gradient(135deg, ${brandGold}, #8e7421)` }}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-white">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="currentColor" opacity="0.9" />
-                  <circle cx="12" cy="9" r="2.5" fill="white" />
-                </svg>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Playfair Display', serif", color: brandGold }}>
-                  Uttarakhand <span className="text-stone-800">Tours</span>
-                </span>
-                <span className="text-[9px] uppercase tracking-[0.2em] text-stone-400 font-medium">Premium Travel Experience</span>
-              </div>
+            <a
+              href="/"
+              className="flex items-center shrink-0"
+              onClick={() => setActive("Home")}
+            >
+              <img
+                src="/Logo.svg"
+                alt="Logo"
+                className="h-20 sm:h-20 md:h-18 lg:h-22 w-auto object-contain"
+              />
             </a>
 
             {/* DESKTOP LINKS */}
