@@ -2,12 +2,12 @@ import React from "react";
 import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail, ChevronRight } from "lucide-react";
 
 const QUICK_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Destinations", href: "#destination" },
-  { label: "Tour Packages", href: "#packages" },
-  { label: "About Us", href: "#about" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Contact Us", href: "#contact", active: true },
+  { label: "Home", href: "/" },
+  { label: "Destinations", href: "destination" },
+  { label: "Tour Packages", href: "packages" },
+  { label: "About Us", href: "about" },
+  { label: "Gallery", href: "gallery" },
+  { label: "Contact Us", href: "contact", active: true },
 ];
 
 const DESTINATIONS = [
@@ -27,26 +27,28 @@ export default function Footer() {
   return (
     <footer className="w-full border-t border-gray-100 font-sans" style={{ backgroundColor: brandLight }}>
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
-        
+
         {/* Responsive Grid System */}
         {/* Mobile: 1 col for Brand, 2 col for Links, 1 col for Contact */}
         {/* Tablet/Desktop: 4 columns */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
-          
+
           {/* Column 1: Brand Info (Full width on mobile) */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1 space-y-6">
-            <h2 className="text-3xl font-serif font-bold text-[#0B1D48]">
-              Uttarakhand <span style={{ color: brandGold }}>Tours</span>
-            </h2>
+            <img
+              src="/Logo.svg"
+              alt="Logo"
+              className="h-45 sm:h-35 md:h-35 w-auto object-contain"
+            />
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
-              Your premium travel partner for exploring the divine beauty of Uttarakhand. 
+              Your premium travel partner for exploring the divine beauty of Uttarakhand.
               Creating unforgettable journeys since 2009.
             </p>
             <div className="flex gap-3">
               {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
-                <a 
-                  key={i} 
-                  href="#" 
+                <a
+                  key={i}
+                  href="#"
                   className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all hover:scale-110 shadow-sm"
                   style={{ backgroundColor: brandGold }}
                 >
@@ -65,8 +67,8 @@ export default function Footer() {
             <ul className="space-y-3.5">
               {QUICK_LINKS.map((link) => (
                 <li key={link.label}>
-                  <a 
-                    href={link.href} 
+                  <a
+                    href={link.href}
                     className={`text-[13px] font-medium transition-colors flex items-center gap-2 ${link.active ? 'text-[#C69E3D]' : 'text-gray-500 hover:text-[#0B1D48]'}`}
                   >
                     {link.active ? <span className="w-1.5 h-1.5 rounded-full bg-[#C69E3D]" /> : <ChevronRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
@@ -129,7 +131,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <p className="text-[11px] text-gray-400 text-center md:text-left font-medium uppercase tracking-wider">
-              © {currentYear} <span className="text-gray-600 font-bold">Uttarakhand Tours</span>. 
+              © {currentYear} <span className="text-gray-600 font-bold">Uttarakhand Tours</span>.
               Crafted with <span className="text-red-400 animate-pulse">❤</span> for travelers.
             </p>
             <div className="flex gap-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
