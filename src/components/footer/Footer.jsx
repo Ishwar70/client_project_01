@@ -3,7 +3,7 @@ import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail, ChevronRigh
 
 const QUICK_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Destinations", href: "destination" },
+  { label: "Destinations", href: "destinations" },
   { label: "Tour Packages", href: "packages" },
   { label: "About Us", href: "about" },
   { label: "Gallery", href: "gallery" },
