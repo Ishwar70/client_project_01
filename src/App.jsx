@@ -9,6 +9,8 @@ import DestinationDetail from './pages/Destinationdetail';
 import About from './pages/aboutPage/About';
 import Services from './pages/servicesPage/Services';
 import Packages from './pages/packagesPage/Packages';
+import Contact from './pages/contactPage/Contact';
+import Blog from './pages/blogPage/Blog';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/packages" element={<Packages />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
        
       <Footer />
