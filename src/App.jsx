@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Packages from './components/package/Packages';
 import WorldDestinationsExplorer from './pages/Worlddestinationsexplorer';
-// import Destinationdetailpage from "./Destinationdetailpage";
+import DestinationDetail from './pages/Destinationdetail';
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
         
         <Route path="/" element={<HomePage />} />
         <Route path="/destinations" element={<WorldDestinationsExplorer />} />
+        <Route path="/destinations/:slug"    element={<DestinationDetail />} />
         <Route path="/packages" element={<Packages />} />
       </Routes>
        
