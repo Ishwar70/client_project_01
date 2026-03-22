@@ -1,5 +1,5 @@
 import HeroSection from '../components/hero/HeroSection'
-import Packages from "../components/package/Packages";
+import PackagesHome from "../components/package/PackagesHome";
 import WhyChooseUs from "../components/whyChooseUs/WhyChooseUs";
 import Gallery from "../components/gallery/Gallery";
 import ContactSection from "../components/contact/ContactSection";
@@ -12,7 +12,7 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <DestinationList/>
-      <Packages />
+      <PackagesHome />
       <WhyChooseUs />
       <Gallery />
       <Testimonials />
