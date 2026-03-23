@@ -1,177 +1,56 @@
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import BookingModal from "../components/queryForm/Bookingmodal ";
+const HomeHero= () => (
+  <div className="relative min-h-175 lg:min-h-[90vh] w-full flex items-center overflow-hidden font-sans">
 
-const GOLD = "#C9A84C";
-const NAVY = "#1B2B4B";
-
-const images = [
-  { label: "Kedarnath", bg: "#2d4270" },
-  { label: "Rishikesh", bg: GOLD },
-  { label: "Nainital", bg: GOLD },
-  { label: "Valley of Flowers", bg: "#2d4270" },
-];
-
-const stats = [
-  { value: "4.9★", label: "Google Rating" },
-  { value: "10K+", label: "Happy Travelers" },
-  { value: "15+", label: "Years Experience" },
-];
-
-export default function HomeHero() {
-  const ref = useRef(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const els = ref.current?.querySelectorAll("[data-animate]");
-    els?.forEach((el, i) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(28px)";
-      el.style.transition = `opacity 0.7s ease ${i * 0.13}s, transform 0.7s ease ${i * 0.13}s`;
-      setTimeout(() => {
-        el.style.opacity = "1";
-        el.style.transform = "translateY(0)";
-      }, 80);
-    });
-  }, []);
-
-  return (
-    <section
-      ref={ref}
-      style={{ background: NAVY }}
-      className="w-full"
+    {/* ── Background ── */}
+    <div
+      className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `
+          linear-gradient(to bottom, rgba(0,0,0,0.68), rgba(0,0,0,0.38)),
+          url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=2000')
+        `,
+      }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 py-20 md:py-28 items-center">
+      <div className="absolute inset-0 bg-black/15" />
+    </div>
 
-          {/* Left — text */}
-          <div>
-            {/* Trust pill */}
-            <div
-              data-animate
-              className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6"
-              style={{
-                background: "rgba(201,168,76,0.12)",
-                border: "0.5px solid rgba(201,168,76,0.3)",
-              }}
-            >
-              <div
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ background: GOLD }}
-              />
-              <span
-                className="text-[9px] uppercase tracking-[2px]"
-                style={{ color: GOLD, fontFamily: "sans-serif" }}
-              >
-                Trusted Since 2009
-              </span>
-            </div>
+    {/* ── Content ── */}
+    <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-10 py-12 lg:py-20 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-            <h1
-              data-animate
-              className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight mb-5"
-              style={{ fontFamily: "'Georgia', serif" }}
-            >
-              <span className="text-white">Experience the</span>
-              <br />
-              <span className="text-white">Soul of the</span>
-              <br />
-              <span style={{ color: GOLD }}>Himalayas</span>
-            </h1>
-
-            <p
-              data-animate
-              className="text-sm leading-relaxed mb-8 max-w-sm"
-              style={{ color: "#8a9bbf", fontFamily: "sans-serif" }}
-            >
-              Bespoke pilgrimages, thrilling adventures and serene hill escapes
-              — crafted exclusively for you by Uttarakhand's most trusted travel
-              experts.
-            </p>
-
-            <div data-animate className="flex gap-3 flex-wrap mb-10">
-              <button
-                onClick={() => navigate("/packages")}
-                className="px-7 py-3 text-sm font-medium rounded text-white transition-opacity hover:opacity-90"
-                style={{ background: GOLD }}
-              >
-                Explore Packages →
-              </button>
-              <button
-                onClick={() => navigate("/about")}
-                className="px-7 py-3 text-sm font-medium rounded transition-colors hover:bg-white/10"
-                style={{ border: "1.5px solid #fff", color: "#fff" }}
-              >
-                Watch Our Story
-              </button>
-            </div>
-
-            {/* Trust stats */}
-            <div
-              data-animate
-              className="flex gap-6 pt-6"
-              style={{ borderTop: "0.5px solid #2d4270" }}
-            >
-              {stats.map((s, i) => (
-                <div key={s.label} className="flex items-center gap-4">
-                  <div className="text-center">
-                    <p
-                      className="text-lg font-semibold"
-                      style={{ color: GOLD, fontFamily: "sans-serif" }}
-                    >
-                      {s.value}
-                    </p>
-                    <p
-                      className="text-[9px] mt-0.5"
-                      style={{ color: "#8a9bbf", fontFamily: "sans-serif" }}
-                    >
-                      {s.label}
-                    </p>
-                  </div>
-                  {i < stats.length - 1 && (
-                    <div
-                      className="h-7 w-px"
-                      style={{ background: "#2d4270" }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right — image collage */}
-          <div
-            data-animate
-            className="grid grid-cols-2 gap-3 h-[280px] md:h-[360px]"
-          >
-            {images.map((img) => (
-              <div
-                key={img.label}
-                className="rounded-xl flex items-center justify-center text-xs transition-transform duration-300 hover:scale-[1.02]"
-                style={{
-                  background: img.bg,
-                  color: img.bg === GOLD ? "#F5E6C0" : "#aab5cc",
-                  fontFamily: "sans-serif",
-                }}
-              >
-                {img.label}
-              </div>
-            ))}
+        {/* LEFT: Text */}
+        <div className="text-left text-white space-y-4 md:space-y-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight drop-shadow-md">
+            Explore the <br className="hidden sm:block" />
+            Beauty of <br />
+            <span className="text-[#C4A036]">Uttarakhand</span>
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-md leading-relaxed drop-shadow-sm">
+            Discover pristine mountains, sacred temples, and unforgettable
+            adventures in the lap of the Himalayas.
+          </p>
+          <div className="hidden lg:flex items-center gap-4 pt-4">
+            <div className="h-1 w-20 bg-[#C4A036] rounded-full" />
+            <p className="text-sm uppercase tracking-widest font-bold">Best Travel Agency</p>
           </div>
         </div>
-      </div>
 
-      {/* Scroll hint */}
-      <div
-        className="text-center py-4"
-        style={{ borderTop: "0.5px solid #2d4270" }}
-      >
-        <span
-          className="text-[9px] uppercase tracking-[2.5px]"
-          style={{ color: "#8a9bbf", fontFamily: "sans-serif" }}
-        >
-          Scroll to Explore ↓
-        </span>
+        {/* RIGHT: BookingModal rendered inline — no popup, no state needed */}
+        <div className="flex justify-center lg:justify-end w-full">
+          <div className="w-full max-w-120">
+            <BookingModal
+              inline
+              title="Quick Enquiry"
+              subtitle="Fill in the details to get a custom quote for your trip."
+              submitLabel="Send Inquiry"
+            />
+          </div>
+        </div>
+
       </div>
-    </section>
-  );
-}
+    </div>
+  </div>
+);
+
+export default HomeHero;
