@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import axios from "axios"; // Added Axios
 import API_ENDPOINTS from "../../api/api"; 
 
 const GOLD   = "#BFA13B";
@@ -59,7 +60,7 @@ export default function BookingModal({
 }) {
   const [form, setForm]           = useState(EMPTY);
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading]     = useState(false); // New: loading state
+  const [loading, setLoading]     = useState(false); 
   const [errors, setErrors]       = useState({});
   const [step, setStep]           = useState(1);
   const [animating, setAnimating] = useState(false);
@@ -133,24 +134,24 @@ export default function BookingModal({
     setLoading(true);
 
     try {
-      // 1. External callback (if provided)
       if (onSubmit) {
+        // 1. External callback (if provided)
         await onSubmit(form);
       } else {
-        // 2. Default API Call using your constant
-        const response = await fetch(API_ENDPOINTS.FORM_SUBMIT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+        // 2. Optimized Axios Call
+        // Axios automatically handles JSON and throws error on 4xx/5xx status
+        await axios.post(API_ENDPOINTS.FORM_SUBMIT, form, {
+            headers: { "Content-Type": "application/json" },
+            timeout: 8000 
         });
-
-        if (!response.ok) throw new Error("Submission failed");
       }
 
       setSubmitted(true);
       if (!inline && !embedded) setTimeout(() => onClose?.(), 2800);
     } catch (err) {
-      setErrors({ submit: "Something went wrong. Please try again." });
+      // Axios error handling: try to get server message, otherwise fallback
+      const serverMsg = err.response?.data?.message || "Something went wrong. Please try again.";
+      setErrors({ submit: serverMsg });
       console.error("Submission Error:", err);
     } finally {
       setLoading(false);
@@ -322,7 +323,7 @@ export default function BookingModal({
   return (
     <>
       {assets}
-      <div className="bm-overlay fixed inset-0 z-200 flex items-center justify-center p-4 sm:p-6" style={{ backgroundColor: "rgba(28,25,23,0.62)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }} role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+      <div className="bm-overlay fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6" style={{ backgroundColor: "rgba(28,25,23,0.62)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }} role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
         <div className="bm-card w-full" style={{ maxWidth: "480px" }} onClick={(e) => e.stopPropagation()}>
           {formBody}
         </div>
