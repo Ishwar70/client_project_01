@@ -323,7 +323,7 @@ export default function BookingModal({
   return (
     <>
       {assets}
-      <div className="bm-overlay fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6" style={{ backgroundColor: "rgba(28,25,23,0.62)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }} role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+      <div className="bm-overlay fixed inset-0 z-200 flex items-center justify-center p-4 sm:p-6" style={{ backgroundColor: "rgba(28,25,23,0.62)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }} role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
         <div className="bm-card w-full" style={{ maxWidth: "480px" }} onClick={(e) => e.stopPropagation()}>
           {formBody}
         </div>

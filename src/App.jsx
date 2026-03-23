@@ -12,14 +12,19 @@ import Packages from './pages/packagesPage/Packages';
 import Contact from './pages/contactPage/Contact';
 import Blog from './pages/blogPage/Blog';
 
+
+import Home from './home/Home';
+import Destination from './destination/Destination';
+
+
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
         
-        <Route path="/" element={<HomePage />} />
-        <Route path="/destinations" element={<WorldDestinationsExplorer />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/destinations" element={<Destination />} />
         <Route path="/destinations/:slug"    element={<DestinationDetail />} />
         {/* <Route path="/packages" element={<PackagesHome />} /> */}
         <Route path="/about" element={<About />} />
