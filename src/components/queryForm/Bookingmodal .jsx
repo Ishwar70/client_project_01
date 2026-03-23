@@ -142,7 +142,7 @@ export default function BookingModal({
         // Axios automatically handles JSON and throws error on 4xx/5xx status
         await axios.post(API_ENDPOINTS.FORM_SUBMIT, form, {
             headers: { "Content-Type": "application/json" },
-            timeout: 8000 
+            timeout: 15000 
         });
       }
 
