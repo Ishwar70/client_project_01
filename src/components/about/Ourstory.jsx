@@ -33,14 +33,14 @@ export default function OurStory() {
             thrilling rapids of Rishikesh — always with authenticity, safety, and
             joy at our core.
           </p>
-          {/* Blockquote */}
+          
+          {/* Blockquote — Duplicate key fixed here */}
           <blockquote
-            className="rounded-r-lg px-5 py-4"
+            className="px-5 py-4"
             style={{
-              borderLeft: `4px solid ${GOLD}`,
               background: "#fff",
               border: `0.5px solid #E5E0D5`,
-              borderLeft: `4px solid ${GOLD}`,
+              borderLeft: `4px solid ${GOLD}`, // Kept the gold accent
               borderRadius: "0 8px 8px 0",
             }}
           >
