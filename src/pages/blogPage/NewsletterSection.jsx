@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 const GOLD = "#C9A84C";
-const NAVY = "#1B2B4B";
+const TEXT_DARK = "#1A1A1A";
+const OFF_WHITE = "#FAFAF7";
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");
@@ -14,82 +15,87 @@ export default function NewsletterSection() {
 
   return (
     <section
-      style={{ background: NAVY }}
-      className="w-full py-20 px-4 sm:px-8 md:px-16 lg:px-24 text-center"
+      className="w-full py-24 px-6 md:px-16 lg:px-24 text-center border-t border-gray-50"
+      style={{ background: "#FFFFFF" }}
     >
-      <div className="max-w-2xl mx-auto">
-        <span
-          className="text-xs tracking-[3px] uppercase font-medium block mb-4"
-          style={{ color: GOLD }}
-        >
-          Stay Updated
-        </span>
+      <div 
+        className="max-w-4xl mx-auto p-10 md:p-16 rounded-[2rem] relative overflow-hidden shadow-sm"
+        style={{ background: OFF_WHITE, border: `1px solid #F0EAD6` }}
+      >
+        {/* Subtle Decorative Gold Corner */}
+        <div 
+          className="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none"
+          style={{ 
+            borderRight: `2px solid ${GOLD}`, 
+            borderTop: `2px solid ${GOLD}`,
+            borderRadius: '0 2rem 0 0' 
+          }}
+        ></div>
 
-        <h2
-          className="text-3xl md:text-4xl font-semibold mb-3"
-          style={{ fontFamily: "'Georgia', serif" }}
-        >
-          <span className="text-white">Subscribe to Our </span>
-          <span style={{ color: GOLD }}>Newsletter</span>
-        </h2>
-
-        <p
-          className="text-sm italic leading-relaxed mb-8"
-          style={{ color: "#8a9bbf" }}
-        >
-          Get travel tips, destination guides and exclusive deals straight to
-          your inbox.
-        </p>
-
-        {subscribed ? (
-          <div
-            className="rounded-xl px-6 py-5 text-center mx-auto max-w-sm"
-            style={{ background: "#2d4270" }}
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <span
+            className="text-[10px] tracking-[5px] uppercase font-bold block mb-6"
+            style={{ color: GOLD }}
           >
+            The Newsletter
+          </span>
+
+          <h2
+            className="text-3xl md:text-5xl font-light leading-tight mb-6"
+            style={{ fontFamily: "'Georgia', serif", color: TEXT_DARK }}
+          >
+            Join the <span className="font-bold italic" style={{ color: GOLD }}>Inner Circle</span>
+          </h2>
+
+          <p
+            className="text-sm md:text-base leading-relaxed mb-10 max-w-md mx-auto"
+            style={{ color: "#777" }}
+          >
+            Receive curated travel stories, hidden gems of the Himalayas, and 
+            exclusive seasonal offers before anyone else.
+          </p>
+
+          {subscribed ? (
             <div
-              className="text-2xl font-bold mb-2"
-              style={{ color: GOLD }}
+              className="rounded-full px-8 py-4 text-center mx-auto max-w-sm flex items-center justify-center gap-3 animate-pulse"
+              style={{ background: "#FFF", border: `1px solid ${GOLD}` }}
             >
-              ✓
+              <span style={{ color: GOLD }} className="text-xl font-bold">✓</span>
+              <p className="text-sm font-bold uppercase tracking-widest" style={{ color: TEXT_DARK }}>
+                You're on the list
+              </p>
             </div>
-            <p className="text-sm font-medium text-white mb-1">
-              You're subscribed!
-            </p>
-            <p className="text-xs" style={{ color: "#8a9bbf" }}>
-              Welcome aboard. Expect great content in your inbox soon.
-            </p>
-          </div>
-        ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto rounded-lg overflow-hidden"
-            style={{ border: "0.5px solid #2d4270" }}
-          >
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 px-4 py-3 text-sm outline-none placeholder:text-gray-500"
-              style={{ background: "#2d4270", color: "#fff" }}
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 flex-shrink-0"
-              style={{ background: GOLD }}
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
             >
-              Subscribe →
-            </button>
-          </form>
-        )}
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="flex-1 px-6 py-4 rounded-full text-sm outline-none transition-all border border-gray-200 focus:border-[#C9A84C] shadow-inner"
+                style={{ background: "#FFF", color: TEXT_DARK }}
+              />
+              <button
+                type="submit"
+                className="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-white rounded-full transition-all hover:shadow-xl active:scale-95"
+                style={{ background: GOLD }}
+              >
+                Subscribe
+              </button>
+            </form>
+          )}
 
-        <p
-          className="text-[10px] mt-4"
-          style={{ color: "#8a9bbf" }}
-        >
-          No spam. Unsubscribe anytime.
-        </p>
+          <p
+            className="text-[9px] mt-6 uppercase tracking-[2px] font-medium"
+            style={{ color: "#AAA" }}
+          >
+            Privacy Guaranteed • Unsubscribe Anytime
+          </p>
+        </div>
       </div>
     </section>
   );

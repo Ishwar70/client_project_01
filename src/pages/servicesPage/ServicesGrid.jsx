@@ -16,50 +16,44 @@ const services = [
   {
     icon: Landmark,
     title: "Pilgrimage Tours",
-    description:
-      "Char Dham, Rishikesh, Haridwar — sacred journeys guided by experts who know every temple intimately.",
+    description: "Char Dham, Rishikesh, Haridwar — sacred journeys guided by experts who know every temple intimately.",
     price: "From ₹15,000",
-    bgAccent: GOLD,
+    image: "https://tse4.mm.bing.net/th/id/OIP.5N7ZWpZZ1fBLCtFJjtRvEgHaFA?rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     icon: Mountain,
     title: "Adventure Treks",
-    description:
-      "River rafting, high-altitude trekking, camping and bonfire — for the thrill-seekers at heart.",
+    description: "River rafting, high-altitude trekking, camping and bonfire — for the thrill-seekers at heart.",
     price: "From ₹12,000",
-    bgAccent: NAVY,
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
   },
   {
     icon: Hotel,
     title: "Hill Station Stays",
-    description:
-      "Luxury stays in Mussoorie, Nainital, Almora — serene escapes with breathtaking mountain views.",
+    description: "Luxury stays in Mussoorie, Nainital, Almora — serene escapes with breathtaking mountain views.",
     price: "From ₹18,000",
-    bgAccent: GOLD,
+    image: "https://tse3.mm.bing.net/th/id/OIP.APFM8IaeM7SQ8B9p3M8StQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     icon: Map,
     title: "Custom Itineraries",
-    description:
-      "Fully personalized trips built around your dates, budget, group size and travel preferences.",
+    description: "Fully personalized trips built around your dates, budget, group size and travel preferences.",
     price: "Custom Pricing",
-    bgAccent: NAVY,
+    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop",
   },
   {
     icon: Users,
     title: "Group Tours",
-    description:
-      "Organized group departures every month — meet fellow travelers and explore together affordably.",
+    description: "Organized group departures every month — meet fellow travelers and explore together affordably.",
     price: "From ₹8,000",
-    bgAccent: GOLD,
+    image: "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=800&auto=format&fit=crop",
   },
   {
     icon: Car,
     title: "Airport Transfers",
-    description:
-      "Safe, comfortable and punctual pick-up & drop services from all major airports and railway stations.",
+    description: "Safe, comfortable and punctual pick-up & drop services from all major airports and railway stations.",
     price: "From ₹2,500",
-    bgAccent: NAVY,
+    image: "https://tse3.mm.bing.net/th/id/OIP.CPYhRIDT_ESrF2fz-BtyFAHaEQ?rs=1&pid=ImgDetMain&o=7&rm=3",
   },
 ];
 
@@ -86,79 +80,76 @@ export default function ServicesGrid() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((s) => {
             const Icon = s.icon;
             return (
               <div
                 key={s.title}
-                className="bg-white rounded-xl overflow-hidden transition-transform duration-300 hover:-translate-y-1 cursor-default"
+                className="bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group"
                 style={{
                   border: "0.5px solid #E5E0D5",
                   borderTop: `3px solid ${GOLD}`,
                 }}
               >
-                {/* Image placeholder */}
-                <div
-                  className="w-full h-36 flex items-center justify-center gap-2"
-                  style={{ background: s.bgAccent }}
-                >
-                  <Icon
-                    size={22}
-                    color={s.bgAccent === GOLD ? "#F5E6C0" : "#aab5cc"}
+                {/* Image Section */}
+                <div className="w-full h-48 relative overflow-hidden">
+                  <img 
+                    src={s.image} 
+                    alt={s.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <span
-                    className="text-xs"
-                    style={{
-                      color: s.bgAccent === GOLD ? "#F5E6C0" : "#aab5cc",
-                    }}
+                  {/* Subtle Dark Overlay */}
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
+                  
+                  {/* Floating Icon Badge */}
+                  <div 
+                    className="absolute bottom-3 right-3 p-2 rounded-lg backdrop-blur-md shadow-lg"
+                    style={{ background: "rgba(255, 255, 255, 0.9)" }}
                   >
-                    {s.title} Image
-                  </span>
+                    <Icon size={18} style={{ color: NAVY }} />
+                  </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                      style={{ background: GOLD }}
-                    >
-                      <Icon size={14} color="#fff" />
-                    </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
                     <h3
-                      className="text-sm font-semibold"
-                      style={{ color: NAVY }}
+                      className="text-lg font-bold"
+                      style={{ color: NAVY, fontFamily: "sans-serif" }}
                     >
                       {s.title}
                     </h3>
                   </div>
 
-                  <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                  <p className="text-sm text-gray-500 leading-relaxed mb-6 h-12 overflow-hidden">
                     {s.description}
                   </p>
 
                   <div
-                    className="w-full mb-4"
-                    style={{ height: "0.5px", background: "#E5E0D5" }}
+                    className="w-full mb-5"
+                    style={{ height: "1px", background: "#f0ede7" }}
                   />
 
                   <div className="flex items-center justify-between">
-                    <span
-                      className="text-xs font-semibold"
-                      style={{ color: GOLD }}
-                    >
-                      {s.price}
-                    </span>
+                    <div>
+                      <span className="block text-[10px] uppercase text-gray-400 font-bold tracking-wider">Starting at</span>
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: GOLD }}
+                      >
+                        {s.price}
+                      </span>
+                    </div>
                     <button
                       onClick={() => navigate("/contact")}
-                      className="text-xs px-3 py-1.5 rounded transition-colors hover:bg-gray-50"
+                      className="text-xs font-bold px-4 py-2 rounded-full transition-all hover:bg-navy-900 group-hover:bg-[#1B2B4B] group-hover:text-white"
                       style={{
-                        border: `0.5px solid ${NAVY}`,
+                        border: `1.5px solid ${NAVY}`,
                         color: NAVY,
                       }}
                     >
-                      Learn More →
+                      Book Now
                     </button>
                   </div>
                 </div>

@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 const GOLD = "#C9A84C";
-const NAVY = "#1B2B4B";
+const TEXT_DARK = "#1A1A1A";
+const OFF_WHITE = "#FAFAF7";
 
 const packages = [
   "Divine Char Dham Yatra",
@@ -13,9 +14,9 @@ const packages = [
   "Custom Package",
 ];
 
-const inputClass =
-  "w-full bg-[#F5F3EF] rounded-md px-3 py-2.5 text-sm text-gray-700 outline-none focus:ring-2 placeholder:text-gray-400";
-const focusStyle = { focusRingColor: GOLD };
+// Refined Input Styling
+const inputClass = 
+  "w-full bg-white border border-gray-100 rounded-xl px-4 py-3.5 text-sm text-gray-700 outline-none transition-all duration-300 focus:border-[#C9A84C] focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] placeholder:text-gray-300 shadow-sm";
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -40,28 +41,27 @@ export default function ContactForm() {
   if (submitted) {
     return (
       <div
-        className="bg-white rounded-xl p-8 flex flex-col items-center justify-center text-center h-full min-h-[400px]"
-        style={{ border: "0.5px solid #E5E0D5" }}
+        className="bg-white rounded-[2rem] p-10 flex flex-col items-center justify-center text-center h-full min-h-[500px] shadow-2xl border border-gray-50"
       >
         <div
-          className="w-14 h-14 rounded-full flex items-center justify-center mb-4 text-2xl"
-          style={{ background: GOLD }}
+          className="w-20 h-20 rounded-full flex items-center justify-center mb-6 text-3xl shadow-xl animate-bounce"
+          style={{ background: `linear-gradient(135deg, ${GOLD}, #E5D296)` }}
         >
           <span className="text-white font-bold">✓</span>
         </div>
         <h3
-          className="text-xl font-semibold mb-2"
-          style={{ color: NAVY, fontFamily: "'Georgia', serif" }}
+          className="text-3xl font-bold mb-3"
+          style={{ color: TEXT_DARK, fontFamily: "'Georgia', serif" }}
         >
-          Message Sent!
+          Success!
         </h3>
-        <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-          Thank you for reaching out. Our team will call you within 2 hours.
+        <p className="text-sm text-gray-400 mb-8 max-w-xs mx-auto leading-relaxed">
+          Your request is being processed. Our luxury travel concierge will contact you within <span className="font-bold" style={{ color: GOLD }}>2 hours</span>.
         </p>
         <button
           onClick={() => setSubmitted(false)}
-          className="text-sm font-medium px-6 py-2.5 rounded text-white transition-opacity hover:opacity-90"
-          style={{ background: GOLD }}
+          className="text-xs font-bold tracking-[2px] uppercase px-8 py-4 rounded-full text-white transition-all hover:scale-105 active:scale-95"
+          style={{ background: TEXT_DARK }}
         >
           Send Another Message
         </button>
@@ -71,152 +71,150 @@ export default function ContactForm() {
 
   return (
     <div
-      className="bg-white rounded-xl p-6 md:p-8"
-      style={{ border: "0.5px solid #E5E0D5" }}
+      className="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] border border-gray-50 relative overflow-hidden"
     >
-      <span
-        className="text-xs tracking-[3px] uppercase font-medium block mb-2"
-        style={{ color: GOLD }}
-      >
-        Send a Message
-      </span>
-      <h2
-        className="text-lg font-semibold mb-6"
-        style={{ color: NAVY, fontFamily: "sans-serif" }}
-      >
-        We Reply Within{" "}
-        <span style={{ color: GOLD }}>2 Hours</span>
-      </h2>
+      {/* Subtle Gold Corner Accent */}
+      <div className="absolute top-0 right-0 w-24 h-24 opacity-5 pointer-events-none" 
+           style={{ borderTop: `8px solid ${GOLD}`, borderRight: `8px solid ${GOLD}`, borderRadius: '0 2rem 0 0' }}></div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* Row 1 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Full Name *
-            </label>
-            <input
-              name="name"
-              required
-              value={form.name}
-              onChange={handle}
-              placeholder="Rahul Sharma"
-              className={inputClass}
-              style={{ border: "0.5px solid #E5E0D5" }}
-            />
-          </div>
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Phone Number *
-            </label>
-            <input
-              name="phone"
-              required
-              value={form.phone}
-              onChange={handle}
-              placeholder="+91 98765 43210"
-              className={inputClass}
-              style={{ border: "0.5px solid #E5E0D5" }}
-            />
-          </div>
-        </div>
-
-        {/* Email */}
-        <div>
-          <label className="text-xs text-gray-400 block mb-1">
-            Email Address *
-          </label>
-          <input
-            name="email"
-            type="email"
-            required
-            value={form.email}
-            onChange={handle}
-            placeholder="rahul@example.com"
-            className={inputClass}
-            style={{ border: "0.5px solid #E5E0D5" }}
-          />
-        </div>
-
-        {/* Row 2 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Select Package
-            </label>
-            <select
-              name="package"
-              value={form.package}
-              onChange={handle}
-              className={inputClass}
-              style={{ border: "0.5px solid #E5E0D5" }}
-            >
-              <option value="">Choose a package</option>
-              {packages.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Travel Date
-            </label>
-            <input
-              name="date"
-              type="date"
-              value={form.date}
-              onChange={handle}
-              className={inputClass}
-              style={{ border: "0.5px solid #E5E0D5" }}
-            />
-          </div>
-        </div>
-
-        {/* Travelers */}
-        <div>
-          <label className="text-xs text-gray-400 block mb-1">
-            Number of Travelers
-          </label>
-          <input
-            name="travelers"
-            value={form.travelers}
-            onChange={handle}
-            placeholder="e.g. 2 Adults, 1 Child"
-            className={inputClass}
-            style={{ border: "0.5px solid #E5E0D5" }}
-          />
-        </div>
-
-        {/* Message */}
-        <div>
-          <label className="text-xs text-gray-400 block mb-1">
-            Your Message
-          </label>
-          <textarea
-            name="message"
-            rows={4}
-            value={form.message}
-            onChange={handle}
-            placeholder="Tell us about your dream trip..."
-            className={inputClass}
-            style={{ border: "0.5px solid #E5E0D5", resize: "none" }}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3 text-sm font-medium rounded text-white transition-opacity hover:opacity-90"
-          style={{ background: GOLD }}
+      <div className="relative z-10">
+        <span
+          className="text-[10px] tracking-[4px] uppercase font-black block mb-3"
+          style={{ color: GOLD }}
         >
-          Send Message →
-        </button>
+          Reservations
+        </span>
+        <h2
+          className="text-3xl font-semibold mb-8"
+          style={{ color: TEXT_DARK, fontFamily: "'Georgia', serif" }}
+        >
+          Book Your <span className="italic font-light" style={{ color: GOLD }}>Escape</span>
+        </h2>
 
-        <p className="text-[10px] text-gray-400 text-center">
-          We respect your privacy. No spam, ever.
-        </p>
-      </form>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+                Full Name
+              </label>
+              <input
+                name="name"
+                required
+                value={form.name}
+                onChange={handle}
+                placeholder="Ex. Rahul Sharma"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+                Phone Number
+              </label>
+              <input
+                name="phone"
+                required
+                value={form.phone}
+                onChange={handle}
+                placeholder="+91"
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+              Email Address
+            </label>
+            <input
+              name="email"
+              type="email"
+              required
+              value={form.email}
+              onChange={handle}
+              placeholder="rahul@example.com"
+              className={inputClass}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+                Choose Journey
+              </label>
+              <select
+                name="package"
+                value={form.package}
+                onChange={handle}
+                className={`${inputClass} appearance-none cursor-pointer`}
+              >
+                <option value="">Select Package</option>
+                {packages.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+                Departure Date
+              </label>
+              <input
+                name="date"
+                type="date"
+                value={form.date}
+                onChange={handle}
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+              Group Size
+            </label>
+            <input
+              name="travelers"
+              value={form.travelers}
+              onChange={handle}
+              placeholder="e.g. 2 Adults, 1 Child"
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2 ml-1">
+              Special Requests
+            </label>
+            <textarea
+              name="message"
+              rows={3}
+              value={form.message}
+              onChange={handle}
+              placeholder="Share any specific preferences..."
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="group relative w-full py-4 rounded-full overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
+            style={{ background: GOLD }}
+          >
+            {/* Shimmer Effect */}
+            <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            
+            <span className="relative z-10 text-white text-[11px] font-bold uppercase tracking-[3px]">
+              Request Itinerary →
+            </span>
+          </button>
+
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: GOLD }}></div>
+            <p className="text-[9px] text-gray-400 uppercase tracking-widest">
+              Instant Confirmation & Best Price Guaranteed
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
