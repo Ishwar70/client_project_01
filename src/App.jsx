@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 // import PackagesHome from './components/package/PackagesHome';
-import WorldDestinationsExplorer from './pages/Worlddestinationsexplorer';
-import DestinationDetail from './pages/Destinationdetail';
+// import WorldDestinationsExplorer from './pages/Worlddestinationsexplorer';
+// import DestinationDetail from './pages/Destinationdetail';
 import About from './pages/aboutPage/About';
 import Services from './pages/servicesPage/Services';
 import Packages from './pages/packagesPage/Packages';
@@ -15,6 +15,7 @@ import Blog from './pages/blogPage/Blog';
 
 import Home from './home/Home';
 import Destination from './destination/Destination';
+import DestinationDetails from './destination/DestinationDetails';
 
 
 function App() {
@@ -25,8 +26,9 @@ function App() {
         
         <Route path="/" element={<Home />} />
         <Route path="/destinations" element={<Destination />} />
-        <Route path="/destinations/:slug"    element={<DestinationDetail />} />
+        {/* <Route path="/destinations/:slug"    element={<DestinationDetail />} /> */}
         {/* <Route path="/packages" element={<PackagesHome />} /> */}
+        <Route path="/destination/:slug" element={<DestinationDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/packages" element={<Packages />} />
