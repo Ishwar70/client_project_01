@@ -1,7 +1,6 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 
 const GOLD = "#C9A84C";
-const GOLD_GRADIENT = "linear-gradient(135deg, #C9A84C 0%, #E5D296 50%, #B8962E 100%)";
 const TEXT_DARK = "#1A1A1A";
 
 const items = [
@@ -18,82 +17,54 @@ const items = [
   {
     icon: MapPin,
     label: "Local Office",
-    value: "Dehradun, Uttarakhand",
+    value: "Dehradun, UK",
   },
 ];
 
 export default function ContactStrip() {
   return (
-    <section className="w-full bg-white py-16 px-6 md:px-16 lg:px-24">
-      <div className="max-w-7xl mx-auto">
-        {/* The Golden Outer Frame */}
-        <div 
-          className="p-[1px] rounded-[2.5rem] shadow-[0_20px_50px_-15px_rgba(201,168,76,0.2)]"
-          style={{ background: GOLD_GRADIENT }}
-        >
-          <div 
-            className="grid grid-cols-1 md:grid-cols-3 rounded-[2.5rem] overflow-hidden"
-            style={{ background: "#FFFFFF" }}
-          >
-            {items.map((item, i) => {
+    <section className="w-full bg-[#FAFAF9] py-10 px-4 md:px-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Subtle Shadow & Thin Border */}
+        <div className="bg-white rounded-3xl md:rounded-full border border-black/5 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+            {items.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="group relative flex items-center gap-6 px-10 py-12 transition-all duration-500 hover:bg-[#FFFDF7]"
-                  style={{
-                    borderRight: i < items.length - 1 ? "1px solid #F5F1E6" : "none",
-                  }}
+                  className="group relative flex items-center gap-5 px-8 py-8 md:py-10 transition-all duration-300 hover:bg-white"
                 >
-                  {/* Premium Metallic Golden Icon Container */}
+                  {/* Minimalist Icon Circle */}
                   <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-700 group-hover:rotate-[360deg] shadow-[0_10px_20px_-5px_rgba(201,168,76,0.3)]"
-                    style={{ 
-                      background: GOLD_GRADIENT,
-                    }}
+                    className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(201,168,76,0.3)] border border-[#C9A84C]/20 group-hover:border-[#C9A84C]"
+                    style={{ background: 'transparent' }}
                   >
-                    <Icon size={22} color="#FFF" strokeWidth={2.5} />
+                    <Icon size={18} color={GOLD} strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
                   </div>
 
-                  <div className="z-10">
-                    <p
-                      className="text-[10px] uppercase tracking-[4px] font-black mb-1.5 transition-colors"
-                      style={{ color: GOLD }}
+                  <div className="flex flex-col">
+                    <span
+                      className="text-[9px] uppercase tracking-[0.3em] font-bold mb-1 transition-colors text-gray-400 group-hover:text-[#C9A84C]"
                     >
                       {item.label}
-                    </p>
-                    <p
-                      className="text-base font-bold tracking-tight"
-                      style={{ color: TEXT_DARK, fontFamily: "sans-serif" }}
+                    </span>
+                    <span
+                      className="text-sm md:text-base font-medium tracking-tight text-[#1A1A1A]"
+                      style={{ fontFamily: "'Georgia', serif" }}
                     >
                       {item.value}
-                    </p>
+                    </span>
                   </div>
 
-                  {/* Golden Reflection Effect on Hover */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                    style={{
-                      background: "linear-gradient(45deg, transparent 0%, rgba(201,168,76,0.05) 50%, transparent 100%)"
-                    }}
-                  ></div>
+                  {/* Hidden Hover Detail: Subtle Gold Bar at Bottom */}
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#C9A84C] transition-all duration-500 group-hover:w-full"></div>
                 </div>
               );
             })}
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 767px) {
-          .grid > div {
-            border-right: none !important;
-            border-bottom: 1px solid #F5F1E6 !important;
-          }
-          .grid > div:last-child {
-            border-bottom: none !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
