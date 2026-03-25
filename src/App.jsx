@@ -17,6 +17,7 @@ import Home from './home/Home';
 import Destination from './destination/Destination';
 import DestinationDetails from './destination/DestinationDetails';
 
+// import TravelDashboard from './dashbaord/TravelDashboard';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/packages" element={<Packages />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
+        {/* <Route path="/dashbaord" element={< TravelDashboard/>} /> */}
       </Routes>
        
       <Footer />
