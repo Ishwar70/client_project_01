@@ -72,7 +72,7 @@ export default function ServicesHero() {
             with the raw, untamed beauty of the Himalayas.
           </p>
 
-          <div data-animate className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* <div data-animate className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={() => navigate("/packages")}
               className="group relative px-8 py-4 bg-black rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
@@ -90,7 +90,7 @@ export default function ServicesHero() {
             >
               Custom Inquiry
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Side: Editorial Image (Hidden on Mobile) */}

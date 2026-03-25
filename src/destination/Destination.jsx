@@ -17,7 +17,7 @@ export default function Destination() {
       <DestinationStats />
       <DestinationGrid searchQuery={searchQuery} />
       <DestinationMap />
-      <DestinationCTA />
+      {/* <DestinationCTA /> */}
     </main>
   );
 }

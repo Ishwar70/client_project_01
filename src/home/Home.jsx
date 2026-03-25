@@ -6,7 +6,7 @@ import WhyChooseUs from "../home/WhyChooseUs";
 import HomePremiumPackages from "../home/HomePremiumPackages";
 import HomeTestimonials from "../home/HomeTestimonials";
 import HomeBlogPreview from "../home/HomeBlogPreview";
-import HomeCTA from "../home/HomeCTA";
+// import HomeCTA from "../home/HomeCTA";
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
       <HomePremiumPackages />
       <HomeTestimonials />
       <HomeBlogPreview />
-      <HomeCTA />
+      {/* <HomeCTA /> */}
     </main>
   );
 }
