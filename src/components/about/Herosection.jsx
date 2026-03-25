@@ -1,10 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const GOLD = "#C9A84C";
-const TEXT_DARK = "#2A2A2A"; // Elegant off-black for readability
-const SOFT_BG = "#FAFAF7";   // Very light sand/paper color for depth
-
-const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=2000&auto=format&fit=crop";
+const TEXT_MAIN = "#1A1A1A"; 
 
 export default function HeroSection() {
   const containerRef = useRef(null);
@@ -13,126 +10,88 @@ export default function HeroSection() {
     const els = containerRef.current?.querySelectorAll("[data-animate]");
     els?.forEach((el, i) => {
       el.style.opacity = "0";
-      el.style.transform = "translateY(20px)";
-      el.style.transition = `opacity 0.8s ease ${i * 0.1}s, transform 0.8s ease ${i * 0.1}s`;
+      el.style.transform = "translateY(10px)";
+      el.style.transition = `all 0.6s ease-out ${i * 0.08}s`;
       setTimeout(() => {
         el.style.opacity = "1";
         el.style.transform = "translateY(0)";
-      }, 100);
+      }, 50);
     });
   }, []);
-
-  const stats = [
-    { value: "15+", label: "Years Exp." },
-    { value: "10K+", label: "Travelers" },
-    { value: "50+", label: "Destinations" },
-    { value: "100%", label: "Satisfaction" },
-  ];
 
   return (
     <section
       ref={containerRef}
-      style={{ background: "#FFFFFF" }}
-      className="w-full px-6 md:px-16 lg:px-24 py-16 md:py-28 overflow-hidden"
+      className="relative w-full bg-white px-6 md:px-12 py-8 md:py-14 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         
         {/* Left Content */}
-        <div>
-          <div data-animate className="flex items-center gap-3 mb-6">
-            <div className="h-[1px] w-8" style={{ background: GOLD }}></div>
-            <span
-              className="text-xs tracking-[4px] uppercase font-bold"
-              style={{ color: GOLD }}
-            >
-              Since 2009
+        <div className="lg:col-span-6 z-10">
+          <div data-animate className="flex items-center gap-2 mb-3">
+            <div className="h-[1.5px] w-5" style={{ backgroundColor: GOLD }}></div>
+            <span className="text-[9px] tracking-[0.4em] uppercase font-bold" style={{ color: GOLD }}>
+              Luxury Travel
             </span>
           </div>
 
           <h1
             data-animate
-            className="text-5xl md:text-7xl font-light leading-[1.1] mb-8"
-            style={{ fontFamily: "'Georgia', serif", color: TEXT_DARK }}
+            className="text-5xl md:text-8xl font-serif leading-[0.9] mb-4 tracking-tighter"
+            style={{ color: TEXT_MAIN }}
           >
-            Experience the <br />
-            <span className="font-bold" style={{ color: GOLD }}>Divine Peaks</span>
+            Pure <br /> 
+            <span style={{ color: GOLD }}>Elevation.</span>
           </h1>
 
           <p
             data-animate
-            className="text-lg leading-relaxed mb-10 max-w-lg text-gray-500"
+            className="text-sm md:text-base leading-relaxed mb-6 max-w-sm text-gray-500 font-light"
           >
-            Discover the soul of Uttarakhand through curated journeys. 
-            From sacred temples to untouched Himalayan trails, we bring 
-            you closer to nature and spirit.
+            Bespoke Uttarakhand expeditions. Discover the silent majesty 
+            of the Himalayas with curated luxury and spiritual depth.
           </p>
 
-          <div data-animate className="flex gap-4 flex-wrap mb-16">
-            <button
-              className="px-10 py-4 text-xs font-bold uppercase tracking-widest rounded-full text-white transition-all hover:shadow-2xl active:scale-95"
-              style={{ background: GOLD }}
-            >
-              Explore Tours
-            </button>
-            <button
-              className="px-10 py-4 text-xs font-bold uppercase tracking-widest rounded-full transition-all border border-gray-200 hover:bg-gray-50"
-              style={{ color: TEXT_DARK }}
-            >
-              Our Story
-            </button>
-          </div>
-
-          {/* Stats Section */}
-          <div
-            data-animate
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-gray-100"
-          >
-            {stats.map((s) => (
-              <div key={s.label}>
-                <div
-                  className="text-2xl font-bold"
-                  style={{ color: TEXT_DARK }}
-                >
-                  {s.value}
-                </div>
-                <div
-                  className="text-[10px] uppercase tracking-widest mt-1 font-bold text-gray-400"
-                >
-                  {s.label}
-                </div>
+          {/* Ultra-tight Stats */}
+          <div data-animate className="flex gap-8 border-t border-gray-50 pt-6">
+            {[
+              { v: "15Y", l: "History" },
+              { v: "50+", l: "Peaks" },
+              { v: "10K", l: "Souls" }
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="text-lg font-medium" style={{ color: TEXT_MAIN }}>{s.v}</div>
+                <div className="text-[8px] uppercase tracking-[0.2em] text-gray-400 font-bold">{s.l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right Content - Elegant Image Layout */}
-        <div data-animate className="relative pl-0 lg:pl-10">
-          <div className="relative z-10 rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border-[8px] border-white">
-            <img 
-              src={HERO_IMAGE_URL} 
-              alt="Uttarakhand Mountains" 
-              className="w-full h-[450px] md:h-[550px] object-cover"
-            />
+        {/* Right Content - Single Powerful Visual */}
+        <div data-animate className="lg:col-span-6 relative mt-4 lg:mt-0">
+          <div className="relative p-2 border border-gray-100">
+            {/* The Image Container */}
+            <div className="relative aspect-16/10 w-full overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1200" 
+                alt="Mountains" 
+                className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000"
+              />
+            </div>
+            
+            {/* Gold Accent Corner */}
+            <div 
+              className="absolute -top-1 -right-1 w-12 h-12 border-t-2 border-r-2" 
+              style={{ borderColor: GOLD }}
+            ></div>
           </div>
 
-          {/* Decorative Gold Element */}
-          <div 
-            className="absolute -top-6 -right-6 w-32 h-32 rounded-full opacity-10 pointer-events-none"
-            style={{ border: `15px solid ${GOLD}` }}
-          ></div>
-
-          {/* Floating Review Card */}
-          <div
-            className="absolute -bottom-6 -left-6 md:left-4 bg-white p-6 rounded-xl shadow-2xl z-20 border border-gray-50"
-          >
-            <div className="flex gap-1 mb-1">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} className="text-sm" style={{ color: GOLD }}>★</span>
-              ))}
-            </div>
-            <div className="text-lg font-bold" style={{ color: TEXT_DARK }}>4.9/5</div>
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
-              Trusted by 10k+ Travelers
+          {/* Floating Rating - Minimalist */}
+          <div className="absolute -bottom-4 right-8 bg-white p-4 shadow-sm border border-gray-50">
+            <div className="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Rating</div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-2xl font-serif italic" style={{ color: TEXT_MAIN }}>4.9</span>
+              <span className="text-[10px]" style={{ color: GOLD }}>★★★★★</span>
             </div>
           </div>
         </div>
