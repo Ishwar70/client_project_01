@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const GOLD = "#C9A84C";
 const TEXT_DARK = "#1A1A1A";
-const LIGHT_GOLD = "#F4EBD0";
 
-const IMG_LEFT = "https://th.bing.com/th/id/OIP.s0AZqlI4Mi5JIcDJQTmDIAHaER?w=277&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3";
-const IMG_RIGHT = "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600&auto=format&fit=crop";
+const IMG_MAIN = "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1200";
 
 export default function ServicesHero() {
   const containerRef = useRef(null);
@@ -16,11 +14,11 @@ export default function ServicesHero() {
     const els = containerRef.current?.querySelectorAll("[data-animate]");
     els?.forEach((el, i) => {
       el.style.opacity = "0";
-      el.style.transform = "scale(0.95) translateY(10px)";
-      el.style.transition = `all 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) ${i * 0.1}s`;
+      el.style.transform = "translateY(20px) scale(0.98)";
+      el.style.transition = `all 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.1}s`;
       setTimeout(() => {
         el.style.opacity = "1";
-        el.style.transform = "scale(1) translateY(0)";
+        el.style.transform = "translateY(0) scale(1)";
       }, 100);
     });
   }, []);
@@ -28,84 +26,70 @@ export default function ServicesHero() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full bg-white pt-16 pb-12 md:pt-24 md:pb-20 px-6 overflow-hidden"
+      className="relative w-full bg-white py-12 md:py-16 px-6 overflow-hidden flex flex-col items-center"
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none">
-         <div className="absolute top-10 left-10 w-40 h-40 rounded-full blur-[100px] opacity-20" style={{ background: GOLD }}></div>
-         <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full blur-[120px] opacity-10" style={{ background: GOLD }}></div>
+      {/* 1. Subtle Background Texture / Watermark */}
+      <div className="absolute top-0 right-0 text-[20vw] font-serif italic text-gray-50 opacity-40 select-none pointer-events-none leading-none -mr-10 -mt-10">
+        Gold
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-0 items-center">
         
-        {/* Left Side: Editorial Image (Hidden on Mobile) */}
-        <div data-animate className="hidden lg:block lg:col-span-3">
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl rotate-[-3deg] border-[6px] border-white">
-            <img src={IMG_LEFT} alt="Trek" className="w-full h-full object-cover" />
-          </div>
-        </div>
-
-        {/* Center: Content (6 Columns) */}
-        <div className="lg:col-span-6 text-center z-10">
-          <div data-animate className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-[1px] w-6 bg-gray-200"></div>
-            <span className="text-[10px] tracking-[4px] uppercase font-extrabold" style={{ color: GOLD }}>
-              Premium Offerings
-            </span>
-            <div className="h-[1px] w-6 bg-gray-200"></div>
-          </div>
-
+        {/* LEFT: Text Content (Span 5) */}
+        <div className="lg:col-span-5 z-20">
           <h1
             data-animate
-            className="text-5xl md:text-7xl font-bold leading-[1.1] mb-6"
-            style={{ fontFamily: "'Georgia', serif", color: TEXT_DARK }}
+            className="text-6xl md:text-[5.5rem] font-serif leading-[0.85] tracking-tighter mb-6"
+            style={{ color: TEXT_DARK }}
           >
-            Curated <br />
-            <span className="italic font-light" style={{ color: GOLD }}>Journeys</span>
+            Divine <br />
+            <span style={{ color: GOLD }} className="italic font-light">Elegance.</span>
           </h1>
 
           <p
             data-animate
-            className="text-sm md:text-base text-gray-500 leading-relaxed mb-10 max-w-md mx-auto"
+            className="text-sm text-gray-400 font-light max-w-xs leading-relaxed mb-8 border-l border-gray-100 pl-6"
           >
-            Expertly crafted itineraries that blend soul-stirring spirituality 
-            with the raw, untamed beauty of the Himalayas.
+            Experience Uttarakhand through a lens of absolute luxury. 
+            Where every detail is gold-standard.
           </p>
 
-          {/* <div data-animate className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button
-              onClick={() => navigate("/packages")}
-              className="group relative px-8 py-4 bg-black rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
-            >
-              <span className="relative z-10 text-[10px] font-bold uppercase tracking-widest text-white">
-                Explore Packages
-              </span>
-              <div className="absolute inset-0 bg-gold translate-y-full group-hover:translate-y-0 transition-transform duration-300" style={{ background: GOLD }}></div>
-            </button>
-
-            <button
-              onClick={() => navigate("/contact")}
-              className="px-8 py-4 text-[10px] font-bold uppercase tracking-widest rounded-full border border-gray-200 transition-all hover:bg-gray-50"
-              style={{ color: TEXT_DARK }}
-            >
-              Custom Inquiry
-            </button>
-          </div> */}
-        </div>
-
-        {/* Right Side: Editorial Image (Hidden on Mobile) */}
-        <div data-animate className="hidden lg:block lg:col-span-3">
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl rotate-[3deg] border-[6px] border-white mt-12">
-            <img src={IMG_RIGHT} alt="Mountain" className="w-full h-full object-cover" />
+          <div data-animate>
+             <button 
+               onClick={() => navigate('/services')}
+               className="group flex items-center gap-4 text-[11px] uppercase tracking-[0.3em] font-bold"
+             >
+                <span className="group-hover:text-[#C9A84C] transition-colors duration-300">View Services</span>
+                <div className="h-px w-10 bg-gray-200 group-hover:w-16 group-hover:bg-[#C9A84C] transition-all duration-500"></div>
+             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile-only breadcrumb at bottom to save top space */}
-      <div data-animate className="mt-12 flex justify-center lg:hidden">
-         <p className="text-[9px] tracking-widest text-gray-400 uppercase">
-           Home <span className="mx-2 text-gold" style={{ color: GOLD }}>/</span> Services
-         </p>
+        {/* RIGHT: The Visual (Span 7) */}
+        <div data-animate className="lg:col-span-7 mt-12 lg:mt-0 relative">
+          <div className="relative group">
+            {/* The Main Image Frame */}
+            <div className="aspect-video overflow-hidden rounded-sm border border-gray-50">
+              <img 
+                src={IMG_MAIN} 
+                alt="Premium View" 
+                className="w-full h-full object-cover grayscale-30 group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
+              />
+            </div>
+
+            {/* Floating Glass Card */}
+            <div className="absolute -bottom-6 -left-6 md:-left-12 bg-white/80 backdrop-blur-md p-6 border border-white shadow-2xl z-30 max-w-50">
+               <div className="text-[9px] uppercase tracking-widest text-[#C9A84C] font-bold mb-2">Heritage</div>
+               <p className="text-[11px] leading-tight text-gray-600 italic">
+                 "A journey that redefines the meaning of peaks."
+               </p>
+            </div>
+
+            {/* Decorative Gold Elements */}
+            <div className="absolute top-0 right-0 w-24 h-24 border-t border-r -mt-2 -mr-2" style={{ borderColor: GOLD }}></div>
+            <div className="absolute bottom-0 left-1/2 w-px h-12 bg-linear-to-t from-[#C9A84C] to-transparent"></div>
+          </div>
+        </div>
       </div>
     </section>
   );

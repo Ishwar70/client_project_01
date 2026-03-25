@@ -7,6 +7,7 @@ import HomePremiumPackages from "../home/HomePremiumPackages";
 import HomeTestimonials from "../home/HomeTestimonials";
 import HomeBlogPreview from "../home/HomeBlogPreview";
 // import HomeCTA from "../home/HomeCTA";
+import ServicesGrid from '../pages/servicesPage/ServicesGrid';
 
 export default function Home() {
   return (
@@ -14,7 +15,8 @@ export default function Home() {
       <HomeHero />
       <MarqueeStrip />
       <TripPlanner />
-      <FeaturedDestinations />
+      <ServicesGrid/>
+      {/* <FeaturedDestinations /> */}
       <WhyChooseUs />
       <HomePremiumPackages />
       <HomeTestimonials />
