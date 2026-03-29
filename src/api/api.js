@@ -1,7 +1,27 @@
+import axios from "axios";
+
 const BASE_URL = import.meta.env.VITE_SERVER_API_URL;
 
-const API_ENDPOINTS = {
-  FORM_SUBMIT: `${BASE_URL}/submit`,
-};
+const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true, 
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-export default API_ENDPOINTS;
+api.interceptors.request.use(
+  (config) => {
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default api;
