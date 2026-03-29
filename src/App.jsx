@@ -17,6 +17,10 @@ import Home from './home/Home';
 import Destination from './destination/Destination';
 import DestinationDetails from './destination/DestinationDetails';
 
+// import TravelDashboard from './dashbaord/TravelDashboard';
+
+import Login from "./auth/Login";
+import Register from "./auth/Register"
 
 function App() {
   return (
@@ -34,6 +38,9 @@ function App() {
         <Route path="/packages" element={<Packages />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
+        {/* <Route path="/dashbaord" element={< TravelDashboard/>} /> */}
+        <Route path="/login" element={< Login/>} />
+        <Route path="/register" element={<Register />} />
       </Routes>
        
       <Footer />
