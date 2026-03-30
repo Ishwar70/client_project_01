@@ -4,7 +4,6 @@ const BASE_URL = import.meta.env.VITE_SERVER_API_URL;
 
 const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -13,7 +12,6 @@ const api = axios.create({
 /* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use(
   (config) => {
-    // attach token if exists
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -29,22 +27,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // global error handling
     if (error.response) {
       const status = error.response.status;
-
       if (status === 401) {
-        console.warn("Unauthorized - maybe token expired");
-        // optional: logout user
-        // localStorage.removeItem("token");
-        // window.location.href = "/login";
+        console.warn("Unauthorized - Logging out...");
+        localStorage.removeItem("token");
       }
-
       if (status === 500) {
-        console.error("Server error");
+        console.error("Server error - please try again later.");
       }
     }
-
     return Promise.reject(error);
   }
 );
