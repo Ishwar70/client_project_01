@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { loginUser } from "../services/auth.service";
 
 const GOLD = "#BFA13B";
@@ -35,7 +35,7 @@ const Login = () => {
       <div className="absolute top-[-10%] left-[-10%] w-52 h-52 rounded-full blur-[60px] opacity-[0.07] pointer-events-none" style={{ background: GOLD }} />
       <div className="absolute bottom-[-10%] right-[-10%] w-52 h-52 rounded-full blur-[60px] opacity-[0.07] pointer-events-none" style={{ background: DARK }} />
 
-      <div 
+      <div
         className="w-full max-w-90 bg-white rounded-[1.25rem] relative z-10 overflow-hidden shadow-2xl"
         style={{ border: `1px solid ${GOLD}10`, fontFamily: "'DM Sans', sans-serif" }}
       >
@@ -46,9 +46,9 @@ const Login = () => {
           {/* Header Section */}
           <div className="text-center mb-5">
             <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl mb-3 shadow-sm" style={{ background: `linear-gradient(135deg, ${GOLD}, ${DARK})` }}>
-               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-               </svg>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
             </div>
             <h2 className="text-xl font-bold text-stone-800" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Login</h2>
             <p className="text-stone-400 text-[11px] tracking-wide uppercase">Enter credentials to continue</p>
@@ -73,7 +73,13 @@ const Login = () => {
             <div className="space-y-1">
               <div className="flex justify-between items-center px-1">
                 <label className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Password</label>
-                <span className="text-[9px] font-bold cursor-pointer" style={{ color: GOLD }}>Forgot?</span>
+                <Link
+                  to="/forgot"
+                  className="text-[9px] font-bold cursor-pointer"
+                  style={{ color: GOLD }}
+                >
+                  Forgot?
+                </Link>
               </div>
               <div className="relative">
                 <input
@@ -85,7 +91,7 @@ const Login = () => {
                   required
                   className="w-full px-4 py-2 rounded-xl border border-stone-100 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none transition-all text-sm"
                 />
-                <button 
+                <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-300 hover:text-stone-500"
@@ -118,9 +124,9 @@ const Login = () => {
 
         {/* Compact Footer */}
         <div className="py-4 bg-stone-50 border-t border-stone-100 text-center">
-            <p className="text-stone-400 text-[10px] font-medium">
-              New user? <Link to="/register" className="font-bold ml-1 transition-colors hover:text-stone-800" style={{ color: GOLD }}>Request Access</Link>
-            </p>
+          <p className="text-stone-400 text-[10px] font-medium">
+            New user? <Link to="/register" className="font-bold ml-1 transition-colors hover:text-stone-800" style={{ color: GOLD }}>Request Access</Link>
+          </p>
         </div>
       </div>
 

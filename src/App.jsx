@@ -21,6 +21,8 @@ import DestinationDetails from './destination/DestinationDetails';
 
 import Login from "./auth/Login";
 import Register from "./auth/Register"
+import Forgot from './auth/Forgot';
+import Reset from './auth/Reset';
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
         {/* <Route path="/dashbaord" element={< TravelDashboard/>} /> */}
         <Route path="/login" element={< Login/>} />
         <Route path="/register" element={<Register />} />
+         <Route path="/forgot" element={<Forgot />} />
+         <Route path="/reset" element={<Reset />} />
       </Routes>
        
       <Footer />
