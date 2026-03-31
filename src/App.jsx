@@ -19,6 +19,8 @@ import Forgot from "./auth/Forgot";
 import Reset from "./auth/Reset";
 
 import DashboardLayout from "./admin/DashboardLayout";
+import DashboardContent from "./admin/DashboardContent";
+import Profile from "./admin/Profile";
 
 function App() {
   return (
@@ -45,7 +47,11 @@ function App() {
 
         {/* 🛡 PROTECTED ADMIN */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/admin" element={<DashboardLayout />} />
+          <Route path="/admin" element={<DashboardLayout />}>
+            <Route index element={<DashboardContent />} />
+            <Route path="profile" element={<Profile />} />
+            {/* <Route path="settings" element={<Settings />} /> */}
+          </Route>
         </Route>
 
       </Routes>
