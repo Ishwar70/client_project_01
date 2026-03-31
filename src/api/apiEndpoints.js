@@ -14,6 +14,14 @@ const API_ENDPOINTS = {
     RESET_PASSWORD: `${BASE_URL}/auth/reset-password`,
     GET_ME: `${BASE_URL}/auth/me`,
   },
+  
+  SERVICES: {
+    GET_ALL: `${BASE_URL}/services`,
+    GET_BY_ID: (id) => `${BASE_URL}/services/${id}`,
+    CREATE: `${BASE_URL}/services`,
+    UPDATE: (id) => `${BASE_URL}/services/${id}`,
+    DELETE: (id) => `${BASE_URL}/services/${id}`,
+  },
 };
 
 export default API_ENDPOINTS;

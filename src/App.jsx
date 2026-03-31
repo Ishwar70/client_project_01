@@ -21,6 +21,8 @@ import Reset from "./auth/Reset";
 import DashboardLayout from "./admin/DashboardLayout";
 import DashboardContent from "./admin/DashboardContent";
 import Profile from "./admin/Profile";
+import ServiceDetails from "./pages/servicesPage/ServiceDetails";
+import ServicesPage from "./admin/services/ServicesPage";
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
           <Route path="/destination/:slug" element={<DestinationDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/booking/:id" element={<ServiceDetails />} />
           <Route path="/packages" element={<Packages />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
@@ -50,7 +53,7 @@ function App() {
           <Route path="/admin" element={<DashboardLayout />}>
             <Route index element={<DashboardContent />} />
             <Route path="profile" element={<Profile />} />
-            {/* <Route path="settings" element={<Settings />} /> */}
+            <Route path="services" element={<ServicesPage />} />
           </Route>
         </Route>
 
