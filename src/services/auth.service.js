@@ -55,3 +55,27 @@ export const resetPassword = async (data) => {
     handleError(error, "Password reset failed");
   }
 };
+
+/* ================= LOGOUT ================= */
+export const logoutUser = async () => {
+  try {
+    await api.post(API.AUTH.LOGOUT);
+
+  } catch (error) {
+    console.warn(error, "Logout API failed, clearing local data anyway");
+  } finally {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("isAuth");
+  }
+};
+
+/* ================= GET CURRENT USER ================= */
+export const getMe = async () => {
+  try {
+    const res = await api.get(API.AUTH.GET_ME);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data || { msg: "Failed to fetch user" };
+  }
+};
