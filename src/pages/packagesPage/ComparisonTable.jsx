@@ -32,7 +32,7 @@ export default function ComparisonTable() {
 
         {/* Table — scrollable on mobile */}
         <div className="overflow-x-auto rounded-xl" style={{ border: "0.5px solid #E5E0D5" }}>
-          <table className="w-full min-w-[480px]" style={{ tableLayout: "fixed" }}>
+          <table className="w-full min-w-120" style={{ tableLayout: "fixed" }}>
             <thead>
               <tr style={{ background: NAVY }}>
                 <th className="text-left px-4 py-3 text-xs font-medium w-2/5" style={{ color: GOLD }}>

@@ -20,10 +20,10 @@ import Reset from "./auth/Reset";
 
 import DashboardLayout from "./admin/DashboardLayout";
 import DashboardContent from "./admin/DashboardContent";
-import Profile from "./admin/Profile";
+import Profile from "./admin/profile/Profile";
 import ServiceDetails from "./pages/servicesPage/ServiceDetails";
 import ServicesPage from "./admin/services/ServicesPage";
-// import ServiceDetails from "./admin/services/ServiceDetails";
+import PackagesPage from "./admin/packages/PackagesPage";
 
 function App() {
   return (
@@ -57,6 +57,10 @@ function App() {
             <Route path="services">
               <Route index element={<ServicesPage />} />
               <Route path=":id" element={<ServiceDetails />} />
+            </Route>
+            <Route path="packages">
+              <Route index element={<PackagesPage />} />
+              {/* <Route path=":id" element={<ServiceDetails />} /> */}
             </Route>
           </Route>
         </Route>

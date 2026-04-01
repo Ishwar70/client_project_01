@@ -35,7 +35,7 @@ const DashboardLayout = () => {
   /* ================= MENU ================= */
   const menuItems = [
     { icon: <FiHome />, label: "Overview", path: "/admin" },
-    { icon: <FiBarChart2 />, label: "Analytics", path: "/admin/analytics" },
+    { icon: <FiBarChart2 />, label: "Packages", path: "/admin/packages" },
     { icon: <FiUsers />, label: "Services", path: "/admin/services" },
     { icon: <FiUser />, label: "Profile", path: "/admin/profile" },
     { icon: <FiSettings />, label: "Settings", path: "/admin/settings" },
