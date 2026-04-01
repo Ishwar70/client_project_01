@@ -1,27 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { 
-  ChevronLeft, 
-  CheckCircle2, 
-  Clock, 
-  ShieldCheck, 
-  ArrowRight,
-  Landmark, Mountain, Hotel, Map, Users, Car 
+import {
+  CheckCircle2, Clock, Shield, ChevronLeft, ArrowRight,
+  Mountain, Landmark, Hotel, Map, Users, Car, Star, Share2, Heart, MapPin
 } from "lucide-react";
-import { getServiceById } from "../../services/services.service"; 
+import { getServiceById } from "../../services/services.service";
 
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
-const BG = "#FAFAF7";
 
-const iconMap = {
-  landmark: Landmark,
-  mountain: Mountain,
-  hotel: Hotel,
-  map: Map,
-  users: Users,
-  car: Car,
-};
+const iconMap = { landmark: Landmark, mountain: Mountain, hotel: Hotel, map: Map, users: Users, car: Car };
 
 export default function ServiceDetails() {
   const { id } = useParams();
@@ -33,9 +21,9 @@ export default function ServiceDetails() {
     const fetchDetail = async () => {
       try {
         const res = await getServiceById(id);
-        setService(res.data);
+        setService(res?.service || res?.data || res || null);
       } catch (err) {
-        console.error("Error fetching service details:", err);
+        console.error("Error:", err);
       } finally {
         setLoading(false);
       }
@@ -44,101 +32,167 @@ export default function ServiceDetails() {
   }, [id]);
 
   if (loading) return (
-    <div className="h-screen flex items-center justify-center bg-[#FAFAF7]">
-      <div className="animate-pulse flex flex-col items-center">
-        <div className="w-12 h-12 border-4 border-t-gold rounded-full animate-spin mb-4" style={{ borderTopColor: GOLD }}></div>
-        <p style={{ color: NAVY }}>Loading exquisite details...</p>
-      </div>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#FAFAF7" }}>
+      <div className="w-10 h-10 rounded-full border-2 border-gray-200 border-t-[#C9A84C] animate-spin" />
     </div>
   );
 
-  if (!service) return <div className="p-20 text-center">Service not found.</div>;
+  if (!service) return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-3" style={{ background: "#FAFAF7" }}>
+      <p className="text-gray-400 text-sm">Service not found.</p>
+      <button onClick={() => navigate(-1)} className="text-sm underline" style={{ color: GOLD }}>Go Back</button>
+    </div>
+  );
 
   const Icon = iconMap[service.icon] || Landmark;
+  const imageUrl = typeof service.image === "string"
+    ? (service.image.startsWith("http") ? service.image : `http://localhost:5000/${service.image}`)
+    : (service.image?.url || "https://via.placeholder.com/800x400?text=No+Image");
+
+  const features = ["Luxury Transport", "Personal Concierge", "VIP Fast-Track", "Travel Insurance"];
 
   return (
-    <div style={{ background: BG }} className="min-h-screen pb-20">
-      {/* Navigation Header */}
-      <div className="max-w-6xl mx-auto px-6 py-6">
-        <button 
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-70"
-          style={{ color: NAVY }}
-        >
+    <div className="min-h-screen pb-10" style={{ background: "#FAFAF7", fontFamily: "sans-serif", color: NAVY }}>
+
+      {/* Nav */}
+      <div className="bg-white flex items-center justify-between px-5 py-3.5"
+        style={{ borderBottom: "0.5px solid #ede8da" }}>
+        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm font-medium" style={{ color: NAVY }}>
           <ChevronLeft size={18} /> Back to Services
         </button>
+        <div className="flex gap-2.5">
+          {[Share2, Heart].map((Ic, i) => (
+            <button key={i} className="w-9 h-9 rounded-full flex items-center justify-center"
+              style={{ border: "0.5px solid #e8e2d0", background: "#fff" }}>
+              <Ic size={15} color={NAVY} />
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        
-        {/* Left Side: Premium Image Gallery/Hero */}
-        <div className="relative group">
-          <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-             <img
-              src={service.image?.startsWith("http") ? service.image : `http://localhost:5000/${service.image}`}
-              alt={service.title}
-              className="w-full h-125 object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
-          {/* Floating Badge */}
-          <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-xl border border-gray-100 hidden md:block">
-            <Icon size={32} style={{ color: GOLD }} />
+      {/* Hero */}
+      <div className="relative w-full h-[300px] sm:h-[380px] overflow-hidden">
+        <img src={imageUrl} alt={service.title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0" style={{ background: "rgba(27,43,75,0.52)" }} />
+
+        {/* Top badges */}
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+          <span className="text-white text-[10px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full"
+            style={{ background: GOLD }}>
+            {service.category || "Experience"}
+          </span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-semibold"
+            style={{ background: "rgba(255,255,255,0.15)", border: "0.5px solid rgba(255,255,255,0.3)" }}>
+            <Star size={12} fill={GOLD} color={GOLD} />
+            {service.ratings > 0 ? service.ratings : "4.9"} · {service.numReviews > 0 ? `${service.numReviews} reviews` : "128 reviews"}
           </div>
         </div>
 
-        {/* Right Side: Content */}
-        <div className="flex flex-col">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: GOLD }}>
-            Premium Experience
-          </span>
-          <h1 className="text-4xl md:text-5xl font-semibold mb-6" style={{ color: NAVY, fontFamily: "'Playfair Display', serif" }}>
+        {/* Bottom title */}
+        <div className="absolute bottom-0 left-0 right-0 px-5 pb-5">
+          <h1 className="text-white text-3xl sm:text-4xl font-medium leading-tight mb-1"
+            style={{ fontFamily: "Georgia, serif" }}>
             {service.title}
           </h1>
+          <p className="text-white/60 text-sm flex items-center gap-1">
+            <MapPin size={12} /> {service.category || "Premium"} Experience
+          </p>
+        </div>
+      </div>
 
-          <div className="flex items-center gap-6 mb-8 text-sm">
-            <div className="flex items-center gap-2 text-gray-500">
-              <Clock size={16} style={{ color: GOLD }} /> 
-              <span>Flexible Timing</span>
+      {/* Body */}
+      <div className="px-5 sm:px-6 pt-5">
+
+        {/* Meta strip */}
+        <div className="flex bg-white rounded-2xl overflow-hidden mb-5" style={{ border: "0.5px solid #e8e2d0" }}>
+          {[
+            { icon: <Clock size={15} color={GOLD} />, label: "Duration", val: "Flexible" },
+            { icon: <Users size={15} color={GOLD} />, label: "Capacity", val: "6 guests" },
+            { icon: <Shield size={15} color={GOLD} />, label: "Status", val: "Verified" },
+          ].map(({ icon, label, val }, i, arr) => (
+            <div key={label} className="flex-1 flex flex-col items-center py-4 gap-1"
+              style={{ borderRight: i < arr.length - 1 ? "0.5px solid #e8e2d0" : "none" }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1"
+                style={{ background: "#FBF5E8" }}>{icon}</div>
+              <span className="text-[9px] uppercase tracking-widest font-semibold" style={{ color: "#aaa" }}>{label}</span>
+              <span className="text-xs font-semibold" style={{ color: NAVY }}>{val}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-500">
-              <ShieldCheck size={16} style={{ color: GOLD }} /> 
-              <span>Verified Service</span>
+          ))}
+        </div>
+
+        {/* About */}
+        <p className="text-[9px] uppercase tracking-widest font-bold mb-2" style={{ color: GOLD }}>About this experience</p>
+        <h2 className="text-lg font-medium mb-2" style={{ fontFamily: "Georgia,serif" }}>The Experience</h2>
+        <p className="text-sm text-gray-500 leading-relaxed mb-5">
+          {service.description || "A curated journey designed for those who appreciate the finer things. Every detail has been refined to ensure a seamless and unforgettable experience."}
+        </p>
+
+        {/* Features */}
+        <p className="text-[9px] uppercase tracking-widest font-bold mb-3" style={{ color: GOLD }}>What's included</p>
+        <div className="grid grid-cols-2 gap-2.5 mb-6">
+          {features.map((feat) => (
+            <div key={feat} className="flex items-center gap-2.5 bg-white rounded-xl px-3.5 py-3"
+              style={{ border: "0.5px solid #e8e2d0" }}>
+              <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "#F0FAF4" }}>
+                <CheckCircle2 size={13} className="text-green-500" />
+              </div>
+              <span className="text-xs font-medium" style={{ color: NAVY }}>{feat}</span>
+            </div>
+          ))}
+        </div>
+
+        <hr style={{ border: "none", borderTop: "0.5px solid #e8e2d0", marginBottom: "20px" }} />
+
+        {/* Pricing card */}
+        <div className="rounded-2xl p-5" style={{ background: NAVY }}>
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <p className="text-[9px] uppercase tracking-widest font-semibold mb-1.5"
+                style={{ color: "rgba(255,255,255,0.4)" }}>Total Investment</p>
+              <p className="text-white font-bold" style={{ fontSize: "1.9rem", lineHeight: 1 }}>
+                {service.price === "Custom"
+                  ? <span style={{ color: GOLD }}>Custom Quote</span>
+                  : <><span style={{ color: GOLD, fontSize: "1.1rem", verticalAlign: "top", marginTop: 4, display: "inline-block" }}>₹</span>
+                    {service.price?.toLocaleString("en-IN")}
+                    <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontWeight: 400, marginLeft: 4 }}>/ trip</span>
+                  </>
+                }
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5 items-end">
+              {[
+                { icon: <Star size={11} color={GOLD} />, text: "Verified" },
+                { icon: <Icon size={11} color={GOLD} />, text: service.category || "Experience" },
+              ].map(({ icon, text }) => (
+                <div key={text} className="flex items-center gap-1.5 px-3 py-1 rounded-full"
+                  style={{ background: "rgba(201,168,76,0.12)", border: "0.5px solid rgba(201,168,76,0.3)" }}>
+                  {icon}
+                  <span style={{ fontSize: 10, color: GOLD, fontWeight: 600 }}>{text}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            {service.description}
-          </p>
-
-          {/* Service Features (Dummy static data for visual polish) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-            {["Luxury Transport", "Personal Guide", "VIP Access", "Insurance Included"].map((feat) => (
-              <div key={feat} className="flex items-center gap-3">
-                <CheckCircle2 size={18} style={{ color: GOLD }} />
-                <span className="text-sm font-medium" style={{ color: NAVY }}>{feat}</span>
+          <div className="flex flex-col gap-2.5 mb-5 pt-4" style={{ borderTop: "0.5px solid rgba(255,255,255,0.1)" }}>
+            {[
+              ["Service fee", "Included"],
+              ["GST & taxes", "At checkout"],
+              ["Cancellation", "Free · 48 hrs"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
+                <span>{k}</span><span style={{ color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>{v}</span>
               </div>
             ))}
           </div>
 
-          <hr className="border-gray-200 mb-8" />
-
-          {/* Pricing and Action */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div>
-              <p className="text-xs uppercase text-gray-400 font-bold tracking-widest">Investment</p>
-              <p className="text-3xl font-bold" style={{ color: NAVY }}>
-                {service.price === "Custom" ? "Custom Quote" : <><span style={{ color: GOLD }}>$</span>{service.price}</>}
-              </p>
-            </div>
-            
-            <button 
-              className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-full text-white font-bold transition-all hover:shadow-lg active:scale-95"
-              style={{ backgroundColor: NAVY }}
-            >
-              CONFIRM BOOKING
-              <ArrowRight size={18} />
-            </button>
-          </div>
+          <button className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-white text-xs font-bold uppercase tracking-widest border-none cursor-pointer"
+            style={{ background: GOLD, letterSpacing: "0.1em" }}>
+            Book this Experience <ArrowRight size={15} />
+          </button>
+          <p className="text-center mt-3" style={{ fontSize: 10, color: "rgba(255,255,255,0.28)" }}>
+            No payment required to reserve · Confirm later
+          </p>
         </div>
 
       </div>
