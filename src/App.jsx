@@ -23,6 +23,7 @@ import DashboardContent from "./admin/DashboardContent";
 import Profile from "./admin/Profile";
 import ServiceDetails from "./pages/servicesPage/ServiceDetails";
 import ServicesPage from "./admin/services/ServicesPage";
+// import ServiceDetails from "./admin/services/ServiceDetails";
 
 function App() {
   return (
@@ -53,7 +54,10 @@ function App() {
           <Route path="/admin" element={<DashboardLayout />}>
             <Route index element={<DashboardContent />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="services" element={<ServicesPage />} />
+            <Route path="services">
+              <Route index element={<ServicesPage />} />
+              <Route path=":id" element={<ServiceDetails />} />
+            </Route>
           </Route>
         </Route>
 
