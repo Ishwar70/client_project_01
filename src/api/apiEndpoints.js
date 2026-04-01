@@ -22,6 +22,14 @@ const API_ENDPOINTS = {
     UPDATE: (id) => `${BASE_URL}/services/${id}`,
     DELETE: (id) => `${BASE_URL}/services/${id}`,
   },
+  
+  PACKAGES: {
+    GET_ALL: (query = "") => `${BASE_URL}/packages${query}`,
+    GET_BY_ID: (id) => `${BASE_URL}/packages/${id}`,
+    CREATE: `${BASE_URL}/packages`,
+    UPDATE: (id) => `${BASE_URL}/packages/${id}`,
+    DELETE: (id) => `${BASE_URL}/packages/${id}`,
+  },
 };
 
 export default API_ENDPOINTS;

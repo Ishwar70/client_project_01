@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Calendar, Hash, LogOut, Edit3, ShieldCheck, Activity } from "lucide-react";
-import { getMe, logoutUser } from "../services/auth.service";
+import { getMe, logoutUser } from "../../services/auth.service";
 
 const formatDate = (dateStr) => {
   if (!dateStr) return "N/A";
