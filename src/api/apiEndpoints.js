@@ -30,6 +30,14 @@ const API_ENDPOINTS = {
     UPDATE: (id) => `${BASE_URL}/packages/${id}`,
     DELETE: (id) => `${BASE_URL}/packages/${id}`,
   },
+
+  POSTS: {
+    GET_ALL: (query = "") => `${BASE_URL}/posts${query}`, 
+    GET_BY_SLUG: (slug) => `${BASE_URL}/posts/${slug}`, 
+    CREATE: `${BASE_URL}/posts`,
+    UPDATE: (id) => `${BASE_URL}/posts/${id}`,
+    DELETE: (id) => `${BASE_URL}/posts/${id}`,
+  },
 };
 
 export default API_ENDPOINTS;
