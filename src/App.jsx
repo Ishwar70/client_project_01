@@ -24,6 +24,8 @@ import Profile from "./admin/profile/Profile";
 import ServiceDetails from "./pages/servicesPage/ServiceDetails";
 import ServicesPage from "./admin/services/ServicesPage";
 import PackagesPage from "./admin/packages/PackagesPage";
+import PostDetail from "./pages/blogPage/PostDetail";
+import PostPage from "./admin/post/PostPage";
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
           <Route path="/packages" element={<Packages />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<PostDetail />} />
         </Route>
 
         {/* 🔐 AUTH */}
@@ -60,6 +63,10 @@ function App() {
             </Route>
             <Route path="packages">
               <Route index element={<PackagesPage />} />
+              {/* <Route path=":id" element={<ServiceDetails />} /> */}
+            </Route>
+            <Route path="posts">
+              <Route index element={<PostPage/>} />
               {/* <Route path=":id" element={<ServiceDetails />} /> */}
             </Route>
           </Route>

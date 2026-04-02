@@ -16,6 +16,7 @@ export default function PackagesGrid({ activeFilter }) {
     const fetchPackages = async () => {
       try {
         const res = await getAllPackages();
+        console.log(res)
         setPackages(res.data || []);
       } catch (err) {
         console.error("Error fetching packages:", err);

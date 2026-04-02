@@ -1,45 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAllPackages } from "../services/package.service"; 
 import BookingModal from "../components/queryForm/Bookingmodal "; 
 
 const GOLD = "#C9A84C";
-const WHITE = "#FFFFFF";
 const TEXT_DARK = "#2D2D2D";
 const OFF_WHITE = "#FCFBFA";
-
-const packages = [
-  {
-    rating: "4.9",
-    duration: "10 Days",
-    title: "Divine Char Dham Yatra",
-    includes: ["Kedarnath", "Badrinath", "VIP Darshan", "All Meals"],
-    price: "₹45,000",
-  },
-  {
-    rating: "4.8",
-    duration: "7 Days",
-    title: "Adventure Seeker Trek",
-    includes: ["River Rafting", "Camping", "All Gear", "Instructors"],
-    price: "₹32,000",
-  },
-  {
-    rating: "4.7",
-    duration: "5 Days",
-    title: "Hill Station Retreat",
-    includes: ["Nainital", "Mussoorie", "Luxury Stay", "Boating"],
-    price: "₹25,000",
-  },
-];
 
 export default function HomePremiumPackages() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
+  
+  // State for API data
+  const [packages, setPackages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getAllPackages();
+        
+        if (response.success && Array.isArray(response.data)) {
+          // 1. Sort by createdAt descending (Latest first)
+          // 2. Take only the top 3
+          const latestThree = response.data
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 3);
+            
+          setPackages(latestThree);
+        }
+      } catch (error) {
+        console.error("Failed to fetch packages:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleEnquire = (pkg) => {
     setSelectedPackage(pkg);
     setIsModalOpen(true);
   };
+
+  // Optional: Loading skeleton or spinner
+  if (isLoading) {
+    return <div className="w-full py-20 text-center text-gray-500">Loading Premium Experiences...</div>;
+  }
 
   return (
     <section className="w-full px-4 sm:px-8 md:px-16 lg:px-24 py-16 md:py-20" style={{ background: OFF_WHITE }}>
@@ -68,7 +78,7 @@ export default function HomePremiumPackages() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {packages.map((pkg) => (
             <div
-              key={pkg.title}
+              key={pkg._id} // Using MongoDB _id instead of title
               className="bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               style={{ border: "0.5px solid #E5E0D5" }}
             >
@@ -91,8 +101,8 @@ export default function HomePremiumPackages() {
                   What's Included
                 </p>
                 <div className="grid grid-cols-2 gap-y-2 mb-5">
-                  {pkg.includes.map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-xs text-gray-600">
+                  {pkg.includes && pkg.includes.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2 text-xs text-gray-600">
                       <span className="text-[10px]" style={{ color: GOLD }}>✔</span> {item}
                     </div>
                   ))}
@@ -104,7 +114,7 @@ export default function HomePremiumPackages() {
                   <div>
                     <p className="text-[10px] text-gray-400 uppercase font-medium">Starts from</p>
                     <p className="text-xl font-bold" style={{ color: TEXT_DARK }}>
-                      {pkg.price}
+                      ₹{Number(pkg.price).toLocaleString('en-IN')}
                     </p>
                   </div>
                   <button
@@ -124,7 +134,6 @@ export default function HomePremiumPackages() {
         </div>
       </div>
 
-      {/* Booking Modal Component */}
       <BookingModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
