@@ -29,7 +29,7 @@ export default function MarqueeStrip() {
         {[...items, ...items].map((item, i) => (
           <span
             key={i}
-            className="text-[10px] uppercase tracking-[2px] flex-shrink-0"
+            className="text-[10px] uppercase tracking-[2px] shrink-0"
             style={{ color: "#F5E6C0", fontFamily: "sans-serif" }}
           >
             ✦ {item}

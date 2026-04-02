@@ -26,6 +26,7 @@ import ServicesPage from "./admin/services/ServicesPage";
 import PackagesPage from "./admin/packages/PackagesPage";
 import PostDetail from "./pages/blogPage/PostDetail";
 import PostPage from "./admin/post/PostPage";
+import DestinationPage from "./admin/destination/DestinationPage";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/destinations" element={<Destination />} />
-          <Route path="/destination/:slug" element={<DestinationDetails />} />
+          <Route path="/destinations/:id" element={<DestinationDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/booking/:id" element={<ServiceDetails />} />
@@ -63,11 +64,12 @@ function App() {
             </Route>
             <Route path="packages">
               <Route index element={<PackagesPage />} />
-              {/* <Route path=":id" element={<ServiceDetails />} /> */}
             </Route>
             <Route path="posts">
               <Route index element={<PostPage/>} />
-              {/* <Route path=":id" element={<ServiceDetails />} /> */}
+            </Route>
+            <Route path="destinations">
+              <Route index element={<DestinationPage/>} />
             </Route>
           </Route>
         </Route>
