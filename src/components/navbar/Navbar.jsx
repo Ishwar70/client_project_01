@@ -17,12 +17,29 @@ const BRAND_DARK = "#8e7421";
 export default function Navbar() {
   const [menuOpen,  setMenuOpen]  = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [active,    setActive]    = useState("Home");
+  
+  // Improvement: Initialize active state based on current URL path
+  const [active, setActive] = useState(() => {
+    const path = window.location.pathname.replace("/", "");
+    const currentLink = NAV_LINKS.find(link => link.href === (path || "/"));
+    return currentLink ? currentLink.label : "Home";
+  });
 
   useEffect(() => {
     const onResize = () => { if (window.innerWidth >= 1024) setMenuOpen(false); };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Improvement: Sync active state if user uses browser Back/Forward buttons
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname.replace("/", "");
+      const currentLink = NAV_LINKS.find(link => link.href === (path || "/"));
+      if (currentLink) setActive(currentLink.label);
+    };
+    window.addEventListener("popstate", handleLocationChange);
+    return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
   useEffect(() => {
@@ -60,7 +77,6 @@ export default function Navbar() {
                 src="/Logo.svg"
                 alt="Logo"
                 className="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                /* Removed brightness/invert so your GOLDEN logo stays golden */
               />
             </a>
 
@@ -159,7 +175,7 @@ export default function Navbar() {
       {/* ── Modal overlay ── */}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
+          className="fixed inset-0 z-1000 flex items-center justify-center p-4"
           style={{
             backgroundColor: "rgba(0,0,0,0.85)",
             backdropFilter: "blur(12px)",
