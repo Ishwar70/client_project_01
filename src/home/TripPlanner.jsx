@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 
 const GOLD = "#C9A84C";
@@ -7,10 +7,32 @@ const tripTypes = ["All Types", "Adventure", "Pilgrimage", "Wildlife", "Hill Sta
 export default function TripPlanner() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [tripType, setTripType] = useState("All Types");
-  const [travellers, setTravellers] = useState(1); // Default to 1
+  const [travellers, setTravellers] = useState(1);
+
+  // Fetch suggestions from Nominatim API
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchTerm.trim().length > 2 && showSuggestions) {
+        fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            searchTerm
+          )}&addressdetails=1&limit=5`
+        )
+          .then((res) => res.json())
+          .then((data) => setSuggestions(data))
+          .catch((err) => console.error("Error fetching locations:", err));
+      } else {
+        setSuggestions([]);
+      }
+    }, 400); // 400ms delay to save API calls
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, showSuggestions]);
 
   const handleSearch = () => {
     const params = {
@@ -21,12 +43,10 @@ export default function TripPlanner() {
       travellers: travellers,
     };
 
-    // Filter out empty values
     const cleanParams = Object.fromEntries(
       Object.entries(params).filter(([_, v]) => v !== "" && v !== null)
     );
 
-    // Navigate to packages with search query
     navigate({
       pathname: "/packages",
       search: `?${createSearchParams(cleanParams)}`,
@@ -48,16 +68,44 @@ export default function TripPlanner() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
-          {/* Destination */}
-          <div>
+          {/* Destination with Autocomplete */}
+          <div className="relative">
             <label className={labelClass}>Destination</label>
             <input 
               type="text" 
               placeholder="Where to?" 
               className={inputClass} 
               value={searchTerm} 
-              onChange={(e) => setSearchTerm(e.target.value)} 
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowSuggestions(true);
+              }}
+              // Delay hiding to allow the 'onClick' event on suggestions to fire first
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             />
+            
+            {/* Suggestions Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute z-50 w-full bg-white border border-[#E5E0D5] rounded-md mt-1 shadow-xl max-h-60 overflow-y-auto">
+                {suggestions.map((item, index) => (
+                  <li 
+                    key={index}
+                    className="px-3 py-2.5 text-[11px] text-gray-600 hover:bg-[#FAFAF7] cursor-pointer border-b border-[#F5F2ED] last:border-0 transition-colors"
+                    onClick={() => {
+                      setSearchTerm(item.display_name);
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    <span className="font-semibold text-gray-800">
+                      {item.display_name.split(',')[0]}
+                    </span>
+                    <span className="text-gray-400 ml-1">
+                      {item.display_name.split(',').slice(1, 3).join(',')}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* From */}
@@ -83,7 +131,7 @@ export default function TripPlanner() {
             />
           </div>
 
-          {/* Travellers - CHANGED TO MANUAL INPUT */}
+          {/* Travellers */}
           <div>
             <label className={labelClass}>Travellers</label>
             <input 
