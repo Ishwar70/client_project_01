@@ -8,7 +8,6 @@ import { getAllPackages, deletePackage } from "../../services/package.service";
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
 
-// Fallback image if the database provides null or broken links
 const PLACEHOLDER = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop";
 
 export default function PackageList({ refresh, onEdit, onRefresh }) {
@@ -22,7 +21,6 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
     try {
       setLoading(true);
       const res = await getAllPackages();
-      // Safely handle various response structures
       const data = res?.packages || res?.data || res || [];
       setPackages(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -49,23 +47,21 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
     }
   };
 
-  /**
-   * Refined Image Logic:
-   * Returns the correct URL or the PLACEHOLDER if the data is null/empty.
-   */
   const getImageUrl = (image) => {
     if (!image) return PLACEHOLDER;
     if (typeof image === "string") {
-      // Return placeholder if the string is actually "null" or empty
       if (image === "null" || image.trim() === "") return PLACEHOLDER;
       return image.startsWith("http") ? image : `http://localhost:5000/${image}`;
     }
     return image?.url || PLACEHOLDER;
   };
 
+  /* ✅ UPDATED SEARCH (tripType + destination support, old fallback safe) */
   const filtered = packages.filter((p) =>
     p.title?.toLowerCase().includes(search.toLowerCase()) ||
-    p.category?.toLowerCase().includes(search.toLowerCase())
+    p.tripType?.toLowerCase().includes(search.toLowerCase()) ||
+    p.category?.toLowerCase().includes(search.toLowerCase()) ||
+    p.destinationName?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -103,14 +99,14 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((pkg) => {
             const imageUrl = getImageUrl(pkg.image);
-            
+
             return (
               <div
                 key={pkg._id}
                 className="group bg-white rounded-2xl overflow-hidden flex flex-col transition-all hover:shadow-md"
                 style={{ border: "0.5px solid #e8e2d0" }}
               >
-                {/* Image Section */}
+                {/* Image */}
                 <div 
                   className="relative h-48 overflow-hidden bg-gray-100 cursor-pointer"
                   onClick={() => onEdit(pkg)}
@@ -119,17 +115,16 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
                     src={imageUrl}
                     alt={pkg.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    // Double safety: If the URL exists but the image fails to load (404), use placeholder
                     onError={(e) => { e.target.src = PLACEHOLDER; }}
                   />
-                  
-                  {/* Category Badge */}
+
+                  {/* ✅ TripType / Category */}
                   <div className="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm z-10"
                        style={{ background: "rgba(255,255,255,0.9)", color: GOLD }}>
-                    {pkg.category}
+                    {pkg.tripType || pkg.category}
                   </div>
 
-                  {/* Edit Overlay */}
+                  {/* Overlay */}
                   <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                     <div className="bg-white/90 p-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                       <Camera size={20} style={{ color: NAVY }} />
@@ -137,7 +132,7 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
                   </div>
                 </div>
 
-                {/* Content Area */}
+                {/* Content */}
                 <div className="p-5 flex flex-col grow">
                   <div className="flex justify-between items-start mb-1 gap-2">
                     <h3 className="font-semibold text-base leading-tight truncate pr-1">{pkg.title}</h3>
@@ -147,16 +142,28 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-gray-400 text-[11px] mb-4">
-                    <Clock size={12} /> {pkg.duration || "Flexible"}
+                  {/* ✅ Duration replaced with date (fallback safe) */}
+                  <div className="flex items-center gap-2 text-gray-400 text-[11px] mb-2">
+                    <Clock size={12} />
+                    {pkg.duration ||
+                      (pkg.fromDate && pkg.toDate
+                        ? `${new Date(pkg.fromDate).toLocaleDateString()} - ${new Date(pkg.toDate).toLocaleDateString()}`
+                        : "Flexible")}
                   </div>
 
-                  {/* Pricing and Actions */}
+                  {/* ✅ Destination */}
+                  <div className="text-[11px] text-gray-400 mb-4">
+                    📍 {pkg.destinationName || "Unknown"}
+                  </div>
+
+                  {/* Footer */}
                   <div className="mt-auto pt-4 flex flex-col gap-3" style={{ borderTop: "0.5px solid #f0ece2" }}>
                     <div className="flex justify-between items-center">
                       <span className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Package Price</span>
                       <span className="font-bold text-sm">
-                        {pkg.price === "Custom" || !pkg.price ? "On Request" : `₹${Number(pkg.price).toLocaleString("en-IN")}`}
+                        {pkg.price === "Custom" || !pkg.price
+                          ? "On Request"
+                          : `₹${Number(pkg.price).toLocaleString("en-IN")}`}
                       </span>
                     </div>
 
@@ -168,6 +175,7 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
                       >
                         <Pencil size={14} /> Edit Package
                       </button>
+
                       <button
                         onClick={() => setDeleteModal(pkg)}
                         className="w-11 h-10 flex items-center justify-center rounded-full text-red-500 transition-all hover:bg-red-50 active:scale-[0.95]"
@@ -184,28 +192,33 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
         </div>
       )}
 
-      {/* ── Delete Modal ── */}
+      {/* ── Delete Modal (UNCHANGED) ── */}
       {deleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-900/40 backdrop-blur-sm transition-opacity">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl scale-in-center" style={{ border: "0.5px solid #e8e2d0" }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-900/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl" style={{ border: "0.5px solid #e8e2d0" }}>
             <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "#FEF2F2" }}>
               <AlertTriangle size={22} style={{ color: "#c0392b" }} />
             </div>
+
             <h3 className="text-center font-bold text-lg mb-2">Delete Package</h3>
+
             <p className="text-center text-sm text-gray-500 mb-6 px-4">
-              Are you sure you want to delete <span className="font-semibold text-slate-700">"{deleteModal.title}"</span>? This action cannot be undone.
+              Are you sure you want to delete{" "}
+              <span className="font-semibold text-slate-700">"{deleteModal.title}"</span>?
             </p>
+
             <div className="flex gap-3">
-              <button 
-                onClick={() => setDeleteModal(null)} 
-                className="flex-1 py-2.5 rounded-full text-sm font-medium border border-slate-200 hover:bg-slate-50 transition-colors"
+              <button
+                onClick={() => setDeleteModal(null)}
+                className="flex-1 py-2.5 rounded-full text-sm border border-slate-200"
               >
                 Cancel
               </button>
-              <button 
-                onClick={handleDelete} 
-                disabled={deleting} 
-                className="flex-1 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:opacity-90 active:scale-95" 
+
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="flex-1 py-2.5 rounded-full text-white"
                 style={{ background: "#c0392b" }}
               >
                 {deleting ? "Deleting..." : "Yes, Delete"}

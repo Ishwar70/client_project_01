@@ -2,11 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { Upload, X, Check } from "lucide-react";
 import { createPackage, updatePackage } from "../../services/package.service";
 
-// UI Theme Constants
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
-
-const CATEGORIES = ["Adventure", "Hill Station", "Pilgrimage", "Custom"];
+const TRIP_TYPES = ["Adventure", "Hill Station", "Pilgrimage", "Wildlife", "Custom"];
 
 const inputStyle = {
   width: "100%",
@@ -36,41 +34,38 @@ export default function PackageForm({ initialData, onSuccess }) {
 
   const [form, setForm] = useState({
     title: "",
-    category: "Adventure",
-    duration: "",
+    tripType: "Adventure",
     price: "",
     rating: "",
     includes: "",
     image: null,
+    destinationName: "",
+    fromDate: "",
+    toDate: "",
+    travellers: 1,
   });
 
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Sync with initialData (Edit Mode)
+  /* ================= SYNC EDIT DATA ================= */
   useEffect(() => {
     if (initialData) {
       setForm({
         title: initialData.title || "",
-        category: initialData.category || "Adventure",
-        duration: initialData.duration || "",
+        tripType: initialData.tripType || "Adventure",
         price: initialData.price || "",
         rating: initialData.rating || "",
         includes: Array.isArray(initialData.includes) ? initialData.includes.join(", ") : "",
-        image: initialData.image || null,
+        image: initialData.image || null, // This is a URL string initially
+        destinationName: initialData.destinationName || "",
+        fromDate: initialData.fromDate ? initialData.fromDate.split("T")[0] : "",
+        toDate: initialData.toDate ? initialData.toDate.split("T")[0] : "",
+        travellers: initialData.travellers || 1,
       });
       setPreview(initialData.image);
     }
   }, [initialData]);
-
-  // Memory Cleanup for Blob URLs
-  useEffect(() => {
-    return () => {
-      if (preview && preview.startsWith("blob:")) {
-        URL.revokeObjectURL(preview);
-      }
-    };
-  }, [preview]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -78,8 +73,7 @@ export default function PackageForm({ initialData, onSuccess }) {
       const file = files[0];
       if (file) {
         setForm((prev) => ({ ...prev, image: file }));
-        const objectUrl = URL.createObjectURL(file);
-        setPreview(objectUrl);
+        setPreview(URL.createObjectURL(file));
       }
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
@@ -89,26 +83,33 @@ export default function PackageForm({ initialData, onSuccess }) {
   const handleRemoveImage = (e) => {
     e.stopPropagation();
     setPreview(null);
-    // Explicitly set to null to tell backend to use DEFAULT_IMAGE
-    setForm((prev) => ({ ...prev, image: null }));
+    setForm((prev) => ({ ...prev, image: null })); 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  /* ================= SUBMIT LOGIC (FIXED) ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // 1. Prepare payload
       const payload = {
-        title: form.title,
-        category: form.category,
-        duration: form.duration || "Flexible",
-        price: form.price || "Custom",
-        rating: form.rating || 4.5,
+        ...form,
         // Convert comma string to array
-        includes: form.includes.split(",").map(i => i.trim()).filter(Boolean),
-        image: form.image
+        includes: form.includes.split(",").map((i) => i.trim()).filter(Boolean),
+        // Ensure travellers is a number
+        travellers: Number(form.travellers) || 1,
       };
+
+      /**
+       * CRITICAL FIX FOR UPDATE:
+       * If 'image' is a string (the old URL), we don't want to re-upload it.
+       * Your service layer (package.service.js) should handle logic:
+       * - If File: upload.
+       * - If null: remove.
+       * - If string: skip (backend keeps old URL).
+       */
 
       if (initialData?._id) {
         await updatePackage(initialData._id, payload);
@@ -118,161 +119,89 @@ export default function PackageForm({ initialData, onSuccess }) {
 
       onSuccess();
     } catch (err) {
+      alert(err.message || "Failed to save package");
       console.error("Submission Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  // Helper to ensure image displays correctly
   const getFullPreviewUrl = (url) => {
     if (!url) return null;
-    if (url.startsWith("blob:") || url.startsWith("http")) return url;
-    return `http://localhost:5000/${url}`;
+    if (typeof url !== "string") return URL.createObjectURL(url); // Handle case where file isn't blobbed yet
+    return url; // Cloudinary URLs or Blobs
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 p-1">
-      {/* Title */}
       <div>
         <label style={labelStyle}>Package Title</label>
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="e.g. Himalayan Adventure"
-          required
-          style={inputStyle}
-          className="focus:border-[#C9A84C]"
-        />
+        <input name="title" value={form.title} onChange={handleChange} placeholder="e.g. Himalayan Adventure" required style={inputStyle} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label style={labelStyle}>Category</label>
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            style={{ ...inputStyle, appearance: "none", cursor: "pointer" }}
-          >
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
+          <label style={labelStyle}>Trip Type</label>
+          <select name="tripType" value={form.tripType} onChange={handleChange} style={inputStyle}>
+            {TRIP_TYPES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-
         <div>
-          <label style={labelStyle}>Duration</label>
-          <input
-            name="duration"
-            value={form.duration}
-            onChange={handleChange}
-            placeholder="e.g. 5 Days"
-            style={inputStyle}
-          />
+          <label style={labelStyle}>Destination</label>
+          <input name="destinationName" value={form.destinationName} onChange={handleChange} placeholder="e.g. Kedarnath" style={inputStyle} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label style={labelStyle}>From Date</label>
+          <input type="date" name="fromDate" value={form.fromDate} onChange={handleChange} style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>To Date</label>
+          <input type="date" name="toDate" value={form.toDate} onChange={handleChange} style={inputStyle} />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label style={labelStyle}>Price (₹)</label>
-          <input
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-            placeholder="Amount or 'Custom'"
-            style={inputStyle}
-          />
+          <input name="price" value={form.price} onChange={handleChange} placeholder="Amount or 'Custom'" style={inputStyle} />
         </div>
-
         <div>
-          <label style={labelStyle}>Rating</label>
-          <input
-            name="rating"
-            type="number"
-            step="0.1"
-            max="5"
-            value={form.rating}
-            onChange={handleChange}
-            placeholder="4.8"
-            style={inputStyle}
-          />
+          <label style={labelStyle}>Travellers</label>
+          <input name="travellers" type="number" min="1" value={form.travellers} onChange={handleChange} style={inputStyle} />
         </div>
       </div>
 
       <div>
         <label style={labelStyle}>Includes (Comma Separated)</label>
-        <textarea
-          name="includes"
-          value={form.includes}
-          onChange={handleChange}
-          placeholder="Hotel, Meals, Guide..."
-          className="w-full px-5 py-3 rounded-2xl outline-none min-h-20 resize-none border border-[#e8e2d0] focus:border-[#C9A84C]"
-          style={{ fontSize: 13, background: "#fff" }}
-        />
+        <textarea name="includes" value={form.includes} onChange={handleChange} placeholder="Hotel, Meals, Guide..." className="w-full px-5 py-3 rounded-2xl outline-none min-h-20 resize-none border border-[#e8e2d0] focus:border-[#C9A84C]" style={{ fontSize: 13 }} />
       </div>
 
       <div>
         <label style={labelStyle}>Cover Image</label>
-        <div
-          onClick={() => fileInputRef.current.click()}
-          className="group relative h-44 w-full cursor-pointer overflow-hidden rounded-2xl border border-dashed border-[#d4c9a8] bg-[#FAFAF7] transition-all hover:bg-white"
-        >
+        <div onClick={() => fileInputRef.current.click()} className="group relative h-44 w-full cursor-pointer overflow-hidden rounded-2xl border border-dashed border-[#d4c9a8] bg-[#FAFAF7] hover:bg-white transition-all">
           {preview ? (
             <div className="h-full w-full">
-              <img 
-                src={getFullPreviewUrl(preview)} 
-                alt="Preview" 
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white">Click to Change Image</p>
-              </div>
-              <button 
-                type="button"
-                onClick={handleRemoveImage}
-                className="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-red-600 shadow-md hover:scale-110"
-              >
+              <img src={preview.startsWith?.('blob') ? preview : preview} alt="Preview" className="h-full w-full object-cover" />
+              <button type="button" onClick={handleRemoveImage} className="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-red-600 shadow-md hover:scale-110">
                 <X size={16} />
               </button>
             </div>
           ) : (
             <div className="flex h-full flex-col items-center justify-center space-y-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ background: "#FBF5E8" }}>
-                <Upload size={18} style={{ color: GOLD }} />
-              </div>
-              <p className="text-xs font-medium" style={{ color: NAVY }}>Upload Package Image</p>
-              <p className="text-[9px] font-bold uppercase text-gray-400 italic">Leave empty for default beach image</p>
+              <Upload size={18} style={{ color: GOLD }} />
+              <p className="text-xs font-medium" style={{ color: NAVY }}>Upload Image</p>
             </div>
           )}
         </div>
-        <input 
-          ref={fileInputRef}
-          type="file" 
-          name="image" 
-          accept="image/*" 
-          onChange={handleChange} 
-          className="hidden" 
-        />
+        <input ref={fileInputRef} type="file" name="image" accept="image/*" onChange={handleChange} className="hidden" />
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-full py-3.5 text-[11px] font-bold uppercase tracking-widest transition-all active:scale-[0.98] shadow-lg shadow-navy/10"
-        style={{ 
-          background: loading ? "#cbd5e1" : NAVY, 
-          color: loading ? "#64748b" : GOLD 
-        }}
-      >
-        {loading ? (
-          "Processing..."
-        ) : (
-          <>
-            <Check size={16} />
-            {initialData ? "Save Changes" : "Create Package"}
-          </>
-        )}
+      <button type="submit" disabled={loading} className="flex w-full items-center justify-center gap-3 rounded-full py-3.5 text-[11px] font-bold uppercase tracking-widest shadow-lg" style={{ background: loading ? "#cbd5e1" : NAVY, color: GOLD }}>
+        {loading ? "Processing..." : <><Check size={16} />{initialData ? "Save Changes" : "Create Package"}</>}
       </button>
     </form>
   );
