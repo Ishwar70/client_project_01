@@ -38,6 +38,14 @@ const API_ENDPOINTS = {
     UPDATE: (id) => `${BASE_URL}/posts/${id}`,
     DELETE: (id) => `${BASE_URL}/posts/${id}`,
   },
+
+  DESTINATIONS: {
+    GET_ALL: `${BASE_URL}/destinations`, 
+    GET_BY_ID: (id) => `${BASE_URL}/destinations/${id}`,
+    CREATE: `${BASE_URL}/destinations`,
+    UPDATE: (id) => `${BASE_URL}/destinations/${id}`,
+    DELETE: (id) => `${BASE_URL}/destinations/${id}`,
+  },
 };
 
 export default API_ENDPOINTS;

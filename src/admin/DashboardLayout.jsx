@@ -30,11 +30,11 @@ const DashboardLayout = () => {
   };
 
   const menuItems = [
-    { icon: <FiHome />, label: "Overview", path: "/admin" },
+    { icon: <FiHome />, label: "Destinations", path: "/admin/destinations" },
     { icon: <FiLayers />, label: "Packages", path: "/admin/packages" },
     { icon: <FiBriefcase />, label: "Services", path: "/admin/services" },
-    { icon: <FiUser />, label: "Profile", path: "/admin/profile" },
     { icon: <FiFileText />, label: "Blogs", path: "/admin/posts" },
+    { icon: <FiUser />, label: "Profile", path: "/admin/profile" },
   ];
 
   // Helper to handle text visibility logic
