@@ -27,7 +27,6 @@ import PackagesPage from "./admin/packages/PackagesPage";
 import PostDetail from "./pages/blogPage/PostDetail";
 import PostPage from "./admin/post/PostPage";
 import DestinationPage from "./admin/destination/DestinationPage";
-import SearchResults from "./home/SearchResults";
 
 function App() {
   return (
@@ -46,7 +45,6 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<PostDetail />} />
-          <Route path="/search" element={<SearchResults />} />
         </Route>
 
         {/* 🔐 AUTH */}
