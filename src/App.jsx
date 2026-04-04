@@ -6,18 +6,15 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Home from "./home/Home";
 import Destination from "./destination/Destination";
 import DestinationDetails from "./destination/DestinationDetails";
-
 import About from "./pages/aboutPage/About";
 import Services from "./pages/servicesPage/Services";
 import Packages from "./pages/packagesPage/Packages";
 import Contact from "./pages/contactPage/Contact";
 import Blog from "./pages/blogPage/Blog";
-
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Forgot from "./auth/Forgot";
 import Reset from "./auth/Reset";
-
 import DashboardLayout from "./admin/DashboardLayout";
 import DashboardContent from "./admin/DashboardContent";
 import Profile from "./admin/profile/Profile";
@@ -27,13 +24,14 @@ import PackagesPage from "./admin/packages/PackagesPage";
 import PostDetail from "./pages/blogPage/PostDetail";
 import PostPage from "./admin/post/PostPage";
 import DestinationPage from "./admin/destination/DestinationPage";
+import Enquiry from "./components/queryForm/Enquiry";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* 🌐 PUBLIC */}
+        {/* 🌐 PUBLIC - The popup logic lives inside PublicLayout */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/destinations" element={<Destination />} />
@@ -44,6 +42,7 @@ function App() {
           <Route path="/packages" element={<Packages />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/enquiry" element={<Enquiry />} />
           <Route path="/blog/:slug" element={<PostDetail />} />
         </Route>
 
@@ -53,7 +52,7 @@ function App() {
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/reset" element={<Reset />} />
 
-        {/* 🛡 PROTECTED ADMIN */}
+        {/* 🛡 PROTECTED ADMIN - No PublicLayout here, so no popup! */}
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<DashboardLayout />}>
             <Route index element={<DashboardContent />} />

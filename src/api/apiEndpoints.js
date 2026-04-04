@@ -5,6 +5,10 @@ const API_ENDPOINTS = {
     SUBMIT: `${BASE_URL}/form/submit`,
   },
 
+  ENQUIRY: {
+    SUBMIT: `${BASE_URL}/enquiries`, 
+  },
+  
   AUTH: {
     REGISTER: `${BASE_URL}/auth/register`,
     LOGIN: `${BASE_URL}/auth/login`,
