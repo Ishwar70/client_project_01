@@ -2,7 +2,6 @@ import ServicesHero from "./ServicesHero";
 import ServicesGrid from "./ServicesGrid";
 import HowItWorks from "./HowItWorks";
 import FeaturesStrip from "./FeaturesStrip";
-// import ServicesCTA from "./ServicesCTA";
 
 export default function Services() {
   return (
@@ -11,7 +10,6 @@ export default function Services() {
       <ServicesGrid />
       <HowItWorks />
       <FeaturesStrip />
-      {/* <ServicesCTA /> */}
     </main>
   );
 }
