@@ -4,7 +4,7 @@ import { createPost, updatePost } from "../../services/post.service";
 
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
-const CATEGORIES = ["Tech", "Travel", "Food", "Lifestyle", "Business"];
+const CATEGORIES = ["Adventure", "Pilgrimage", "Tips & Guides", "Hill Stations", "Business"];
 
 const inputStyle = {
   width: "100%",
@@ -33,7 +33,7 @@ export default function PostForm({ initialData, onSuccess }) {
     title: "",
     content: "",
     excerpt: "",
-    category: "Tech",
+    category: "",
     isPublished: true,
     tags: "",
     image: null

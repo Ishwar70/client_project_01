@@ -37,7 +37,7 @@ export default function BlogHero({ activeFilter, setActiveFilter }) {
             <span className="text-[10px] tracking-[4px] uppercase font-bold" style={{ color: GOLD }}>
               The Journal
             </span>
-            <div className="h-[1px] w-12" style={{ background: GOLD }}></div>
+            <div className="h-px w-12" style={{ background: GOLD }}></div>
           </div>
 
           <h1
@@ -81,7 +81,7 @@ export default function BlogHero({ activeFilter, setActiveFilter }) {
 
         {/* Right Side: Editorial Image Card (5 Columns) */}
         <div data-animate className="lg:col-span-5 relative">
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] group">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-4/3 group">
             <img 
               src={BLOG_HERO_IMG} 
               alt="Himalayas" 

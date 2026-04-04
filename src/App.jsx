@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import PublicLayout from "./layouts/PublicLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -31,19 +31,25 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* 🌐 PUBLIC - The popup logic lives inside PublicLayout */}
+        {/* 🌐 PUBLIC */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/destinations" element={<Destination />} />
           <Route path="/destinations/:id" element={<DestinationDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
+          
+          {/* Main Booking/Enquiry Page */}
+          <Route path="/booking" element={<Enquiry />} />
           <Route path="/booking/:id" element={<ServiceDetails />} />
+          
           <Route path="/packages" element={<Packages />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/enquiry" element={<Enquiry />} />
           <Route path="/blog/:slug" element={<PostDetail />} />
+
+          {/* Optional: Redirect old /enquiry links to /booking so users don't see errors */}
+          <Route path="/enquiry" element={<Navigate to="/booking" replace />} />
         </Route>
 
         {/* 🔐 AUTH */}
@@ -52,7 +58,7 @@ function App() {
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/reset" element={<Reset />} />
 
-        {/* 🛡 PROTECTED ADMIN - No PublicLayout here, so no popup! */}
+        {/* 🛡 PROTECTED ADMIN */}
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<DashboardLayout />}>
             <Route index element={<DashboardContent />} />
@@ -72,6 +78,9 @@ function App() {
             </Route>
           </Route>
         </Route>
+
+        {/* 404 Catch-all: Redirects to home if route doesn't exist */}
+        <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
     </BrowserRouter>

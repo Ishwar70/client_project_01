@@ -6,27 +6,47 @@ const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
 const OFF_WHITE = "#FAFAF7";
 
-export default function FeaturedPost() {
+// 1. Accept activeFilter as a prop
+export default function FeaturedPost({ activeFilter }) {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
+      setLoading(true);
       try {
-        const data = await getAllPosts({ page: 1, limit: 1 });
-        const latestPost = data.posts?.[0];
-        setPost(latestPost);
+        // 2. Adjust API call based on filter
+        // If your backend supports a category query, use it here:
+        const query = { page: 1, limit: 1 };
+        if (activeFilter !== "All") {
+          query.category = activeFilter;
+        }
+
+        const data = await getAllPosts(query);
+        
+        // 3. Handle cases where a category might be empty
+        const latestPost = data.posts?.[0] || data?.[0];
+        setPost(latestPost || null);
       } catch (error) {
         console.error("Failed to load featured post", error);
+        setPost(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPost();
-  }, []);
+  }, [activeFilter]); // 4. Re-run effect when filter changes
 
-  if (loading || !post) return null;
+  // If loading, show a skeleton or nothing
+  if (loading) return (
+    <div className="w-full bg-white px-4 py-16 text-center animate-pulse">
+      <div className="max-w-7xl mx-auto h-96 bg-gray-50 rounded-3xl" />
+    </div>
+  );
+
+  // 5. Hide the section if no post is found for a specific category
+  if (!post) return null;
 
   return (
     <section className="w-full bg-white px-4 sm:px-8 md:px-16 lg:px-24 py-16 md:py-24">
@@ -39,7 +59,7 @@ export default function FeaturedPost() {
               className="text-xs tracking-[4px] uppercase font-bold block mb-3"
               style={{ color: GOLD }}
             >
-              Editor's Choice
+              {activeFilter === "All" ? "Editor's Choice" : `Top in ${activeFilter}`}
             </span>
             <h2 
               className="text-3xl md:text-5xl font-bold italic"
@@ -56,7 +76,7 @@ export default function FeaturedPost() {
           className="rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 shadow-sm group border border-gray-100"
           style={{ background: OFF_WHITE }}
         >
-          {/* Left — Image Section (Clickable) */}
+          {/* Left — Image Section */}
           <Link 
             to={`/blog/${post.slug}`} 
             className="relative min-h-87.5 lg:col-span-7 overflow-hidden cursor-pointer"
@@ -115,7 +135,6 @@ export default function FeaturedPost() {
                 </div>
               </div>
 
-              {/* 2. Updated Read More Button to Link */}
               <Link
                 to={`/blog/${post.slug}`}
                 className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all"

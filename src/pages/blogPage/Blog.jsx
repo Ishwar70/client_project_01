@@ -13,8 +13,9 @@ export default function Blog() {
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
-      <FeaturedPost />
+      <FeaturedPost activeFilter={activeFilter} />
       <BlogGrid activeFilter={activeFilter} />
+
       <NewsletterSection />
     </main>
   );
