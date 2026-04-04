@@ -11,7 +11,6 @@ const Reset = () => {
 
   const [form, setForm] = useState({
     email: state?.email || "",
-    otp: "",
     newPassword: "",
   });
 
@@ -30,10 +29,13 @@ const Reset = () => {
 
     try {
       const res = await resetPassword(form);
+
       setMsg(res.msg || "Password reset successful!");
-      setTimeout(() => navigate("/login"), 2000);
+
+      setTimeout(() => navigate("/login"), 1500);
+
     } catch (err) {
-      setMsg(err.response?.data?.msg || "Reset failed");
+      setMsg(err.msg || "Reset failed");
     } finally {
       setLoading(false);
     }
@@ -41,35 +43,42 @@ const Reset = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-stone-50 relative overflow-hidden">
-      <div className="absolute bottom-[-10%] right-[-10%] w-52 h-52 rounded-full blur-[60px] opacity-[0.07] pointer-events-none" style={{ background: DARK }} />
+      <div
+        className="absolute bottom-[-10%] right-[-10%] w-52 h-52 rounded-full blur-[60px] opacity-[0.07] pointer-events-none"
+        style={{ background: DARK }}
+      />
 
-      <div className="w-full max-w-90 bg-white rounded-[1.25rem] relative z-10 shadow-2xl border" style={{ borderColor: `${GOLD}10`, fontFamily: "'DM Sans', sans-serif" }}>
-        <div className="h-1 w-full" style={{ background: `linear-gradient(to right, ${GOLD}, ${DARK})` }} />
+      <div
+        className="w-full max-w-90 bg-white rounded-[1.25rem] relative z-10 shadow-2xl border"
+        style={{ borderColor: `${GOLD}10`, fontFamily: "'DM Sans', sans-serif" }}
+      >
+        <div
+          className="h-1 w-full"
+          style={{ background: `linear-gradient(to right, ${GOLD}, ${DARK})` }}
+        />
 
         <div className="p-6">
           <div className="text-center mb-6">
-            <h2 className="text-xl font-bold text-stone-800" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Set New Password</h2>
-            <p className="text-stone-400 text-[10px] tracking-wide uppercase">Verifying email: {form.email}</p>
+            <h2
+              className="text-xl font-bold text-stone-800"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
+              Set New Password
+            </h2>
+
+            <p className="text-stone-400 text-[10px] tracking-wide uppercase">
+              Email: {form.email}
+            </p>
           </div>
 
           <form onSubmit={handleReset} className="space-y-4">
-            {/* OTP Field */}
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-stone-400 ml-1">One-Time Password</label>
-              <input
-                type="text"
-                name="otp"
-                placeholder="Enter 6-digit OTP"
-                value={form.otp}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 rounded-xl border border-stone-100 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none text-sm tracking-[0.3em] text-center"
-              />
-            </div>
 
-            {/* New Password Field */}
+            {/* NEW PASSWORD */}
             <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-stone-400 ml-1">New Password</label>
+              <label className="text-[9px] font-bold uppercase tracking-widest text-stone-400 ml-1">
+                New Password
+              </label>
+
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -80,33 +89,45 @@ const Reset = () => {
                   required
                   className="w-full px-4 py-2 rounded-xl border border-stone-100 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none text-sm"
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-300 hover:text-stone-500"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-300 hover:text-stone-500 text-[10px] font-bold"
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? "HIDE" : "SHOW"}
                 </button>
               </div>
             </div>
 
+            {/* BUTTON */}
             <button
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-xl text-white font-bold text-[11px] tracking-[0.2em] shadow-lg transition-all active:scale-[0.98]"
-              style={{ background: `linear-gradient(135deg, ${GOLD} 0%, ${DARK} 100%)` }}
+              style={{
+                background: `linear-gradient(135deg, ${GOLD} 0%, ${DARK} 100%)`,
+              }}
             >
-              {loading ? "RESETTING..." : "UPDATE PASSWORD"}
+              {loading ? "UPDATING..." : "UPDATE PASSWORD"}
             </button>
           </form>
 
+          {/* MESSAGE */}
           {msg && (
-            <div className={`mt-4 p-2 rounded-lg text-center text-[10px] font-bold uppercase ${msg.includes("failed") ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600"}`}>
+            <div
+              className={`mt-4 p-2 rounded-lg text-center text-[10px] font-bold uppercase ${
+                msg.toLowerCase().includes("fail")
+                  ? "bg-red-50 text-red-600"
+                  : "bg-green-50 text-green-600"
+              }`}
+            >
               {msg}
             </div>
           )}
         </div>
       </div>
+
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
     </div>
   );

@@ -24,23 +24,16 @@ const Login = () => {
 
     try {
       const res = await loginUser(form);
-      const token = res.token || res.data?.token;
-      const userData = res.user || res.data?.user;
-      if (token) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("isAuth", "true"); 
-        if (userData) {
-          localStorage.setItem("user", JSON.stringify(userData));
-        }
 
-        setMsg(res.msg || "Login successful! Redirecting...");
-        setTimeout(() => {
-          navigate("/admin");
-        }, 1000);
-      }
+      // ✅ Token already stored in service
+      setMsg(res.msg || "Login successful! Redirecting...");
+
+      setTimeout(() => {
+        navigate("/admin");
+      }, 1000);
 
     } catch (err) {
-      setMsg(err.response?.data?.msg || err.msg || "Login failed. Please check credentials.");
+      setMsg(err.msg || "Login failed. Please check credentials.");
     } finally {
       setLoading(false);
     }
@@ -62,44 +55,102 @@ const Login = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-stone-800" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Welcome Back</h2>
-            <p className="text-stone-400 text-[10px] tracking-widest uppercase mt-1">Authorized Access Only</p>
+            <h2 className="text-2xl font-bold text-stone-800" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              Welcome Back
+            </h2>
+            <p className="text-stone-400 text-[10px] tracking-widest uppercase mt-1">
+              Authorized Access Only
+            </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
+            {/* EMAIL */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 ml-1">Email Address</label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none text-sm" />
+              <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 ml-1">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none text-sm"
+              />
             </div>
 
+            {/* PASSWORD */}
             <div className="space-y-1">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500">Password</label>
-                <Link to="/forgot" className="text-[10px] font-bold hover:underline" style={{ color: GOLD }}>Forgot?</Link>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500">
+                  Password
+                </label>
+                <Link
+                  to="/forgot"
+                  className="text-[10px] font-bold hover:underline"
+                  style={{ color: GOLD }}
+                >
+                  Forgot?
+                </Link>
               </div>
+
               <div className="relative">
-                <input type={showPassword ? "text" : "password"} name="password" value={form.password} onChange={handleChange} required className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none text-sm" />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50 focus:bg-white focus:border-[#BFA13B] outline-none text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 text-[10px] font-bold"
+                >
                   {showPassword ? "HIDE" : "SHOW"}
                 </button>
               </div>
             </div>
 
-            <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl text-white font-bold text-[11px] tracking-[0.2em] shadow-lg mt-4 flex items-center justify-center disabled:opacity-70" style={{ background: `linear-gradient(135deg, ${GOLD} 0%, ${DARK} 100%)` }}>
-              {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "SIGN IN"}
+            {/* BUTTON */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 rounded-xl text-white font-bold text-[11px] tracking-[0.2em] shadow-lg mt-4 flex items-center justify-center disabled:opacity-70"
+              style={{
+                background: `linear-gradient(135deg, ${GOLD} 0%, ${DARK} 100%)`,
+              }}
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                "SIGN IN"
+              )}
             </button>
           </form>
 
+          {/* MESSAGE */}
           {msg && (
-            <div className={`mt-6 p-3 rounded-xl text-center text-[10px] font-bold uppercase ${msg.toLowerCase().includes("failed") ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600"}`}>
+            <div
+              className={`mt-6 p-3 rounded-xl text-center text-[10px] font-bold uppercase ${
+                msg.toLowerCase().includes("failed")
+                  ? "bg-red-50 text-red-600"
+                  : "bg-green-50 text-green-600"
+              }`}
+            >
               {msg}
             </div>
           )}
         </div>
 
+        {/* FOOTER */}
         <div className="py-5 bg-stone-50 border-t border-stone-100 text-center">
           <p className="text-stone-400 text-[10px] font-medium uppercase tracking-tight">
-            New user? <Link to="/register" className="font-bold ml-1" style={{ color: GOLD }}>Request Access</Link>
+            New user?{" "}
+            <Link to="/register" className="font-bold ml-1" style={{ color: GOLD }}>
+              Request Access
+            </Link>
           </p>
         </div>
       </div>

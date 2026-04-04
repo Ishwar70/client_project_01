@@ -7,7 +7,6 @@ const API_ENDPOINTS = {
 
   AUTH: {
     REGISTER: `${BASE_URL}/auth/register`,
-    VERIFY_OTP: `${BASE_URL}/auth/verify-otp`,
     LOGIN: `${BASE_URL}/auth/login`,
     LOGOUT: `${BASE_URL}/auth/logout`,
     FORGOT_PASSWORD: `${BASE_URL}/auth/forgot-password`,
@@ -22,7 +21,7 @@ const API_ENDPOINTS = {
     UPDATE: (id) => `${BASE_URL}/services/${id}`,
     DELETE: (id) => `${BASE_URL}/services/${id}`,
   },
-  
+
   PACKAGES: {
     GET_ALL: (query = "") => `${BASE_URL}/packages${query}`,
     GET_BY_ID: (id) => `${BASE_URL}/packages/${id}`,
@@ -32,15 +31,15 @@ const API_ENDPOINTS = {
   },
 
   POSTS: {
-    GET_ALL: (query = "") => `${BASE_URL}/posts${query}`, 
-    GET_BY_SLUG: (slug) => `${BASE_URL}/posts/${slug}`, 
+    GET_ALL: (query = "") => `${BASE_URL}/posts${query}`,
+    GET_BY_SLUG: (slug) => `${BASE_URL}/posts/${slug}`,
     CREATE: `${BASE_URL}/posts`,
     UPDATE: (id) => `${BASE_URL}/posts/${id}`,
     DELETE: (id) => `${BASE_URL}/posts/${id}`,
   },
 
   DESTINATIONS: {
-    GET_ALL: `${BASE_URL}/destinations`, 
+    GET_ALL: `${BASE_URL}/destinations`,
     GET_BY_ID: (id) => `${BASE_URL}/destinations/${id}`,
     CREATE: `${BASE_URL}/destinations`,
     UPDATE: (id) => `${BASE_URL}/destinations/${id}`,
