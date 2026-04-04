@@ -18,12 +18,16 @@ const Forgot = () => {
 
     try {
       const res = await forgotPassword({ email });
-      setMsg(res.msg || "OTP sent successfully!");
+
+      setMsg(res.msg || "Proceed to reset password");
+
+      // ✅ still navigate to reset page
       setTimeout(() => {
         navigate("/reset", { state: { email } });
-      }, 1500);
+      }, 1200);
+
     } catch (err) {
-      setMsg(err.response?.data?.msg || "Failed to send OTP");
+      setMsg(err.msg || "Request failed");
     } finally {
       setLoading(false);
     }
@@ -32,7 +36,7 @@ const Forgot = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-stone-50 relative overflow-hidden">
       <div className="absolute top-[-10%] left-[-10%] w-52 h-52 rounded-full blur-[60px] opacity-[0.07] pointer-events-none" style={{ background: GOLD }} />
-      
+
       <div className="w-full max-w-90 bg-white rounded-[1.25rem] relative z-10 overflow-hidden shadow-2xl" style={{ border: `1px solid ${GOLD}10`, fontFamily: "'DM Sans', sans-serif" }}>
         <div className="h-1 w-full" style={{ background: `linear-gradient(to right, ${GOLD}, ${DARK})` }} />
 
@@ -43,13 +47,21 @@ const Forgot = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-stone-800" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Recover Password</h2>
-            <p className="text-stone-400 text-[11px] tracking-wide uppercase">We'll send an OTP to your email</p>
+
+            <h2 className="text-xl font-bold text-stone-800" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              Recover Password
+            </h2>
+
+            <p className="text-stone-400 text-[11px] tracking-wide uppercase">
+              Enter your email to reset password
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-stone-400 ml-1">Email Address</label>
+              <label className="text-[9px] font-bold uppercase tracking-widest text-stone-400 ml-1">
+                Email Address
+              </label>
               <input
                 type="email"
                 placeholder="email@example.com"
@@ -66,23 +78,33 @@ const Forgot = () => {
               className="w-full py-3 rounded-xl text-white font-bold text-[11px] tracking-[0.2em] shadow-lg transition-all active:scale-[0.98] flex items-center justify-center"
               style={{ background: `linear-gradient(135deg, ${GOLD} 0%, ${DARK} 100%)` }}
             >
-              {loading ? "SENDING..." : "SEND OTP"}
+              {loading ? "PROCESSING..." : "CONTINUE"}
             </button>
           </form>
 
           {msg && (
-            <div className={`mt-4 p-2 rounded-lg text-center text-[10px] font-bold uppercase tracking-wider ${msg.includes("Failed") ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600"}`}>
+            <div
+              className={`mt-4 p-2 rounded-lg text-center text-[10px] font-bold uppercase tracking-wider ${
+                msg.toLowerCase().includes("fail")
+                  ? "bg-red-50 text-red-600"
+                  : "bg-green-50 text-green-600"
+              }`}
+            >
               {msg}
             </div>
           )}
         </div>
 
         <div className="py-4 bg-stone-50 border-t border-stone-100 text-center">
-          <Link to="/login" className="text-stone-400 text-[10px] font-bold uppercase tracking-widest hover:text-stone-800 transition-colors">
+          <Link
+            to="/login"
+            className="text-stone-400 text-[10px] font-bold uppercase tracking-widest hover:text-stone-800 transition-colors"
+          >
             Back to Login
           </Link>
         </div>
       </div>
+
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
     </div>
   );

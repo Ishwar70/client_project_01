@@ -10,19 +10,17 @@ const handleError = (error, fallbackMsg) => {
 export const registerUser = async (data) => {
   try {
     const res = await api.post(API.AUTH.REGISTER, data);
+
+    // ✅ Save token (since backend now returns it directly)
+    if (res.data?.token) {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("isAuth", "true");
+    }
+
     return res.data;
   } catch (error) {
     handleError(error, "Register failed");
-  }
-};
-
-/* ================= VERIFY OTP ================= */
-export const verifyOtp = async (data) => {
-  try {
-    const res = await api.post(API.AUTH.VERIFY_OTP, data);
-    return res.data;
-  } catch (error) {
-    handleError(error, "OTP verification failed");
   }
 };
 
@@ -30,6 +28,14 @@ export const verifyOtp = async (data) => {
 export const loginUser = async (data) => {
   try {
     const res = await api.post(API.AUTH.LOGIN, data);
+
+    // ✅ Store auth data
+    if (res.data?.token) {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("isAuth", "true");
+    }
+
     return res.data;
   } catch (error) {
     handleError(error, "Login failed");
@@ -42,7 +48,7 @@ export const forgotPassword = async (data) => {
     const res = await api.post(API.AUTH.FORGOT_PASSWORD, data);
     return res.data;
   } catch (error) {
-    handleError(error, "Failed to send reset OTP");
+    handleError(error, "Failed to process request");
   }
 };
 
@@ -60,9 +66,8 @@ export const resetPassword = async (data) => {
 export const logoutUser = async () => {
   try {
     await api.post(API.AUTH.LOGOUT);
-
   } catch (error) {
-    console.warn(error, "Logout API failed, clearing local data anyway");
+    console.warn("Logout API failed, clearing local data anyway");
   } finally {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
