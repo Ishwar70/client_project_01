@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
-  { label: "Home",        href: "/"            },
-  { label: "About",       href: "about"        },
-  { label: "Services",    href: "services"     },
-  { label: "Destination", href: "destinations" },
-  { label: "Packages",    href: "packages"     },
-  { label: "Blog",        href: "blog"         },
-  { label: "Contact",     href: "contact"      },
+  { label: "Home",        href: "/"             },
+  { label: "About",       href: "about"         },
+  { label: "Services",    href: "services"      },
+  { label: "Destination", href: "destinations"  },
+  { label: "Packages",    href: "packages"      },
+  { label: "Blog",        href: "blog"          },
+  { label: "Contact",     href: "contact"       },
 ];
 
 const BRAND_GOLD = "#BFA13B";
@@ -17,9 +17,13 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   
   const [active, setActive] = useState(() => {
-    const path = window.location.pathname.replace("/", "");
-    const currentLink = NAV_LINKS.find(link => link.href === (path || "/"));
-    return currentLink ? currentLink.label : "Home";
+    // Check if window is defined (for SSR safety)
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.replace("/", "");
+      const currentLink = NAV_LINKS.find(link => link.href === (path || "/"));
+      return currentLink ? currentLink.label : "Home";
+    }
+    return "Home";
   });
 
   useEffect(() => {
@@ -89,15 +93,15 @@ export default function Navbar() {
               })}
             </ul>
 
-            {/* Desktop Enquiry Button */}
+            {/* Desktop Booking Button */}
             <div className="hidden lg:flex items-center gap-3">
               <a
-                href="/enquiry"
+                href="/booking"
                 className="relative inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-sm font-bold shadow-lg hover:shadow-[0_0_20px_rgba(191,161,59,0.4)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 overflow-hidden group border border-white/20"
                 style={{ background: `linear-gradient(135deg, ${BRAND_GOLD}, ${BRAND_DARK})` }}
               >
                 <span className="absolute inset-0 bg-white/20 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                <span className="relative z-10 font-bold">Enquiry</span>
+                <span className="relative z-10 font-bold">Book Now</span>
                 <svg className="relative z-10 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -108,6 +112,7 @@ export default function Navbar() {
             <button
               className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl hover:bg-white/10 transition-colors"
               onClick={() => setMenuOpen((p) => !p)}
+              aria-label="Toggle Menu"
             >
               <span className={`block w-6 h-0.5 bg-white rounded-full transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
               <span className={`block w-6 h-0.5 bg-white rounded-full transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
@@ -142,11 +147,12 @@ export default function Navbar() {
               })}
             </ul>
             <a
-              href="/enquiry"
+              href="/booking"
               className="flex items-center justify-center gap-3 w-full py-5 rounded-2xl text-white text-lg font-black shadow-2xl active:scale-[0.98] transition-all border border-white/10"
               style={{ background: `linear-gradient(to right, ${BRAND_GOLD}, ${BRAND_DARK})` }}
+              onClick={() => setMenuOpen(false)}
             >
-              Enquiry
+              Book Now
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
