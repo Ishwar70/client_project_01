@@ -25,6 +25,7 @@ import PostDetail from "./pages/blogPage/PostDetail";
 import PostPage from "./admin/post/PostPage";
 import DestinationPage from "./admin/destination/DestinationPage";
 import Enquiry from "./components/queryForm/Enquiry";
+import TestimonialsPage from "./admin/testimonial/TestimonialsPage";
 
 function App() {
   return (
@@ -38,11 +39,11 @@ function App() {
           <Route path="/destinations/:id" element={<DestinationDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
-          
+
           {/* Main Booking/Enquiry Page */}
           <Route path="/booking" element={<Enquiry />} />
           <Route path="/booking/:id" element={<ServiceDetails />} />
-          
+
           <Route path="/packages" element={<Packages />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
@@ -71,10 +72,13 @@ function App() {
               <Route index element={<PackagesPage />} />
             </Route>
             <Route path="posts">
-              <Route index element={<PostPage/>} />
+              <Route index element={<PostPage />} />
             </Route>
             <Route path="destinations">
-              <Route index element={<DestinationPage/>} />
+              <Route index element={<DestinationPage />} />
+            </Route>
+            <Route path="testimonials">
+              <Route index element={<TestimonialsPage />} />
             </Route>
           </Route>
         </Route>
