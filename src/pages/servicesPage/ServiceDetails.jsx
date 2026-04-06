@@ -23,7 +23,7 @@ export default function ServiceDetails() {
     const fetchService = async () => {
       try {
         setLoading(true);
-        const res = await getServiceById(id);
+        const res = await getServiceBy8Id(id);
         const data = res?.service || res?.data?.service;
         if (data) setService(data);
         else setError("Service not found.");
