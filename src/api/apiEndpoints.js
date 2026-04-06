@@ -6,9 +6,9 @@ const API_ENDPOINTS = {
   },
 
   ENQUIRY: {
-    SUBMIT: `${BASE_URL}/enquiries`, 
+    SUBMIT: `${BASE_URL}/enquiries`,
   },
-  
+
   AUTH: {
     REGISTER: `${BASE_URL}/auth/register`,
     LOGIN: `${BASE_URL}/auth/login`,
@@ -48,6 +48,13 @@ const API_ENDPOINTS = {
     CREATE: `${BASE_URL}/destinations`,
     UPDATE: (id) => `${BASE_URL}/destinations/${id}`,
     DELETE: (id) => `${BASE_URL}/destinations/${id}`,
+  },
+
+  TESTIMONIALS: {
+    GET_ALL: `${BASE_URL}/testimonials`,
+    CREATE: `${BASE_URL}/testimonials`,
+    UPDATE: (id) => `${BASE_URL}/testimonials/${id}`,
+    DELETE: (id) => `${BASE_URL}/testimonials/${id}`,
   },
 };
 
