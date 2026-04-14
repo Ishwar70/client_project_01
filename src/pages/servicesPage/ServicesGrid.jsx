@@ -26,18 +26,18 @@ export default function ServicesGrid() {
   }, []);
 
   return (
-    <section className="w-full py-10 px-4 md:px-10" style={{ background: "#FAFAF7" }}>
+    <section className="w-full pt-2 pb-12 px-4 md:px-10 bg-white"> {/* Top spacing removed (pt-2) & Bg white */}
       <div className="max-w-6xl mx-auto">
 
-        {/* Header */}
-        <div className="text-center mb-10">
+        {/* Header - Reduced margin bottom */}
+        <div className="text-center mb-8">
           <h2
             className="text-2xl md:text-4xl font-medium"
             style={{ color: NAVY, fontFamily: "'Georgia', serif" }}
           >
             Our <span style={{ color: GOLD }}>Services</span>
           </h2>
-          <div className="w-10 h-0.75 mt-3 mx-auto rounded-full" style={{ background: GOLD }} />
+          <div className="w-10 h-0.5 mt-2 mx-auto rounded-full" style={{ background: GOLD }} />
         </div>
 
         {/* States */}
@@ -56,17 +56,16 @@ export default function ServicesGrid() {
               return (
                 <div
                   key={s._id}
-                  className="bg-white rounded-2xl overflow-hidden flex flex-col group"
-                  style={{ border: "0.5px solid #e8e2d0" }}
+                  className="bg-white rounded-xl overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-lg"
+                  style={{ border: "1px solid #f0ece2" }}
                 >
                   {/* Image */}
-                  <div className="relative w-full h-48 overflow-hidden">
+                  <div className="relative w-full h-44 overflow-hidden">
                     <img
                       src={imageUrl}
                       alt={s.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    {/* Gold strip at bottom of image */}
                     <div
                       className="absolute bottom-0 left-0 right-0 h-1"
                       style={{ background: `linear-gradient(90deg, ${GOLD}, #e8c872, ${GOLD})` }}
@@ -75,10 +74,9 @@ export default function ServicesGrid() {
 
                   {/* Body */}
                   <div className="flex flex-col flex-1 p-5">
-                    {/* Category tag */}
                     {s.category && (
                       <p
-                        className="text-[10px] font-semibold uppercase tracking-widest mb-1"
+                        className="text-[9px] font-bold uppercase tracking-[0.15em] mb-1"
                         style={{ color: GOLD }}
                       >
                         {s.category}
@@ -86,27 +84,27 @@ export default function ServicesGrid() {
                     )}
 
                     <h3
-                      className="text-base font-medium mb-2"
+                      className="text-base font-semibold mb-1"
                       style={{ color: NAVY, fontFamily: "'Georgia', serif" }}
                     >
                       {s.title}
                     </h3>
 
-                    <p className="text-[13px] text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-2">
+                    <p className="text-[12px] text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-2">
                       {s.description}
                     </p>
 
-                    {/* Footer */}
+                    {/* Footer - Tightened spacing */}
                     <div
-                      className="flex items-center justify-between pt-4"
-                      style={{ borderTop: "0.5px solid #f0ece2" }}
+                      className="flex items-center justify-between pt-3"
+                      style={{ borderTop: "1px solid #f8f5f0" }}
                     >
                       <div>
-                        <p className="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-0.5">
-                          {s.price === "Custom" ? "Price" : "Starting from"}
+                        <p className="text-[9px] uppercase tracking-wider text-gray-400 font-medium">
+                          {s.price === "Custom" ? "Price" : "From"}
                         </p>
                         <p
-                          className="text-base font-medium"
+                          className="text-sm font-bold"
                           style={{ color: s.price === "Custom" ? NAVY : GOLD }}
                         >
                           {s.price === "Custom" ? "Custom" : `₹${s.price}`}
@@ -115,13 +113,13 @@ export default function ServicesGrid() {
 
                       <button
                         onClick={() => navigate(`/booking/${s._id}`)}
-                        className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest px-5 py-2.5 rounded-full transition-all duration-300"
+                        className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-300 shadow-sm"
                         style={{ background: NAVY, color: GOLD }}
                         onMouseEnter={e => { e.currentTarget.style.background = GOLD; e.currentTarget.style.color = "#fff"; }}
                         onMouseLeave={e => { e.currentTarget.style.background = NAVY; e.currentTarget.style.color = GOLD; }}
                       >
-                        Book Now
-                        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+                        Book
+                        <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
                           <path d="M3 8h10M9 4l4 4-4 4" />
                         </svg>
                       </button>

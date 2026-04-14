@@ -9,83 +9,81 @@ const features = [
     icon: ShieldCheck,
     title: "Trusted Partner",
     description:
-      "Over 15 years of excellence creating memorable and safe Uttarakhand journeys for thousands of travelers.",
+      "Delivering safe and memorable travel experiences across India for thousands of happy travelers.",
   },
   {
     icon: MapPin,
-    title: "Expert Local Guides",
+    title: "Expert Guides",
     description:
-      "Certified guides who know every trail, temple, and hidden gem intimately — your safety is always first.",
+      "Experienced local guides across India ensuring authentic and seamless travel experiences.",
   },
   {
     icon: SlidersHorizontal,
     title: "Custom Itineraries",
     description:
-      "Tailor-made tours designed entirely around your preferences, budget, and travel style.",
+      "Personalized travel plans tailored to your preferences, budget, and travel style.",
   },
   {
     icon: Headphones,
     title: "24/7 Support",
     description:
-      "Round-the-clock dedicated assistance to ensure a seamless and stress-free experience.",
+      "Dedicated assistance anytime, anywhere — ensuring a smooth and stress-free journey.",
   },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section style={{ background: BG }} className="w-full py-20 px-6 md:px-16 lg:px-24">
+    <section style={{ background: BG }} className="w-full py-12 px-6 md:px-16 lg:px-24">
       <div className="max-w-7xl mx-auto">
+        
         {/* Header */}
-        <div className="text-center mb-14">
-          <span
-            className="text-xs tracking-[3px] uppercase font-medium block mb-3"
-            style={{ color: GOLD }}
-          >
-            Experience Excellence
-          </span>
+        <div className="text-center mb-8">
           <h2
-            className="text-4xl font-semibold mb-3"
+            className="text-3xl md:text-4xl font-semibold mb-2"
             style={{ color: NAVY, fontFamily: "'Georgia', serif" }}
           >
             Why Choose <span style={{ color: GOLD }}>Us</span>
           </h2>
-          <p className="text-sm italic text-gray-400">
-            "Your perfect travel companion for unforgettable Uttarakhand experiences"
+          <p className="text-sm text-gray-500">
+            Your trusted travel partner for exploring India with comfort and confidence
           </p>
         </div>
 
         {/* Feature cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((f) => {
             const Icon = f.icon;
             return (
               <div
                 key={f.title}
-                className="group bg-white rounded-xl p-6 text-center transition-all duration-300 hover:-translate-y-1 cursor-default"
+                className="group bg-white rounded-xl p-5 text-center transition-all duration-300 hover:-translate-y-1 cursor-default"
                 style={{
                   border: "0.5px solid #E5E0D5",
                   borderTop: `3px solid ${GOLD}`,
                 }}
               >
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-5 transition-colors duration-300"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
                   style={{ background: GOLD }}
                 >
                   <Icon size={18} color="#fff" />
                 </div>
+
                 <h3
-                  className="text-sm font-semibold mb-2"
+                  className="text-sm font-semibold mb-1"
                   style={{ color: NAVY }}
                 >
                   {f.title}
                 </h3>
-                <p className="text-xs text-gray-400 leading-relaxed">
+
+                <p className="text-xs text-gray-500 leading-relaxed">
                   {f.description}
                 </p>
               </div>
             );
           })}
         </div>
+
       </div>
     </section>
   );

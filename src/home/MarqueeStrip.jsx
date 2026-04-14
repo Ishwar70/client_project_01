@@ -1,16 +1,39 @@
 const GOLD = "#C9A84C";
 
 const items = [
+  // 🏔️ North India
   "Char Dham Yatra",
   "Kedarnath Trek",
-  "Rishikesh Rafting",
-  "Nainital Retreat",
-  "Valley of Flowers",
+  "Manali Adventure",
+  "Leh Ladakh Road Trip",
+  "Kashmir Valley Tour",
+
+  // 🛕 Spiritual India
+  "Varanasi Ganga Aarti",
+  "Tirupati Balaji Darshan",
+  "Golden Temple Amritsar",
+  "Jagannath Puri Yatra",
+  "Vaishno Devi Darshan",
+
+  // 🏝️ Beaches & Islands
+  "Goa Beach Escape",
+  "Andaman Island Tour",
+  "Gokarna Retreat",
+  "Kerala Backwaters",
+
+  // 🏰 Heritage & Culture
+  "Jaipur Royal Palaces",
+  "Udaipur Lake City",
+  "Hampi Heritage Walk",
+  "Khajuraho Temples",
+  "Mysore Palace Tour",
+
+  // 🌿 Nature & Wildlife
   "Jim Corbett Safari",
-  "Mussoorie Escape",
-  "Auli Ski Resort",
-  "Haridwar Aarti",
-  "Badrinath Darshan",
+  "Kaziranga National Park",
+  "Sundarbans Mangrove Tour",
+  "Meghalaya Waterfalls",
+  "Coorg Hill Retreat",
 ];
 
 export default function MarqueeStrip() {
@@ -22,7 +45,7 @@ export default function MarqueeStrip() {
       <div
         className="flex gap-10 whitespace-nowrap"
         style={{
-          animation: "marquee 28s linear infinite",
+          animation: "marquee 32s linear infinite",
           width: "max-content",
         }}
       >
@@ -40,7 +63,7 @@ export default function MarqueeStrip() {
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          100% { transform: translateX(-15%); }
         }
       `}</style>
     </section>

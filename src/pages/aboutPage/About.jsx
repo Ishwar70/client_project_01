@@ -4,8 +4,6 @@ import StatsStrip from "../../components/about/Statsstrip";
 import OurStory from "../../components/about/Ourstory";
 import MissionVision from "../../components/about/Missionvision";
 import WhyChooseUs from "../../components/about/Whychooseus";
-import TeamSection from "../../components/about/Teamsection";
-// import Testimonials from "../../components/about/Testimonials";
 import CTASection from "../../components/about/Ctasection";
 import HomeTestimonials from '../../home/HomeTestimonials';
 
@@ -17,8 +15,6 @@ export default function About() {
       <OurStory />
       <MissionVision />
       <WhyChooseUs />
-      {/* <TeamSection /> */}
-      {/* <Testimonials /> */}
       <HomeTestimonials/>
       <CTASection />
     </main>

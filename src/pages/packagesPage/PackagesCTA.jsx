@@ -8,38 +8,41 @@ export default function PackagesCTA() {
 
   return (
     <section
-      className="w-full py-14 px-4 sm:px-8 md:px-16 lg:px-24"
+      className="w-full py-0 px-4 sm:px-8 md:px-16 lg:px-24"
       style={{ background: GOLD }}
     >
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-        <div>
+      {/* Content wrapper with internal padding to maintain visual balance without external spacing */}
+      <div className="max-w-7xl mx-auto py-12 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+        
+        <div className="max-w-xl">
           <h2
-            className="text-2xl md:text-3xl font-semibold text-white mb-2"
+            className="text-2xl md:text-4xl font-semibold text-white mb-3"
             style={{ fontFamily: "'Georgia', serif" }}
           >
-            Can't find what you're looking for?
+            Your Dream India <span className="italic">Tailored</span>
           </h2>
-          <p className="text-sm italic" style={{ color: "#F5E6C0" }}>
-            We build 100% custom packages — tell us your dream trip!
+          <p className="text-sm md:text-base font-medium" style={{ color: "#FDF4DB" }}>
+            Can't find the perfect itinerary? We specialize in 100% bespoke journeys across the subcontinent.
           </p>
         </div>
 
-        <div className="flex gap-3 flex-wrap justify-center md:justify-end flex-shrink-0">
+        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto justify-center md:justify-end">
           <button
             onClick={() => navigate("/contact")}
-            className="px-6 py-3 text-sm font-medium rounded text-white transition-opacity hover:opacity-90"
+            className="group px-8 py-4 text-sm font-bold uppercase tracking-widest rounded-full text-white transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg"
             style={{ background: NAVY }}
           >
-            Build Custom Package →
+            Build Custom Plan
           </button>
+          
           <button
             onClick={() => navigate("/contact")}
-            className="px-6 py-3 text-sm font-medium rounded transition-colors hover:bg-white/10"
-            style={{ border: "1.5px solid #fff", color: "#fff" }}
+            className="px-8 py-4 text-sm font-bold uppercase tracking-widest rounded-full transition-all duration-300 border-2 border-white text-white hover:bg-white hover:text-[#C9A84C]"
           >
-            Contact Us
+            Talk to Expert
           </button>
         </div>
+
       </div>
     </section>
   );
