@@ -28,7 +28,7 @@ export default function PackagesHero({ activeFilter, setActiveFilter }) {
       {/* Background with optimized overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1524492707947-2f85aefb9729?auto=format&fit=crop&q=80&w=2000" 
+          src="https://wallpaperaccess.com/full/1315566.jpg" 
           alt="Incredible India Heritage"
           className="w-full h-full object-cover scale-105"
         />
