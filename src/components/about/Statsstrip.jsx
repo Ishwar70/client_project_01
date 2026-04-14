@@ -1,12 +1,43 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const GOLD = "#C9A84C";
 const stats = [
-  { value: "15+", label: "Years Experience" },
-  { value: "10K+", label: "Happy Travelers" },
-  { value: "50+", label: "Destinations" },
-  { value: "100%", label: "Satisfaction" },
+  { value: 15, suffix: "+", label: "Years Experience" },
+  { value: 10, suffix: "K+", label: "Happy Travelers" },
+  { value: 50, suffix: "+", label: "Destinations" },
+  { value: 100, suffix: "%", label: "Satisfaction" },
 ];
+
+// Helper Component for Count-Up Animation
+const AnimatedNumber = ({ target }) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        let start = 0;
+        const duration = 1500; // 1.5 Seconds animation
+        const increment = target / (duration / 16);
+
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) {
+            setCount(target);
+            clearInterval(timer);
+          } else {
+            setCount(Math.floor(start));
+          }
+        }, 16);
+      }
+    }, { threshold: 0.1 });
+
+    if (countRef.current) observer.observe(countRef.current);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return <span ref={countRef}>{count}</span>;
+};
 
 export default function StatsStrip() {
   const stripRef = useRef(null);
@@ -27,7 +58,7 @@ export default function StatsStrip() {
   return (
     <section 
       ref={stripRef}
-      className="w-full py-8 md:py-10 relative overflow-hidden"
+      className="w-full py-6 md:py-8 relative overflow-hidden" // Padding adjusted for laptop
       style={{ background: `linear-gradient(to right, ${GOLD}, #B8962E)` }}
     >
       {/* Subtle background texture */}
@@ -37,22 +68,22 @@ export default function StatsStrip() {
         {stats.map((s, i) => (
           <div
             key={s.label}
-            className="stat-item group flex flex-col items-center justify-center py-4 text-center transition-transform duration-300 hover:scale-105"
+            className="stat-item group flex flex-col items-center justify-center py-3 text-center transition-transform duration-300 hover:scale-105"
           >
-            {/* Divider Logic: Only show between items, hidden on mobile for the 2nd column */}
+            {/* Divider Logic */}
             {i !== 0 && (
               <div className={`absolute left-0 h-10 w-[1px] bg-gradient-to-b from-transparent via-white/30 to-transparent ${i === 2 ? 'md:block hidden' : 'hidden md:block'}`} />
             )}
 
             <span
               className="text-3xl md:text-5xl font-light text-white tracking-tighter tabular-nums drop-shadow-sm"
-              style={{ fontFamily: "serif" }} // Using serif here matches your Hero sections
+              style={{ fontFamily: "serif" }}
             >
-              {s.value}
+              <AnimatedNumber target={s.value} />{s.suffix}
             </span>
             
             <span
-              className="text-[9px] md:text-[11px] uppercase tracking-[3px] mt-2 font-bold text-white/70 group-hover:text-white transition-colors"
+              className="text-[8px] md:text-[10px] uppercase tracking-[2px] mt-1 font-bold text-white/80 group-hover:text-white transition-colors"
             >
               {s.label}
             </span>

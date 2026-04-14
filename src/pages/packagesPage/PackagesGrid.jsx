@@ -54,63 +54,73 @@ export default function PackagesGrid({ activeFilter }) {
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((pkg) => (
-            <div
-              key={pkg._id}
-              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col"
-            >
-              {/* DECREASED IMAGE HEIGHT: from h-64 to h-48 */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={pkg.image}
-                  alt={pkg.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-40" />
-                <span className="absolute top-3 left-3 bg-white/90 text-[8px] font-bold tracking-tighter uppercase px-2 py-1 rounded shadow-sm">
-                  {pkg.tripType}
-                </span>
-              </div>
-
-              {/* TIGHTER PADDING: from p-8 to p-5 */}
-              <div className="p-5 flex flex-col grow">
-                <div className="mb-1">
-                  <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight">
-                    {pkg.title}
-                  </h3>
-                  <p className="text-[11px] font-medium mt-1" style={{ color: GOLD }}>
-                    📍 {pkg.destinationName}
-                  </p>
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((pkg) => (
+              <div
+                key={pkg._id}
+                className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={pkg.image}
+                    alt={pkg.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-40" />
+                  <span className="absolute top-3 left-3 bg-white/90 text-[8px] font-bold tracking-tighter uppercase px-2 py-1 rounded shadow-sm">
+                    {pkg.tripType}
+                  </span>
                 </div>
 
-                {/* SLIMMER INCLUSIONS SECTION */}
-                <div className="flex flex-wrap gap-1.5 mt-3 mb-4">
-                  {pkg.includes?.slice(0, 3).map((inc, i) => (
-                    <span key={i} className="text-[9px] bg-gray-50 px-2 py-0.5 rounded text-gray-500 border border-gray-100">
-                      {inc}
-                    </span>
-                  ))}
-                </div>
-
-                {/* COMPACT FOOTER */}
-                <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
-                  <div>
-                    <p className="text-[8px] font-bold text-gray-400 uppercase">Per Person</p>
-                    <p className="text-xl font-bold" style={{ color: NAVY }}>₹{pkg.price}</p>
+                <div className="p-5 flex flex-col grow">
+                  <div className="mb-1">
+                    <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight">
+                      {pkg.title}
+                    </h3>
+                    <p className="text-[11px] font-medium mt-1" style={{ color: GOLD }}>
+                      📍 {pkg.destinationName}
+                    </p>
                   </div>
-                  <button
-                    onClick={() => navigate("/contact")}
-                    className="px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all shadow-sm"
-                    style={{ background: GOLD, color: "white" }}
-                  >
-                    View →
-                  </button>
+
+                  <div className="flex flex-wrap gap-1.5 mt-3 mb-4">
+                    {pkg.includes?.slice(0, 3).map((inc, i) => (
+                      <span key={i} className="text-[9px] bg-gray-50 px-2 py-0.5 rounded text-gray-500 border border-gray-100">
+                        {inc}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
+                    <div>
+                      <p className="text-[8px] font-bold text-gray-400 uppercase">Per Person</p>
+                      <p className="text-xl font-bold" style={{ color: NAVY }}>₹{pkg.price}</p>
+                    </div>
+                    <button
+                      onClick={() => navigate("/contact")}
+                      className="px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all shadow-sm"
+                      style={{ background: GOLD, color: "white" }}
+                    >
+                      View →
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-20 text-center">
+            <p className="text-sm font-serif italic text-gray-400 mb-2">No packages match your search</p>
+            <h2 className="text-2xl font-bold tracking-tight" style={{ color: NAVY }}>Sorry, no data found.</h2>
+            <button 
+              onClick={() => navigate("/packages")}
+              className="mt-6 text-[10px] font-bold tracking-widest uppercase border-b-2 pb-1"
+              style={{ color: GOLD, borderColor: GOLD }}
+            >
+              Clear all filters
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

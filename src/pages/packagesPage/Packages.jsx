@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PackagesHero from "./PackagesHero";
-import FeaturedPackage from "./FeaturedPackage";
 import PackagesGrid from "./PackagesGrid";
 import ComparisonTable from "./ComparisonTable";
 import PackagesFAQ from "./PackagesFAQ";
@@ -15,7 +14,6 @@ export default function Packages() {
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
-      <FeaturedPackage />
       <PackagesGrid activeFilter={activeFilter} />
       <ComparisonTable />
       <PackagesFAQ />

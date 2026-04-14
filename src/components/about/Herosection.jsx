@@ -22,77 +22,76 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full bg-white px-6 md:px-12 py-8 md:py-14 overflow-hidden"
+      className="relative w-full bg-white px-4 md:px-12 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
         
-        {/* Left Content */}
-        <div className="lg:col-span-6 z-10">
-          <div data-animate className="flex items-center gap-2 mb-3">
-            <div className="h-[1.5px] w-5" style={{ backgroundColor: GOLD }}></div>
-            <span className="text-[9px] tracking-[0.4em] uppercase font-bold" style={{ color: GOLD }}>
-              Luxury Travel
-            </span>
-          </div>
-
-          <h1
-            data-animate
-            className="text-5xl md:text-8xl font-serif leading-[0.9] mb-4 tracking-tighter"
-            style={{ color: TEXT_MAIN }}
-          >
-            Pure <br /> 
-            <span style={{ color: GOLD }}>Elevation.</span>
-          </h1>
-
-          <p
-            data-animate
-            className="text-sm md:text-base leading-relaxed mb-6 max-w-sm text-gray-500 font-light"
-          >
-            Bespoke Uttarakhand expeditions. Discover the silent majesty 
-            of the Himalayas with curated luxury and spiritual depth.
-          </p>
-
-          {/* Ultra-tight Stats */}
-          <div data-animate className="flex gap-8 border-t border-gray-50 pt-6">
-            {[
-              { v: "15Y", l: "History" },
-              { v: "50+", l: "Peaks" },
-              { v: "10K", l: "Souls" }
-            ].map((s, i) => (
-              <div key={i}>
-                <div className="text-lg font-medium" style={{ color: TEXT_MAIN }}>{s.v}</div>
-                <div className="text-[8px] uppercase tracking-[0.2em] text-gray-400 font-bold">{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Content - Single Powerful Visual */}
-        <div data-animate className="lg:col-span-6 relative mt-4 lg:mt-0">
-          <div className="relative p-2 border border-gray-100">
-            {/* The Image Container */}
-            <div className="relative aspect-16/10 w-full overflow-hidden">
+        {/* RIGHT CONTENT - Image Section (Mobile First) */}
+        <div data-animate className="lg:col-span-6 relative mt-4 lg:mt-0 order-1 lg:order-2 lg:py-6">
+          <div className="relative p-1 border border-gray-100">
+            {/* IMAGE */}
+            <div className="relative aspect-video lg:aspect-[16/10] w-full overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1200" 
-                alt="Mountains" 
+                src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1200" 
+                alt="India Travel" 
                 className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000"
               />
             </div>
-            
-            {/* Gold Accent Corner */}
+            {/* GOLD CORNER */}
             <div 
-              className="absolute -top-1 -right-1 w-12 h-12 border-t-2 border-r-2" 
+              className="absolute -top-1 -right-1 w-6 h-6 lg:w-10 lg:h-10 border-t-2 border-r-2" 
               style={{ borderColor: GOLD }}
             ></div>
           </div>
 
-          {/* Floating Rating - Minimalist */}
-          <div className="absolute -bottom-4 right-8 bg-white p-4 shadow-sm border border-gray-50">
-            <div className="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Rating</div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-serif italic" style={{ color: TEXT_MAIN }}>4.9</span>
-              <span className="text-[10px]" style={{ color: GOLD }}>★★★★★</span>
+          {/* FLOATING RATING - Smaller on mobile */}
+          <div className="absolute -bottom-2 right-4 lg:bottom-10 lg:right-4 bg-white p-2 lg:p-4 shadow-xl border border-gray-50 z-20">
+            <div className="text-[6px] lg:text-[8px] uppercase tracking-widest text-gray-400 mb-0.5">
+              Rating
             </div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg lg:text-2xl font-serif italic" style={{ color: TEXT_MAIN }}>
+                4.9
+              </span>
+              <span className="text-[8px] lg:text-[10px]" style={{ color: GOLD }}>
+                ★★★★★
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* LEFT CONTENT - Text Section */}
+        <div className="lg:col-span-6 z-10 pt-2 pb-8 lg:py-12 order-2 lg:order-1">
+          <h1
+            data-animate
+            className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif leading-[1.1] mb-3 lg:mb-5 tracking-tighter"
+            style={{ color: TEXT_MAIN }}
+          >
+            Discover <br className="hidden lg:block" /> 
+            <span style={{ color: GOLD }}>Incredible India.</span>
+          </h1>
+
+          <p
+            data-animate
+            className="text-[11px] sm:text-sm lg:text-[15px] leading-relaxed mb-6 lg:mb-8 max-w-sm lg:max-w-md text-gray-500 font-light"
+          >
+            From royal palaces of Rajasthan and serene Kerala backwaters 
+            to Himalayan adventures and sacred spiritual journeys — 
+            explore India through curated luxury experiences.
+          </p>
+
+          {/* STATS - Scaled down for laptop elegance */}
+          <div data-animate className="flex gap-6 lg:gap-10 border-t border-gray-100 pt-5">
+            {[
+              { v: "15Y+", l: "Experience" },
+              { v: "50+", l: "Destinations" },
+              { v: "10K+", l: "Travelers" }
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="text-sm lg:text-lg font-medium" style={{ color: TEXT_MAIN }}>{s.v}</div>
+                <div className="text-[7px] lg:text-[9px] uppercase tracking-widest text-gray-400 font-bold">{s.l}</div>
+              </div>
+            ))}
           </div>
         </div>
 

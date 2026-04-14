@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const GOLD = "#C9A84C";
-const filters = ["All", "Pilgrimage", "Adventure", "Hill Station", "Custom"];
+const filters = ["All", "Heritage", "Coastal", "Wildlife", "Adventure", "Pilgrimage"];
 
 export default function PackagesHero({ activeFilter, setActiveFilter }) {
   const containerRef = useRef(null);
@@ -12,6 +12,7 @@ export default function PackagesHero({ activeFilter, setActiveFilter }) {
       el.style.opacity = "0";
       el.style.transform = "translateY(15px)";
       el.style.transition = `opacity 0.8s ease-out ${i * 0.1}s, transform 0.8s ease-out ${i * 0.1}s`;
+      
       setTimeout(() => {
         el.style.opacity = "1";
         el.style.transform = "translateY(0)";
@@ -22,45 +23,37 @@ export default function PackagesHero({ activeFilter, setActiveFilter }) {
   return (
     <section
       ref={containerRef}
-      className="relative w-full py-12 md:py-24 px-4 md:px-6 overflow-hidden min-h-[420px] md:min-h-[550px] flex items-center"
+      className="relative w-full pt-20 pb-12 px-4 md:px-6 overflow-hidden min-h-[550px] md:min-h-[700px] flex items-center justify-center"
     >
-      {/* Background with Darker Mobile Gradient */}
+      {/* Background with optimized overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=2000" 
-          alt="Himalayan Background"
-          className="w-full h-full object-cover scale-110 md:scale-100"
+          src="https://images.unsplash.com/photo-1524492707947-2f85aefb9729?auto=format&fit=crop&q=80&w=2000" 
+          alt="Incredible India Heritage"
+          className="w-full h-full object-cover scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-white/95"></div>
+        {/* Darker top for nav visibility, subtle bottom fade */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/20"></div>
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10 w-full text-center">
-        <span
-          data-animate
-          className="text-[8px] md:text-[10px] tracking-[5px] md:tracking-[10px] uppercase font-bold block mb-3 text-[#D4AF37]"
-        >
-          Signature Collections
-        </span>
-
+        {/* Headline: Responsive sizes from 3xl to 7xl */}
         <h1
           data-animate
-          className="text-4xl md:text-7xl font-light leading-[1.1] mb-4 text-white"
+          className="text-3xl md:text-7xl font-medium leading-[1.15] mb-4 text-white tracking-tight"
           style={{ fontFamily: "'Georgia', serif" }}
         >
-          Unveil <span className="font-bold italic text-[#D4AF37]">Uttarakhand</span>
+          Discover <span className="italic text-[#D4AF37]">Incredible</span> India
         </h1>
 
-        <p data-animate className="text-white/80 text-xs md:text-lg italic mb-10 max-w-sm md:max-w-xl mx-auto px-6">
-          Handpicked itineraries designed for the soulful traveler.
+        <p data-animate className="text-white/90 text-sm md:text-lg font-medium mb-10 max-w-md md:max-w-2xl mx-auto px-4 leading-relaxed">
+          From the golden peaks of the north to the azure waters of the south—your bespoke journey awaits.
         </p>
 
-        {/* MOBILE SCROLLABLE TRACK 
-            - 'no-scrollbar' class added (CSS below)
-            - 'snap-x' for better touch feel 
-        */}
+        {/* MOBILE SCROLLABLE TRACK: Improved touch-target and spacing */}
         <div
           data-animate
-          className="w-full overflow-x-auto overflow-y-hidden snap-x no-scrollbar flex flex-nowrap md:flex-wrap md:justify-center gap-3 px-4 pb-6"
+          className="w-full overflow-x-auto overflow-y-hidden snap-x no-scrollbar flex flex-nowrap md:flex-wrap md:justify-center gap-2 md:gap-3 px-2 mb-8"
         >
           {filters.map((f) => {
             const isActive = activeFilter === f;
@@ -68,10 +61,10 @@ export default function PackagesHero({ activeFilter, setActiveFilter }) {
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`flex-shrink-0 snap-center px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border
+                className={`flex-shrink-0 snap-center px-5 py-2.5 rounded-full text-[11px] font-medium uppercase tracking-[0.15em] transition-all duration-300 border
                   ${isActive 
-                    ? 'text-white shadow-[0_10px_20px_rgba(201,168,76,0.3)] border-transparent' 
-                    : 'text-white/70 border-white/20 bg-black/30 backdrop-blur-md hover:text-white'}`}
+                    ? 'text-white border-transparent shadow-xl scale-105' 
+                    : 'text-white/90 border-white/20 bg-black/30 backdrop-blur-md hover:bg-black/50'}`}
                 style={isActive ? { background: GOLD } : {}}
               >
                 {f}
@@ -80,16 +73,16 @@ export default function PackagesHero({ activeFilter, setActiveFilter }) {
           })}
         </div>
         
-        <div data-animate className="flex items-center justify-center gap-4 mt-2">
-          <div className="h-[1px] w-10 bg-gray-300/30"></div>
-          <p className="text-[9px] uppercase tracking-[3px] text-gray-400 font-bold">
-            {activeFilter} Explorations
+        {/* Footer Accent: Tighter spacing */}
+        <div data-animate className="flex items-center justify-center gap-4">
+          <div className="h-[1px] w-8 bg-white/30"></div>
+          <p className="text-[10px] uppercase tracking-[3px] text-white/70 font-medium">
+            {activeFilter === "All" ? "Pan-India" : activeFilter} Gateways
           </p>
-          <div className="h-[1px] w-10 bg-gray-300/30"></div>
+          <div className="h-[1px] w-8 bg-white/30"></div>
         </div>
       </div>
 
-      {/* FIXED CSS BLOCK: Injecting styles without using the 'jsx' attribute */}
       <style dangerouslySetInnerHTML={{ __html: `
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

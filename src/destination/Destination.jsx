@@ -14,7 +14,10 @@ export default function Destination() {
         setSearchQuery={setSearchQuery}
       />
       <DestinationStats />
-      <DestinationGrid searchQuery={searchQuery} />
+      <DestinationGrid 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+      />
       <DestinationMap />
     </main>
   );

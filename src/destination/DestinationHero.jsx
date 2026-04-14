@@ -1,25 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { Search, MapPin, Compass, Loader2 } from "lucide-react";
+import { Search, MapPin, Loader2 } from "lucide-react";
 
 const GOLD = "#C9A84C";
 
 export default function DestinationHero({ searchQuery, setSearchQuery }) {
-  const ref = useRef(null);
-  const dropdownRef = useRef(null); // Ref to detect clicks outside
-  const [inputVal, setInputVal] = useState(searchQuery);
+  const dropdownRef = useRef(null);
+  const [inputVal, setInputVal] = useState(searchQuery || "");
   const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Sync with global state (e.g., when clearing search)
   useEffect(() => {
     setInputVal(searchQuery);
   }, [searchQuery]);
 
-  // Handle clicks outside to close dropdown
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShowDropdown(false);
       }
     };
@@ -27,29 +24,16 @@ export default function DestinationHero({ searchQuery, setSearchQuery }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Entrance Animations
-  useEffect(() => {
-    const els = ref.current?.querySelectorAll("[data-animate]");
-    els?.forEach((el, i) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(10px)";
-      el.style.transition = `all 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.08}s`;
-      setTimeout(() => {
-        el.style.opacity = "1";
-        el.style.transform = "translateY(0)";
-      }, 50);
-    });
-  }, []);
-
-  // API Fetch with Debounce
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
-      if (inputVal.length > 2) {
+      if (inputVal?.length > 2) {
         setIsLoading(true);
         try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${inputVal}&limit=5`
-          );
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            inputVal
+          )}&countrycodes=in&limit=6&addressdetails=1`;
+          
+          const response = await fetch(url);
           const data = await response.json();
           setSuggestions(data);
           setShowDropdown(true);
@@ -62,7 +46,7 @@ export default function DestinationHero({ searchQuery, setSearchQuery }) {
         setSuggestions([]);
         setShowDropdown(false);
       }
-    }, 300);
+    }, 400);
 
     return () => clearTimeout(delayDebounceFn);
   }, [inputVal]);
@@ -73,55 +57,39 @@ export default function DestinationHero({ searchQuery, setSearchQuery }) {
     setShowDropdown(false);
   };
 
-  const selectSuggestion = (display_name) => {
-    setInputVal(display_name);
-    setSearchQuery(display_name);
-    setShowDropdown(false);
-  };
-
   return (
-    <section
-      ref={ref}
-      className="relative w-full min-h-[50vh] md:min-h-[60vh] flex items-center justify-center px-6 overflow-visible bg-[#050505]"
-    >
-      {/* Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+    <section className="relative w-full min-h-[70vh] flex items-center justify-center px-4 py-12 overflow-visible bg-[#050505]">
+      {/* Background with Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <img
-          src="https://wallpapercat.com/w/full/0/8/2/32198-3840x2160-desktop-4k-himalayas-background.jpg"
-          className="w-full h-full object-cover scale-105 opacity-60"
-          alt="Himalayas"
+          src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?q=80&w=2070&auto=format&fit=crop" 
+          className="w-full h-full object-cover opacity-40 scale-110"
+          alt="India Background"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/20 to-[#050505]"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/40 to-black/80"></div>
       </div>
 
       <div className="max-w-4xl mx-auto relative z-20 w-full text-center">
-        <div data-animate className="flex items-center justify-center gap-2 mb-4">
-          <Compass size={14} className="text-[#D4AF37] animate-pulse" />
-          <span className="text-[10px] tracking-[0.4em] uppercase font-bold text-[#D4AF37]/90">
-            The Great Escape
-          </span>
-        </div>
-
         <h1
-          data-animate
-          className="text-5xl md:text-7xl font-light leading-[1.1] mb-8 text-white tracking-tight"
-          style={{ fontFamily: "'Georgia', serif" }}
+          className="text-4xl sm:text-6xl md:text-8xl font-light leading-[1.1] mb-6 sm:mb-10 text-white tracking-tight px-2"
+          style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          Seek <span className="italic font-normal text-[#D4AF37]">Solitude.</span>
+          Discover <span className="italic font-normal text-[#D4AF37]">India</span>
+          <br className="hidden sm:block" /> like never before.
         </h1>
 
         {/* Search Wrapper */}
-        <div className="relative max-w-xl mx-auto w-full" data-animate ref={dropdownRef}>
+        <div className="relative max-w-2xl mx-auto w-full px-2" ref={dropdownRef}>
           <form
             onSubmit={handleSearch}
-            className="group relative z-30 flex flex-col sm:flex-row items-center gap-2 bg-white/5 backdrop-blur-2xl rounded-2xl sm:rounded-full p-1.5 border border-white/10 shadow-2xl transition-all focus-within:border-[#D4AF37]/50"
+            className="group relative z-30 flex flex-col sm:flex-row items-center gap-3 bg-white/10 backdrop-blur-xl rounded-2xl sm:rounded-full p-2 border border-white/20 transition-all focus-within:border-[#D4AF37]/50"
           >
             <div className="flex items-center flex-1 w-full">
               <div className="pl-4">
                 {isLoading ? (
-                  <Loader2 size={16} className="text-[#D4AF37] animate-spin" />
+                  <Loader2 size={20} className="text-[#D4AF37] animate-spin" />
                 ) : (
-                  <MapPin size={16} className="text-white/40" />
+                  <MapPin size={20} className="text-[#D4AF37]" />
                 )}
               </div>
               <input
@@ -129,40 +97,79 @@ export default function DestinationHero({ searchQuery, setSearchQuery }) {
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 onFocus={() => inputVal.length > 2 && setShowDropdown(true)}
-                placeholder="Where does your soul lead?..."
-                className="flex-1 text-sm outline-none bg-transparent placeholder:text-white/20 text-white py-3 px-4 font-light"
+                placeholder="Search City, State or Landmark..."
+                className="flex-1 text-base outline-none bg-transparent placeholder:text-white/40 text-white py-4 px-3 font-light custom-input"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full sm:w-auto px-10 py-3 rounded-xl sm:rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all active:scale-95 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl sm:rounded-full text-xs font-bold uppercase tracking-widest text-white transition-all active:scale-95 flex items-center justify-center gap-2"
               style={{ background: `linear-gradient(135deg, ${GOLD}, #B8962E)` }}
             >
-              Find <Search size={14} />
+              Search <Search size={16} />
             </button>
           </form>
 
-          {/* Suggestions Dropdown - Positioned Downwards */}
+          {/* Fixed Suggestions Dropdown */}
           {showDropdown && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-[#111] border border-white/10 rounded-2xl overflow-hidden z-100 text-left shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in fade-in slide-in-from-top-2 duration-200">
-              {suggestions.map((item, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => selectSuggestion(item.display_name)}
-                  className="w-full px-5 py-4 text-xs text-white/70 hover:text-white hover:bg-white/5 flex items-start gap-3 transition-colors border-b border-white/5 last:border-0"
-                >
-                  <MapPin size={14} className="text-[#D4AF37] mt-0.5 shrink-0" />
-                  <span className="truncate leading-tight">
-                    {item.display_name}
-                  </span>
-                </button>
-              ))}
+            <div className="absolute top-[calc(100%+12px)] left-0 right-0 bg-[#141414] border border-white/10 rounded-3xl overflow-hidden z-[999] shadow-[0_30px_60px_rgba(0,0,0,0.7)] animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
+                {suggestions.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setInputVal(item.display_name);
+                      setSearchQuery(item.display_name);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full px-6 py-5 flex items-start gap-4 text-left hover:bg-white/5 transition-all border-b border-white/5 last:border-0 group/item"
+                  >
+                    <div className="mt-1 flex-shrink-0">
+                      <MapPin size={18} className="text-[#D4AF37] group-hover/item:scale-110 transition-transform" />
+                    </div>
+                    <div className="flex flex-col gap-1 min-w-0 flex-1">
+                      <span className="text-white font-semibold text-base sm:text-lg leading-tight truncate">
+                        {item.address.city || item.address.town || item.address.state || "Location Found"}
+                      </span>
+                      <span className="text-white/50 text-xs sm:text-sm leading-normal whitespace-normal break-words">
+                        {item.display_name}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
       </div>
+
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+          
+          .custom-input:-webkit-autofill {
+            -webkit-text-fill-color: white !important;
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+            transition: background-color 5000s ease-in-out 0s;
+          }
+
+          .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.4);
+          }
+        `}
+      </style>
     </section>
   );
 }

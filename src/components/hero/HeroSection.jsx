@@ -24,11 +24,12 @@ const HeroSection = () => (
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight drop-shadow-md">
             Explore the <br className="hidden sm:block" />
             Beauty of <br />
-            <span className="text-[#C4A036]">Uttarakhand</span>
+            <span className="text-[#C4A036]">India</span>
           </h1>
+
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-md leading-relaxed drop-shadow-sm">
-            Discover pristine mountains, sacred temples, and unforgettable
-            adventures in the lap of the Himalayas.
+            Discover serene beaches, royal palaces, spiritual temples, and vibrant cities —
+            experience unforgettable journeys across India with expertly crafted travel experiences.
           </p>
           <div className="hidden lg:flex items-center gap-4 pt-4">
             <div className="h-1 w-20 bg-[#C4A036] rounded-full" />
