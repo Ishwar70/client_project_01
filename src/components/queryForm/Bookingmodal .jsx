@@ -3,63 +3,57 @@ import { submitEnquiry } from "../../services/form.service";
 
 const GOLD = "#BFA13B";
 const DARK = "#8e7421";
-const LIGHT = "#fdf8ec";
 
-const EMPTY = { name: "", email: "", phone: "", query: "" };
+const EMPTY = { 
+  name: "", 
+  email: "", 
+  phone: "", 
+  departCity: "", 
+  location: "", 
+  passengers: "", 
+  date: "", 
+  days: "", 
+  message: "",
+  agreed: false 
+};
 
 /* ─── UI Helpers ─── */
-const GradBtn = ({ children, loading, ...p }) => (
+const GradBtn = ({ children, loading, disabled, ...p }) => (
   <button
-    className="w-full py-3 rounded-xl text-white font-bold uppercase tracking-[0.15em] text-[10px] relative overflow-hidden transition-all active:scale-[0.97] shadow-[0_8px_20px_-6px_rgba(191,161,59,0.4)] mt-2 group disabled:opacity-80"
+    className="w-full py-2.5 rounded-lg text-white font-bold uppercase tracking-[0.15em] text-[11px] relative overflow-hidden transition-all active:scale-[0.98] shadow-md mt-1 disabled:opacity-50"
     style={{ background: `linear-gradient(135deg, ${GOLD} 0%, ${DARK} 100%)` }}
-    disabled={loading}
+    disabled={loading || disabled}
     {...p}
   >
-    {/* Shimmer Effect using Tailwind animation */}
-    <div className="absolute inset-0 w-full h-full bg-white/20 -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" 
-         style={{ animation: loading ? 'none' : '' }} />
-    
     <span className="relative z-10 flex items-center justify-center gap-2">
-      {loading ? (
-        <div className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />
-      ) : (
-        children
-      )}
+      {loading ? <div className="animate-spin h-3 w-3 border-2 border-white/30 border-t-white rounded-full" /> : children}
     </span>
-
-    {/* Global Style fix for the shimmer keyframe if not in tailwind.config */}
-    <style>{`
-      @keyframes shimmer {
-        100% { transform: translateX(250%) skewX(-12deg); }
-      }
-    `}</style>
   </button>
 );
 
-const Field = ({ label, icon, error, children }) => (
-  <div className="flex flex-col gap-1">
-    <div className="flex items-center justify-between px-1">
-      <label className="flex items-center gap-1.5 text-[8px] font-bold uppercase tracking-widest text-stone-400">
-        <span className="opacity-60">{icon}</span> {label}
+const Field = ({ label, error, children, className = "" }) => (
+  <div className={`flex flex-col gap-0.5 ${className}`}>
+    <div className="flex items-center justify-between px-0.5">
+      <label className="text-[10px] font-semibold uppercase tracking-wider text-stone-600">
+        {label}
       </label>
-      {error && <span className="text-[8px] text-red-500 font-bold animate-pulse">Required</span>}
+      {error && <span className="text-[9px] text-red-500 font-medium italic">Required</span>}
     </div>
     {children}
   </div>
 );
 
 const inputCls =
-  "w-full px-3 py-2 rounded-lg border border-stone-100 bg-stone-50/40 " +
-  "focus:border-[#BFA13B] focus:ring-0 focus:bg-white " +
-  "outline-none transition-all duration-300 text-[12px] text-stone-800 placeholder:text-stone-300 " +
-  "shadow-inner shadow-black/[0.01]";
+  "w-full px-3 py-1.5 rounded border border-stone-200 bg-white " +
+  "focus:border-[#BFA13B] focus:ring-0 outline-none transition-all " +
+  "text-[13px] text-stone-800 placeholder:text-stone-300";
 
 export default function BookingModal({
   isOpen,
   onClose,
-  title = "Private Inquiry",
-  subtitle = "Refined bespoke service",
-  submitLabel = "Send Request",
+  title = "Travel Inquiry Form",
+  subtitle = "Get a customized travel plan",
+  submitLabel = "Submit Inquiry",
 }) {
   const [form, setForm] = useState(EMPTY);
   const [submitted, setSubmitted] = useState(false);
@@ -73,99 +67,132 @@ export default function BookingModal({
   }, [isOpen]);
 
   const change = (e) => {
-    const { name, value } = e.target;
-    setForm((p) => ({ ...p, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setForm((p) => ({ ...p, [name]: type === "checkbox" ? checked : value }));
     if (errors[name]) setErrors((p) => ({ ...p, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = {};
-    if (!form.name.trim()) errs.name = true;
-    if (!form.email.trim()) errs.email = true;
-    if (!form.phone.trim()) errs.phone = true;
+    
+    // Updated required fields to match your new Model strictness
+    const required = ["name", "email", "phone", "location", "date"];
+    required.forEach(field => { 
+      if (!form[field]?.toString().trim()) errs[field] = true; 
+    });
+    
+    if (!form.agreed) errs.agreed = true;
 
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) { 
+      setErrors(errs); 
+      return; 
+    }
 
     setLoading(true);
     try {
+      // Logic: Service now sends the full object to /enquiries/submit
       await submitEnquiry(form);
       setSubmitted(true);
-      setTimeout(() => { onClose(); setSubmitted(false); setForm(EMPTY); }, 2500);
-    } catch (err) { setErrors({ submit: "Error" }); }
-    finally { setLoading(false); }
+      setTimeout(() => { 
+        onClose(); 
+        setSubmitted(false); 
+        setForm(EMPTY); 
+      }, 3000);
+    } catch (err) { 
+      // Displays the specifically joined error messages from our updated service
+      setErrors({ submit: err.message || "Error" }); 
+      alert(err.message || "Something went wrong. Please try again.");
+    } finally { 
+      setLoading(false); 
+    }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-md animate-in fade-in duration-500">
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-      
-      <div 
-        className="w-full max-w-90 bg-white rounded-[2.5rem] shadow-2xl relative overflow-hidden border border-white/20"
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
-        {/* Artistic Accent */}
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#BFA13B]/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-[1px] animate-in fade-in duration-200">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+      `}</style>
 
-        {/* Close Icon */}
-        <button onClick={onClose} className="absolute top-5 right-6 z-50 text-stone-300 hover:text-stone-800 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-        </button>
+      <div className="w-full max-w-lg bg-white rounded-lg shadow-xl relative overflow-hidden flex flex-col border border-stone-100" 
+           style={{ fontFamily: "'Poppins', sans-serif" }}>
+        
+        {/* Header - Height Reduced */}
+        <div className="px-6 py-5 bg-stone-50 border-b border-stone-100 text-center relative">
+          <button onClick={onClose} className="absolute top-4 right-4 text-stone-400 hover:text-stone-700">
+             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+          <h2 className="text-xl font-bold text-stone-800">{title}</h2>
+          <p className="text-stone-500 text-[11px] font-medium">{subtitle}</p>
+        </div>
 
-        <div className="flex flex-col">
-          {/* Header */}
-          <div className="px-8 pt-7 pb-3 text-center">
-            <h2 className="text-2xl font-bold text-stone-800 tracking-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{title}</h2>
-            <div className="h-px w-8 bg-[#BFA13B] mx-auto my-2 opacity-50" />
-            <p className="text-stone-400 text-[9px] tracking-[0.2em] uppercase">{subtitle}</p>
-          </div>
+        <div className="px-6 py-5 overflow-y-auto">
+          {submitted ? (
+            <div className="py-8 text-center animate-in zoom-in duration-300">
+               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">✓</div>
+               <h3 className="text-stone-800 font-bold text-sm">Thank You!</h3>
+               <p className="text-stone-500 text-[11px] mt-1">Our team will contact you shortly with travel details.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-3">
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3">
+                <Field label="Full Name" error={errors.name}>
+                  <input type="text" name="name" placeholder="Enter name" value={form.name} onChange={change} className={inputCls} />
+                </Field>
+                <Field label="Email ID" error={errors.email}>
+                  <input type="email" name="email" placeholder="example@mail.com" value={form.email} onChange={change} className={inputCls} />
+                </Field>
 
-          <div className="px-7 pb-8 pt-1">
-            {submitted ? (
-              <div className="flex flex-col items-center justify-center py-12 space-y-4 animate-in zoom-in duration-500">
-                <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl" style={{ background: `linear-gradient(135deg, ${GOLD}, ${DARK})` }}>✓</div>
-                <div className="text-stone-800 font-bold text-sm tracking-widest uppercase">Confirmed</div>
+                <Field label="Mobile Number" error={errors.phone}>
+                  <input type="tel" name="phone" placeholder="98765 43210" value={form.phone} onChange={change} className={inputCls} />
+                </Field>
+                <Field label="Departure City" error={errors.departCity}>
+                  <input type="text" name="departCity" placeholder="City name" value={form.departCity} onChange={change} className={inputCls} />
+                </Field>
+
+                <Field label="Destination" error={errors.location}>
+                  <input type="text" name="location" placeholder="Where do you want to go?" value={form.location} onChange={change} className={inputCls} />
+                </Field>
+                <Field label="Travel Date" error={errors.date}>
+                  <input type="date" name="date" value={form.date} onChange={change} className={inputCls} />
+                </Field>
+
+                <Field label="Number of Persons">
+                  <input type="number" name="passengers" placeholder="Ex: 4" value={form.passengers} onChange={change} className={inputCls} />
+                </Field>
+                <Field label="Number of Days">
+                  <input type="number" name="days" placeholder="Ex: 5" value={form.days} onChange={change} className={inputCls} />
+                </Field>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <Field label="Full Name" icon="✧" error={errors.name}>
-                  <input type="text" name="name" placeholder="E.g. Alexander Knight" value={form.name} onChange={change} className={inputCls} />
-                </Field>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <Field label="Email" icon="✧" error={errors.email}>
-                    <input type="email" name="email" placeholder="Email" value={form.email} onChange={change} className={inputCls} />
-                  </Field>
-                  <Field label="Phone" icon="✧" error={errors.phone}>
-                    <input type="tel" name="phone" placeholder="Phone" value={form.phone} onChange={change} className={inputCls} />
-                  </Field>
-                </div>
+              <Field label="Message (Optional)">
+                <textarea name="message" rows="1" placeholder="Any specific requirements..." value={form.message} onChange={change} className={`${inputCls} resize-none min-h-[40px]`} />
+              </Field>
 
-                <Field label="Requirements" icon="✧">
-                  <textarea 
-                    name="query" 
-                    rows="1" 
-                    placeholder="Tell us more..." 
-                    value={form.query} 
-                    onChange={change} 
-                    className={`${inputCls} resize-none min-h-11.25`} 
+              <div className="pt-0.5">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    name="agreed" 
+                    checked={form.agreed} 
+                    onChange={change}
+                    className="w-4 h-4 rounded border-stone-300 text-[#BFA13B] focus:ring-0"
                   />
-                </Field>
+                  <span className="text-[10px] text-stone-500">
+                    I have read and agree to the <span className="text-stone-800 underline underline-offset-2">User Agreement</span> and <span className="text-stone-800 underline underline-offset-2">Privacy Policy</span>.
+                  </span>
+                </label>
+                {errors.agreed && <p className="text-[9px] text-red-500 mt-0.5 font-bold uppercase tracking-tight">Required</p>}
+              </div>
 
-                <GradBtn type="submit" loading={loading}>
-                  {submitLabel}
-                </GradBtn>
-
-                <div className="flex items-center justify-center gap-2 mt-4 opacity-40">
-                   <div className="h-px w-4 bg-stone-400" />
-                   <p className="text-[8px] text-stone-500 font-bold uppercase tracking-[0.2em]">Secure Request</p>
-                   <div className="h-px w-4 bg-stone-400" />
-                </div>
-              </form>
-            )}
-          </div>
+              <GradBtn type="submit" loading={loading}>
+                {submitLabel}
+              </GradBtn>
+            </form>
+          )}
         </div>
       </div>
     </div>

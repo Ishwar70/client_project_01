@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom"; 
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import BookingModal from "../components/queryForm/Bookingmodal ";
 
 const PublicLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    const hasSeenModal = sessionStorage.getItem("hasSeenBookingModal");
-
-    if (!hasSeenModal) {
+    if (location.pathname === "/") {
       setIsModalOpen(true);
-      sessionStorage.setItem("hasSeenBookingModal", "true");
+    } else {
+      setIsModalOpen(false);
     }
-  }, []);
+  }, [location.pathname]); 
 
   return (
     <>

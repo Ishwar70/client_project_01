@@ -16,6 +16,14 @@ export const submitEnquiry = async (data) => {
     const res = await api.post(API.ENQUIRY.SUBMIT, data);
     return res.data;
   } catch (error) {
-    throw error.response?.data || { success: false, message: "Enquiry submission failed" };
+    const backendError = error.response?.data?.error;
+    const errorMessage = Array.isArray(backendError) 
+      ? backendError.join(", ") 
+      : backendError || "Enquiry submission failed";
+    throw { 
+      success: false, 
+      message: errorMessage,
+      raw: error.response?.data 
+    };
   }
 };
