@@ -48,8 +48,8 @@ export default function Footer() {
                 className="h-24 md:h-20 w-auto object-contain self-start drop-shadow-[0_0_15px_rgba(191,161,59,0.3)]"
               />
               <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-                Your premium travel partner for exploring the divine beauty of Uttarakhand.
-                Creating unforgettable journeys since 2009.
+                Your premium travel partner for exploring the incredible diversity of India. 
+                From the Himalayas to the backwaters, we create unforgettable journeys since 2009.
               </p>
             </div>
             
@@ -145,8 +145,8 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <p className="text-[11px] text-gray-500 text-center md:text-left font-medium uppercase tracking-wider">
-              © {currentYear} <span className="text-white font-bold">Uttarakhand Tours</span>.
-              Crafted with <span className="text-[#BFA13B]">❤</span> for travelers.
+              © {currentYear} <span className="text-white font-bold">Incredible India Journeys</span>.
+              All Rights Reserved.
             </p>
             <div className="flex gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
               <a href="#" className="hover:text-[#BFA13B] transition-colors">Privacy</a>

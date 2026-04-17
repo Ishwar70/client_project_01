@@ -4,9 +4,9 @@ const API_ENDPOINTS = {
   FORM: {
     SUBMIT: `${BASE_URL}/form/submit`,
   },
-
+  
   ENQUIRY: {
-    SUBMIT: `${BASE_URL}/enquiries`,
+    SUBMIT: `${BASE_URL}/enquiries/submit`,
   },
 
   AUTH: {
