@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PackageCard from './PackageCard.jsx';
-import { tourData } from './tourData.js.js'; 
+import { getAllPackages } from '../../services/package.service';
 
 const Packages = () => {
+  const [packages, setPackages] = useState([]);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await getAllPackages("?limit=6");
+        let data = res?.packages || res?.data || res || [];
+        if (!Array.isArray(data)) data = [];
+        setPackages(data.slice(0, 6));
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+      }
+    };
+    fetchPackages();
+  }, []);
+
   return (
     <section className="py-16 md:py-24 px-4 sm:px-6 md:px-10 bg-white relative">
       <div className="max-w-7xl mx-auto">
@@ -19,8 +35,15 @@ const Packages = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-          {tourData.map((pkg, index) => (
-            <PackageCard key={index} {...pkg} />
+          {packages.map((pkg, index) => (
+            <PackageCard 
+              key={pkg._id || index}
+              title={pkg.title || pkg.name || "Exclusive Package"}
+              duration={pkg.duration || `${pkg.nights || 2}N/${pkg.days || 3}D`}
+              rating={pkg.rating || "4.8"}
+              highlights={Array.isArray(pkg.includes) && pkg.includes.length > 0 ? pkg.includes.slice(0, 6) : ["Expert Guide", "Premium Stay", "Meals", "Transport"]}
+              price={Number(pkg.price) || 15000}
+            />
           ))}
         </div>
       </div>

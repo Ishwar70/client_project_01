@@ -1,33 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clock, Users, ArrowRight } from 'lucide-react';
+import { getAllPackages } from "../../services/package.service";
 
 const ServicesSection = () => {
-  const packages = [
-    {
-      title: "Kerala Backwaters Tour",
-      image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=800&auto=format&fit=crop",
-      price: "21,000",
-      duration: "5 Nights / 6 Days",
-    },
-    {
-      title: "Tamil Nadu Temple Tour",
-      image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=800&auto=format&fit=crop",
-      price: "18,000",
-      duration: "5 Nights / 6 Days",
-    },
-    {
-      title: "Madurai and Munnar",
-      image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800&auto=format&fit=crop",
-      price: "38,000",
-      duration: "4 Nights / 5 Days",
-    },
-    {
-      title: "Hyderabad Getaway - Weekend Special",
-      image: "https://images.unsplash.com/photo-1606298246186-08868ab77562?q=80&w=800&auto=format&fit=crop",
-      price: "9,366",
-      duration: "2 Nights / 3 Days",
-    }
-  ];
+  const [packages, setPackages] = useState([]);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await getAllPackages("?limit=3");
+        let data = res?.packages || res?.data || res || [];
+        if (!Array.isArray(data)) data = [];
+        setPackages(data.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+      }
+    };
+    fetchPackages();
+  }, []);
 
   return (
     <section className="py-10 bg-white font-sans">
@@ -46,12 +36,12 @@ const ServicesSection = () => {
         {/* Packages Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg, index) => (
-            <div key={index} className="group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+            <div key={pkg._id || index} className="group bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
               {/* Image Container */}
               <div className="relative h-64 overflow-hidden">
                 <img 
-                  src={pkg.image} 
-                  alt={pkg.title} 
+                  src={pkg.image?.url || pkg.image || "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=800&auto=format&fit=crop"} 
+                  alt={pkg.title || pkg.name} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-md">
@@ -62,12 +52,12 @@ const ServicesSection = () => {
               {/* Content */}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#D4AF37] transition-colors">
-                  {pkg.title}
+                  {pkg.title || pkg.name}
                 </h3>
                 
                 <div className="flex items-center gap-4 mb-6 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
-                    <Clock size={16} className="text-[#D4AF37]" /> {pkg.duration}
+                    <Clock size={16} className="text-[#D4AF37]" /> {pkg.duration || "5 Nights / 6 Days"}
                   </span>
                   <span className="flex items-center gap-1">
                     <Users size={16} className="text-[#D4AF37]" /> Group Tour
@@ -78,7 +68,7 @@ const ServicesSection = () => {
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider">Starts at</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      ₹{pkg.price}<span className="text-sm font-normal text-gray-500"> /Person</span>
+                      ₹{pkg.price || "Contact Us"}<span className="text-sm font-normal text-gray-500"> /Person</span>
                     </p>
                   </div>
                   <button className="bg-[#D4AF37] hover:bg-black text-white p-3 rounded-lg transition-colors shadow-lg">
