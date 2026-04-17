@@ -29,6 +29,8 @@ import TestimonialsPage from "./admin/testimonial/TestimonialsPage";
 import Uttarakhand from "./landing_page/uttarakhand/Uttarakhand";
 import SouthIndia from "./landing_page/southIndia/SouthIndia";
 import NorthEast from "./landing_page/northEast/NorthEast";
+import Andaman from "./landing_page/andaman/Andaman";
+import Goa from "./landing_page/goa/Goa";
 function App() {
   return (
     <BrowserRouter>
@@ -58,6 +60,8 @@ function App() {
           <Route path="/uttarakhand-tour-packages" element={<Uttarakhand />} />
           <Route path="/south-india-tour-packages" element={<SouthIndia />} />
           <Route path="/north-east-india-tour-packages" element={<NorthEast />} />
+          <Route path="/andaman-tour-packages" element={<Andaman />} />
+          <Route path="/goa-tour-packages" element={<Goa />} />
         </Route>
 
         {/* 🔐 AUTH */}

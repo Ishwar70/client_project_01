@@ -1,31 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getAllTestimonials } from "../../services/testimonial.service";
 
 const TravelExpertSection = () => {
   const [activeFaq, setActiveFaq] = useState(null);
+  const [reviews, setReviews] = useState([]);
 
-  const reviews = [
-    {
-      id: 1,
-      name: "Amit Sharma",
-      location: "Delhi",
-      text: "The Trip Trails made our Kedarnath yatra seamless. The local guides were expert and the coordination was perfect.",
-      rating: 5
-    },
-    {
-      id: 2,
-      name: "Priya Verma",
-      location: "Mumbai",
-      text: "Best travel agency for Uttarakhand! Our family trip to Nainital and Mussoorie was comfortable and budget-friendly.",
-      rating: 5
-    },
-    {
-      id: 3,
-      name: "Rahul Negi",
-      location: "Dehradun",
-      text: "Exceptional service and 24/7 support. They customized the itinerary exactly how we wanted it. Highly recommended!",
-      rating: 5
-    }
-  ];
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await getAllTestimonials({ limit: 3 });
+        let data = res?.testimonials || res?.data || res || [];
+        if (!Array.isArray(data)) data = [];
+        setReviews(data.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      }
+    };
+    fetchReviews();
+  }, []);
 
   const faqs = [
     {
@@ -75,20 +67,20 @@ const TravelExpertSection = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.map((review) => (
-              <div key={review.id} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+            {reviews.map((review, index) => (
+              <div key={review._id || index} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
                 <div className="flex text-[#D4AF37] mb-4">
-                  {[...Array(review.rating)].map((_, i) => (
+                  {[...Array(Number(review.stars) || 5)].map((_, i) => (
                     <span key={i} className="text-lg">★</span>
                   ))}
                 </div>
-                <p className="text-gray-600 italic mb-6 leading-relaxed">"{review.text}"</p>
+                <p className="text-gray-600 italic mb-6 leading-relaxed">"{review.quote || "Amazing trip!"}"</p>
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold">
-                    {review.name[0]}
+                    {(review.name || "T")[0]}
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 leading-none">{review.name}</h4>
+                    <h4 className="font-bold text-gray-900 leading-none">{review.name || "Happy Traveler"}</h4>
                     <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">{review.location}</p>
                   </div>
                 </div>
