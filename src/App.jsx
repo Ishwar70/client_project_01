@@ -26,7 +26,9 @@ import PostPage from "./admin/post/PostPage";
 import DestinationPage from "./admin/destination/DestinationPage";
 import Enquiry from "./components/queryForm/Enquiry";
 import TestimonialsPage from "./admin/testimonial/TestimonialsPage";
-
+import Uttarakhand from "./landing_page/uttarakhand/Uttarakhand";
+import SouthIndia from "./landing_page/southIndia/SouthIndia";
+import NorthEast from "./landing_page/northEast/NorthEast";
 function App() {
   return (
     <BrowserRouter>
@@ -51,6 +53,11 @@ function App() {
 
           {/* Optional: Redirect old /enquiry links to /booking so users don't see errors */}
           <Route path="/enquiry" element={<Navigate to="/booking" replace />} />
+
+          {/* Landing pages Routes*/}
+          <Route path="/uttarakhand-tour-packages" element={<Uttarakhand />} />
+          <Route path="/south-india-tour-packages" element={<SouthIndia />} />
+          <Route path="/north-east-india-tour-packages" element={<NorthEast />} />
         </Route>
 
         {/* 🔐 AUTH */}

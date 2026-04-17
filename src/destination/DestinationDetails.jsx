@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// Updated service import as requested
 import { getDestinationById } from "../services/destination.service"; 
 import { 
   Calendar, 
@@ -31,12 +30,8 @@ const DestinationDetails = () => {
     const fetchDestination = async () => {
       try {
         setLoading(true);
-        // Using the updated service function
         const res = await getDestinationById(id);
-        
-        // Handling common API response patterns
         const data = res?.destination || res?.data?.destination || res?.data;
-        
         if (data) {
           setDestination(data);
         } else {

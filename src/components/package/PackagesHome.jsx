@@ -1,6 +1,6 @@
 import React from 'react';
 import PackageCard from './PackageCard.jsx';
-import { tourData } from './tourData.js.js'; // Extension add karna mat bhoolna
+import { tourData } from './tourData.js.js'; 
 
 const Packages = () => {
   return (

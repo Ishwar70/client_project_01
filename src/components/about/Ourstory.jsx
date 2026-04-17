@@ -85,7 +85,7 @@ export default function OurStory() {
               className="block text-[10px] md:text-xs uppercase tracking-[0.2em] mt-4 not-italic font-bold"
               style={{ color: GOLD }}
             >
-              — Rahul Sharma, Founder
+              — Rahul Shukla, Founder
             </footer>
           </blockquote>
         </div>
