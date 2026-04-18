@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAllServices } from "../services/services.service";
+import { MapPin, Users } from "lucide-react";
 
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
@@ -88,6 +89,18 @@ export default function HomeServices() {
                         {s.title}
                       </h3>
 
+                      {/* Location & Capacity Info */}
+                      <div className="flex items-center gap-4 mb-3">
+                        <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                          <MapPin size={10} color={GOLD} />
+                          <span>{s.city ? `${s.city}, ${s.state}` : "Global Service"}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                          <Users size={10} color={GOLD} />
+                          <span>{s.noOfPerson || 2}+ People</span>
+                        </div>
+                      </div>
+
                       <p className="text-[13px] text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-2">
                         {s.description}
                       </p>
@@ -104,13 +117,13 @@ export default function HomeServices() {
                         </div>
 
                         <button
-                          onClick={() => navigate(`/booking/${s._id}`)}
-                          className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all duration-300"
+                          onClick={() => navigate("/contact")}
+                          className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
                           style={{ background: NAVY, color: GOLD }}
                           onMouseEnter={e => { e.currentTarget.style.background = GOLD; e.currentTarget.style.color = "#fff"; }}
                           onMouseLeave={e => { e.currentTarget.style.background = NAVY; e.currentTarget.style.color = GOLD; }}
                         >
-                          Book
+                          Send Enquiry
                           <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="3">
                             <path d="M3 8h10M9 4l4 4-4 4" />
                           </svg>
@@ -122,23 +135,25 @@ export default function HomeServices() {
               })}
             </div>
 
-            {/* Explore Services Button - Refined Height & Golden Theme */}
-            <div className="mt-10 text-center">
+            {/* Explore Services Button - Refined & Clear */}
+            <div className="mt-12 text-center">
               <button
                 onClick={() => navigate("/services")}
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-full transition-all duration-300 font-bold uppercase tracking-widest text-[11px] shadow-md hover:shadow-xl active:scale-95"
+                className="inline-flex items-center gap-2 px-10 py-3.5 rounded-full transition-all duration-300 font-bold uppercase tracking-widest text-[11px] shadow-lg hover:shadow-2xl active:scale-95 border-2 border-transparent hover:border-[#C9A84C20]"
                 style={{
                   background: GOLD,
                   color: "#FFFFFF",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = "brightness(1.1)";
+                  e.currentTarget.style.filter = "brightness(1.05)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.filter = "brightness(1)";
+                  e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                Explore All Services
+                View More Services
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M3 8h10M9 4l4 4-4 4" />
                 </svg>

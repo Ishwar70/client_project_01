@@ -8,10 +8,6 @@ import { getAllServices, deleteService } from "../../services/services.service";
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
 
-const iconMap = {
-  landmark: Landmark, mountain: Mountain, hotel: Hotel,
-  map: Map, users: Users, car: Car,
-};
 
 export default function ServiceList({ refresh, onEdit, onRefresh }) {
   const navigate = useNavigate();
@@ -100,21 +96,20 @@ export default function ServiceList({ refresh, onEdit, onRefresh }) {
           {/* Mobile View */}
           <div className="flex flex-col gap-3 sm:hidden">
             {filtered.map((s) => {
-              const Icon = iconMap[s.icon] || Landmark;
               const imageUrl = getImageUrl(s.image);
               return (
                 <div key={s._id} className="bg-white rounded-2xl overflow-hidden" style={{ border: "0.5px solid #e8e2d0" }}>
                   <div className="flex items-center gap-3 p-4">
                     <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0" style={{ background: "#FBF5E8" }}>
-                      {imageUrl ? <img src={imageUrl} alt={s.title} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon size={22} style={{ color: GOLD }} /></div>}
+                      {imageUrl ? <img src={imageUrl} alt={s.title} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center font-bold text-[8px]" style={{ color: GOLD }}>NO IMG</div>}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{s.title}</p>
                       <p className="text-[10px] uppercase font-semibold" style={{ color: GOLD }}>{s.category || "—"}</p>
+                      <p className="text-[9px] text-gray-400 italic">{s.city ? `${s.city}, ${s.state}` : "Location not set"}</p>
                     </div>
                   </div>
                   <div className="flex" style={{ borderTop: "0.5px solid #f0ece2" }}>
-                    <button onClick={() => navigate(`/admin/services/${s._id}`)} className="flex-1 py-3 text-xs font-semibold" style={{ borderRight: "0.5px solid #f0ece2" }}>View</button>
                     <button onClick={() => onEdit(s)} className="flex-1 py-3 text-xs font-semibold" style={{ color: GOLD, borderRight: "0.5px solid #f0ece2" }}>Edit</button>
                     <button onClick={() => setDeleteModal(s)} className="flex-1 py-3 text-xs font-semibold text-red-600">Delete</button>
                   </div>
@@ -128,21 +123,20 @@ export default function ServiceList({ refresh, onEdit, onRefresh }) {
             <table className="w-full border-collapse">
               <thead>
                 <tr style={{ borderBottom: "0.5px solid #ede8da", background: "#FAFAF7" }}>
-                  {["Service", "Category", "Price", "Status", "Actions"].map((h) => (
+                  {["Service", "Category", "Location", "Rating", "Status", "Price", "Actions"].map((h) => (
                     <th key={h} className="text-left px-5 py-3.5 text-[10px] font-bold uppercase tracking-widest text-gray-400">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((s, idx) => {
-                  const Icon = iconMap[s.icon] || Landmark;
                   const imageUrl = getImageUrl(s.image);
                   return (
                     <tr key={s._id} className="hover:bg-[#FAFAF7] transition-colors" style={{ borderBottom: idx < filtered.length - 1 ? "0.5px solid #f0ece2" : "none" }}>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0" style={{ background: "#FBF5E8" }}>
-                            {imageUrl ? <img src={imageUrl} alt={s.title} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon size={18} style={{ color: GOLD }} /></div>}
+                            {imageUrl ? <img src={imageUrl} alt={s.title} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center font-bold text-[7px]" style={{ color: GOLD }}>NO IMG</div>}
                           </div>
                           <div>
                             <p className="text-sm font-medium">{s.title}</p>
@@ -153,23 +147,23 @@ export default function ServiceList({ refresh, onEdit, onRefresh }) {
                       <td className="px-5 py-4">
                         <span className="text-[10px] font-bold uppercase px-3 py-1 rounded-full" style={{ background: "#FBF5E8", color: "#9a7530" }}>{s.category || "—"}</span>
                       </td>
-                      <td className="px-5 py-4 font-semibold text-sm">
-                        {s.price === "Custom" ? <span style={{ color: GOLD }}>Custom</span> : <>₹{Number(s.price).toLocaleString("en-IN")}</>}
+                      <td className="px-5 py-4 text-[10px] text-gray-500 italic">
+                        {s.city ? `${s.city}, ${s.state}, ${s.country}` : "Global"}
                       </td>
-                      <td className="px-5 py-4 text-xs font-medium" style={{ color: s.isActive ? "#27a85a" : "#999" }}>
-                        {s.isActive ? "Active" : "Inactive"}
+                      <td className="px-5 py-4 text-[10px] font-bold uppercase">
+                         <span style={{ color: GOLD }}>★ {s.ratings || 0}</span>
+                         <span className="ml-1 text-gray-400 font-normal">({s.numReviews || 0})</span>
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded ${s.isActive ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-400"}`}>
+                          {s.isActive ? "Active" : "Inactive"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 font-semibold text-sm">
+                        ₹{Number(s.price || 0).toLocaleString("en-IN")}
                       </td>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-2">
-                          {/* View Button */}
-                          <button 
-                            onClick={() => navigate(`/admin/services/${s._id}`)} 
-                            className="px-3 py-1.5 rounded-full text-xs font-medium" 
-                            style={{ background: "#F0F4FF", color: NAVY, border: "0.5px solid #dbeafe" }}
-                          >
-                            View
-                          </button>
-
                           {/* Edit Button */}
                           <button 
                             onClick={() => onEdit(s)} 

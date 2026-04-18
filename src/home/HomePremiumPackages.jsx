@@ -10,7 +10,15 @@ const OFF_WHITE = "#FCFBFA";
 export default function HomePremiumPackages() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState(null);
+   const [selectedPackage, setSelectedPackage] = useState(null);
+  const calculateDuration = (from, to) => {
+    if (!from || !to) return "Flexible";
+    const start = new Date(from);
+    const end = new Date(to);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays + 1} Days / ${diffDays} Nights`;
+  };
   
   // State for API data
   const [packages, setPackages] = useState([]);
@@ -89,10 +97,13 @@ export default function HomePremiumPackages() {
                     ★ {pkg.rating} RATING
                   </p>
                   <p className="text-[10px] font-bold text-white/90 tracking-wider">
-                    {pkg.duration}
+                    {calculateDuration(pkg.fromDate, pkg.toDate)}
                   </p>
                 </div>
                 <h3 className="text-lg font-semibold text-white leading-tight">{pkg.title}</h3>
+                <p className="text-[10px] text-white/80 mt-1 uppercase tracking-widest">
+                  {pkg.city}, {pkg.state}, {pkg.country}
+                </p>
               </div>
 
               {/* Card Body */}
@@ -107,6 +118,10 @@ export default function HomePremiumPackages() {
                     </div>
                   ))}
                 </div>
+
+                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest mb-4 p-2 rounded bg-gray-50" style={{ color: TEXT_DARK }}>
+                   <span style={{ color: GOLD }}>👥</span> Capacity: {pkg.noOfPerson || pkg.travellers || 0} People
+                </div>
                 
                 <div className="w-full mb-5" style={{ height: "1px", background: "#F0EBE3" }} />
                 
@@ -114,7 +129,7 @@ export default function HomePremiumPackages() {
                   <div>
                     <p className="text-[10px] text-gray-400 uppercase font-medium">Starts from</p>
                     <p className="text-xl font-bold" style={{ color: TEXT_DARK }}>
-                      ₹{Number(pkg.price).toLocaleString('en-IN')}
+                      ₹{Number(pkg.price || 0).toLocaleString('en-IN')}
                     </p>
                   </div>
                   <button

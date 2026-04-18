@@ -34,6 +34,9 @@ export default function DestinationList({ refresh, onEdit, onRefresh }) {
 
   const filtered = items.filter(i => 
     i.name?.toLowerCase().includes(search.toLowerCase()) || 
+    i.city?.toLowerCase().includes(search.toLowerCase()) ||
+    i.state?.toLowerCase().includes(search.toLowerCase()) ||
+    i.country?.toLowerCase().includes(search.toLowerCase()) ||
     i.region?.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -56,11 +59,11 @@ export default function DestinationList({ refresh, onEdit, onRefresh }) {
         <div className="bg-white rounded-2xl overflow-hidden border border-[#e8e2d0]">
           <table className="w-full border-collapse hidden sm:table">
             <thead className="bg-[#FAFAF7] border-b border-[#ede8da]">
-              <tr>
-                {["Location", "Region", "Rating", "Budget", "Actions"].map(h => (
-                  <th key={h} className="text-left px-5 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">{h}</th>
-                ))}
-              </tr>
+                <tr className="bg-[#FAFAF7] border-b border-[#ede8da]">
+                  {["Location", "Full Address", "Rating", "Budget", "Status", "Actions"].map(h => (
+                    <th key={h} className="text-left px-5 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">{h}</th>
+                  ))}
+                </tr>
             </thead>
             <tbody>
               {filtered.map((d) => (
@@ -71,9 +74,16 @@ export default function DestinationList({ refresh, onEdit, onRefresh }) {
                       <p className="text-sm font-medium">{d.name}</p>
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-xs text-gray-500 uppercase font-semibold">{d.region}</td>
+                  <td className="px-5 py-4 text-[10px] text-gray-400 italic">
+                    {d.city ? `${d.city}, ${d.state}, ${d.country}` : (d.region || "Global")}
+                  </td>
                   <td className="px-5 py-4 font-bold text-xs" style={{ color: GOLD }}>★ {d.rating}</td>
                   <td className="px-5 py-4 text-xs">₹{d.budget?.toLocaleString()}</td>
+                  <td className="px-5 py-4">
+                    <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded ${d.isActive ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-400"}`}>
+                      {d.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </td>
                   <td className="px-5 py-4">
                     <div className="flex gap-2">
                       <button onClick={() => onEdit(d)} className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-tighter" style={{ background: "#FBF5E8", color: "#9a7530" }}>Edit</button>

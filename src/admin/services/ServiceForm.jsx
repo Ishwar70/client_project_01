@@ -8,14 +8,6 @@ import { createService, updateService } from "../../services/services.service";
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
 
-const ICONS = [
-  { key: "mountain", label: "Mountain", Icon: Mountain },
-  { key: "landmark", label: "Landmark", Icon: Landmark },
-  { key: "hotel", label: "Hotel", Icon: Hotel },
-  { key: "map", label: "Map", Icon: Map },
-  { key: "users", label: "Users", Icon: Users },
-  { key: "car", label: "Car", Icon: Car },
-];
 
 const CATEGORIES = [
   "Adventure", "Cultural", "Hospitality",
@@ -53,7 +45,13 @@ export default function ServiceForm({ initialData, onSuccess }) {
     description: "",
     price: "",
     category: "",
-    icon: "mountain",
+    country: "",
+    state: "",
+    city: "",
+    noOfPerson: 0,
+    ratings: 0,
+    numReviews: 0,
+    isActive: true,
     image: null,
   });
 
@@ -69,7 +67,13 @@ export default function ServiceForm({ initialData, onSuccess }) {
         description: initialData.description || "",
         price: initialData.price || "",
         category: initialData.category || "",
-        icon: initialData.icon || "mountain",
+        country: initialData.country || "",
+        state: initialData.state || "",
+        city: initialData.city || "",
+        noOfPerson: initialData.noOfPerson || 0,
+        ratings: initialData.ratings || 0,
+        numReviews: initialData.numReviews || 0,
+        isActive: initialData.isActive !== undefined ? initialData.isActive : true,
         image: null,
       });
       const img = initialData.image;
@@ -87,7 +91,13 @@ export default function ServiceForm({ initialData, onSuccess }) {
       description: "",
       price: "",
       category: "",
-      icon: "mountain",
+      country: "",
+      state: "",
+      city: "",
+      noOfPerson: 0,
+      ratings: 0,
+      numReviews: 0,
+      isActive: true,
       image: null,
     });
     setPreview(null);
@@ -125,7 +135,13 @@ export default function ServiceForm({ initialData, onSuccess }) {
       data.append("description", formData.description);
       data.append("price", formData.price);
       data.append("category", formData.category);
-      data.append("icon", formData.icon);
+      data.append("country", formData.country);
+      data.append("state", formData.state);
+      data.append("city", formData.city);
+      data.append("noOfPerson", formData.noOfPerson);
+      data.append("ratings", formData.ratings);
+      data.append("numReviews", formData.numReviews);
+      data.append("isActive", formData.isActive);
       if (formData.image) data.append("image", formData.image);
 
       if (initialData?._id) {
@@ -163,7 +179,7 @@ export default function ServiceForm({ initialData, onSuccess }) {
       </div>
 
       {/* Price + Category */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label style={labelStyle}>Price (₹)</label>
           <input
@@ -173,31 +189,63 @@ export default function ServiceForm({ initialData, onSuccess }) {
             value={formData.price}
             onChange={(e) => set("price", e.target.value)}
             required
-            onFocus={(e) => { e.target.style.borderColor = GOLD; e.target.style.background = "#fff"; }}
-            onBlur={(e) => { e.target.style.borderColor = "#e8e2d0"; e.target.style.background = "#FAFAF7"; }}
           />
         </div>
         <div>
           <label style={labelStyle}>Category</label>
-          <div style={{ position: "relative" }}>
-            <select
-              style={{ ...inputStyle, appearance: "none", cursor: "pointer" }}
-              value={formData.category}
-              onChange={(e) => set("category", e.target.value)}
-              required
-              onFocus={(e) => { e.target.style.borderColor = GOLD; e.target.style.background = "#fff"; }}
-              onBlur={(e) => { e.target.style.borderColor = "#e8e2d0"; e.target.style.background = "#FAFAF7"; }}
-            >
-              <option value="">Select...</option>
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-            <div style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
-               <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="#aaa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </div>
-          </div>
+          <input
+            style={inputStyle}
+            type="text"
+            placeholder="e.g. Adventure"
+            value={formData.category}
+            onChange={(e) => set("category", e.target.value)}
+            required
+          />
         </div>
+      </div>
+
+      {/* Location Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label style={labelStyle}>City</label>
+          <input name="city" value={formData.city} onChange={(e) => set("city", e.target.value)} placeholder="e.g. Manali" style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>State</label>
+          <input name="state" value={formData.state} onChange={(e) => set("state", e.target.value)} placeholder="e.g. Himachal" style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>Country</label>
+          <input name="country" value={formData.country} onChange={(e) => set("country", e.target.value)} placeholder="e.g. India" style={inputStyle} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label style={labelStyle}>Capacity (People)</label>
+          <input name="noOfPerson" type="number" min="0" value={formData.noOfPerson} onChange={(e) => set("noOfPerson", e.target.value)} style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>Initial Rating (0-5)</label>
+          <input name="ratings" type="number" step="0.1" min="0" max="5" value={formData.ratings} onChange={(e) => set("ratings", e.target.value)} style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>Review Count</label>
+          <input name="numReviews" type="number" min="0" value={formData.numReviews} onChange={(e) => set("numReviews", e.target.value)} style={inputStyle} />
+        </div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "5px 0" }}>
+        <input 
+          type="checkbox" 
+          id="isActive"
+          checked={formData.isActive}
+          onChange={(e) => set("isActive", e.target.checked)}
+          style={{ width: 16, height: 16, cursor: "pointer", accentColor: GOLD }}
+        />
+        <label htmlFor="isActive" style={{ fontSize: 11, fontWeight: 600, color: NAVY, cursor: "pointer" }}>
+          Service is Active
+        </label>
       </div>
 
       {/* Description */}
@@ -214,37 +262,6 @@ export default function ServiceForm({ initialData, onSuccess }) {
         />
       </div>
 
-      {/* Icon Selector */}
-      <div>
-        <label style={labelStyle}>Service Icon</label>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
-          {ICONS.map(({ key, label, Icon }) => {
-            const isActive = formData.icon === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => set("icon", key)}
-                style={{
-                  border: `0.5px solid ${isActive ? GOLD : "#e8e2d0"}`,
-                  borderRadius: 8,
-                  padding: "8px 4px",
-                  background: isActive ? "#FBF5E8" : "#FAFAF7",
-                  cursor: "pointer",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 4,
-                  transition: "all 0.2s",
-                }}
-              >
-                <Icon size={16} color={isActive ? GOLD : "#888"} />
-                <span style={{ fontSize: 7, fontWeight: 800, color: isActive ? "#9a7530" : "#aaa", textTransform: "uppercase" }}>{label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       {/* Image Upload Area */}
       <div>
