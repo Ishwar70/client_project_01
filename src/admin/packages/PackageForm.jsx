@@ -39,10 +39,14 @@ export default function PackageForm({ initialData, onSuccess }) {
     rating: "",
     includes: "",
     image: null,
-    destinationName: "",
+    country: "",
+    state: "",
+    city: "",
     fromDate: "",
     toDate: "",
-    travellers: 1,
+    noOfPerson: 1,
+    rating: 0,
+    isActive: true,
   });
 
   const [preview, setPreview] = useState(null);
@@ -57,11 +61,15 @@ export default function PackageForm({ initialData, onSuccess }) {
         price: initialData.price || "",
         rating: initialData.rating || "",
         includes: Array.isArray(initialData.includes) ? initialData.includes.join(", ") : "",
-        image: initialData.image || null, // This is a URL string initially
-        destinationName: initialData.destinationName || "",
+        image: initialData.image || null,
+        country: initialData.country || "",
+        state: initialData.state || "",
+        city: initialData.city || "",
         fromDate: initialData.fromDate ? initialData.fromDate.split("T")[0] : "",
         toDate: initialData.toDate ? initialData.toDate.split("T")[0] : "",
-        travellers: initialData.travellers || 1,
+        noOfPerson: initialData.noOfPerson || 1,
+        rating: initialData.rating || 0,
+        isActive: initialData.isActive !== undefined ? initialData.isActive : true,
       });
       setPreview(initialData.image);
     }
@@ -98,8 +106,8 @@ export default function PackageForm({ initialData, onSuccess }) {
         ...form,
         // Convert comma string to array
         includes: form.includes.split(",").map((i) => i.trim()).filter(Boolean),
-        // Ensure travellers is a number
-        travellers: Number(form.travellers) || 1,
+        // Ensure noOfPerson is a number
+        noOfPerson: Number(form.noOfPerson) || 1,
       };
 
       /**
@@ -140,16 +148,29 @@ export default function PackageForm({ initialData, onSuccess }) {
         <input name="title" value={form.title} onChange={handleChange} placeholder="e.g. Himalayan Adventure" required style={inputStyle} />
       </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div>
+          <label style={labelStyle}>City</label>
+          <input name="city" value={form.city} onChange={handleChange} placeholder="e.g. Manali" style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>State</label>
+          <input name="state" value={form.state} onChange={handleChange} placeholder="e.g. Himachal" style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>Country</label>
+          <input name="country" value={form.country} onChange={handleChange} placeholder="e.g. India" style={inputStyle} />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label style={labelStyle}>Trip Type</label>
-          <select name="tripType" value={form.tripType} onChange={handleChange} style={inputStyle}>
-            {TRIP_TYPES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+          <input name="tripType" value={form.tripType} onChange={handleChange} placeholder="e.g. Adventure" style={inputStyle} />
         </div>
         <div>
-          <label style={labelStyle}>Destination</label>
-          <input name="destinationName" value={form.destinationName} onChange={handleChange} placeholder="e.g. Kedarnath" style={inputStyle} />
+          <label style={labelStyle}>Capacity (People)</label>
+          <input name="noOfPerson" type="number" min="1" value={form.noOfPerson} onChange={handleChange} style={inputStyle} />
         </div>
       </div>
 
@@ -167,17 +188,31 @@ export default function PackageForm({ initialData, onSuccess }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label style={labelStyle}>Price (₹)</label>
-          <input name="price" value={form.price} onChange={handleChange} placeholder="Amount or 'Custom'" style={inputStyle} />
+          <input name="price" value={form.price} onChange={handleChange} placeholder="Amount (e.g. 5000)" style={inputStyle} />
         </div>
         <div>
-          <label style={labelStyle}>Travellers</label>
-          <input name="travellers" type="number" min="1" value={form.travellers} onChange={handleChange} style={inputStyle} />
+          <label style={labelStyle}>Initial Rating (0-5)</label>
+          <input name="rating" type="number" step="0.1" min="0" max="5" value={form.rating} onChange={handleChange} style={inputStyle} />
         </div>
       </div>
 
       <div>
         <label style={labelStyle}>Includes (Comma Separated)</label>
         <textarea name="includes" value={form.includes} onChange={handleChange} placeholder="Hotel, Meals, Guide..." className="w-full px-5 py-3 rounded-2xl outline-none min-h-20 resize-none border border-[#e8e2d0] focus:border-[#C9A84C]" style={{ fontSize: 13 }} />
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "5px 0" }}>
+        <input 
+          type="checkbox" 
+          name="isActive"
+          id="isActivePkg"
+          checked={form.isActive}
+          onChange={(e) => setForm(p => ({ ...p, isActive: e.target.checked }))}
+          style={{ width: 16, height: 16, cursor: "pointer", accentColor: GOLD }}
+        />
+        <label htmlFor="isActivePkg" style={{ fontSize: 11, fontWeight: 600, color: NAVY, cursor: "pointer" }}>
+          Package is Active
+        </label>
       </div>
 
       <div>

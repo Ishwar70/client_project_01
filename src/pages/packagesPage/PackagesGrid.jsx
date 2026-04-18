@@ -27,11 +27,16 @@ export default function PackagesGrid({ activeFilter }) {
 
   const filtered = packages.filter((pkg) => {
     const matchesActiveFilter = activeFilter === "All" || pkg.tripType === activeFilter || pkg.category === activeFilter;
-    const destParam = searchParams.get("destinationName")?.toLowerCase();
-    const travelersParam = searchParams.get("travellers");
+    const destParam = searchParams.get("search")?.toLowerCase();
+    const travelersParam = searchParams.get("noOfPerson");
     
-    const matchesDest = !destParam || pkg.destinationName?.toLowerCase().includes(destParam);
-    const matchesTravellers = !travelersParam || pkg.travellers >= parseInt(travelersParam);
+    const matchesDest = !destParam || 
+      pkg.city?.toLowerCase().includes(destParam) ||
+      pkg.state?.toLowerCase().includes(destParam) ||
+      pkg.country?.toLowerCase().includes(destParam) ||
+      pkg.title?.toLowerCase().includes(destParam);
+      
+    const matchesTravellers = !travelersParam || (pkg.noOfPerson) >= parseInt(travelersParam);
 
     return matchesActiveFilter && matchesDest && matchesTravellers;
   });
@@ -78,8 +83,8 @@ export default function PackagesGrid({ activeFilter }) {
                     <h3 className="text-lg font-serif font-bold text-gray-900 leading-tight">
                       {pkg.title}
                     </h3>
-                    <p className="text-[11px] font-medium mt-1" style={{ color: GOLD }}>
-                      📍 {pkg.destinationName}
+                    <p className="text-[10px] font-medium mt-1 uppercase" style={{ color: GOLD }}>
+                      {pkg.city}, {pkg.state}, {pkg.country}
                     </p>
                   </div>
 
@@ -89,12 +94,17 @@ export default function PackagesGrid({ activeFilter }) {
                         {inc}
                       </span>
                     ))}
+                    <span className="text-[9px] bg-gold/10 px-2 py-0.5 rounded text-[#C9A84C] border border-[#C9A84C]/20 font-bold">
+                      👥 {pkg.noOfPerson || pkg.travellers || 0} MAX
+                    </span>
                   </div>
 
                   <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
                     <div>
                       <p className="text-[8px] font-bold text-gray-400 uppercase">Per Person</p>
-                      <p className="text-xl font-bold" style={{ color: NAVY }}>₹{pkg.price}</p>
+                      <p className="text-xl font-bold" style={{ color: NAVY }}>
+                        ₹{Number(pkg.price || 0).toLocaleString('en-IN')}
+                      </p>
                     </div>
                     <button
                       onClick={() => navigate("/contact")}

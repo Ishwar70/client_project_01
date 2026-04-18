@@ -1,5 +1,7 @@
 import React from 'react';
 import HeroSection from './HeroSection';
+import ExploreDestinations from './ExploreDestinations';
+import TourPackages from './TourPackages';
 import ServicesSection from './ServicesSection';
 import ChooseSection from './ChooseSection';
 import TestimonialSection from './TestimonialSection';
@@ -9,7 +11,9 @@ const Goa = () => {
   return (
     <div className="bg-white">
       <HeroSection />
-      <ServicesSection />
+      <ExploreDestinations />
+      <TourPackages />
+      {/* <ServicesSection /> */}
       <ChooseSection />
       <TestimonialSection />
       <FAQSection />

@@ -18,9 +18,9 @@ const ExploreDestinations = () => {
         let allData = res?.destinations || res?.data || res || [];
         if (!Array.isArray(allData)) allData = [];
 
-        const filtered = allData.filter(dest => dest.state?.toLowerCase().includes("uttarakhand"));
+        const filtered = allData.filter(dest => dest.state?.toLowerCase().includes("goa"));
 
-        console.log("Filtered Uttarakhand Destinations:", filtered);
+        console.log("Filtered Goa Destinations:", filtered);
         setDestinations(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching destinations:", error);
@@ -38,7 +38,7 @@ const ExploreDestinations = () => {
         {/* Responsive Header */}
         <div className="text-left mb-8 md:mb-12 border-l-4 border-[#C9A84C] pl-4 md:pl-6">
           <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 leading-tight md:leading-none">
-            Discover Your Perfect <span className="text-[#C9A84C] italic">Uttarakhand Journey</span>
+            Discover Your Perfect <span className="text-[#C9A84C] italic">Goa Journey</span>
           </h2>
         </div>
 

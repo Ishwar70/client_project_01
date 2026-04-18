@@ -19,9 +19,9 @@ const TourPackages = () => {
         let allData = res?.packages || res?.data || res || [];
         if (!Array.isArray(allData)) allData = [];
 
-        const filtered = allData.filter(pkg => pkg.state?.toLowerCase().includes("uttarakhand"));
+        const filtered = allData.filter(pkg => pkg.state?.toLowerCase().includes("goa"));
 
-        console.log("Filtered Uttarakhand Packages:", filtered);
+        console.log("Filtered Goa Packages:", filtered);
         setPackages(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching packages:", error);
@@ -50,7 +50,7 @@ const TourPackages = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-gray-900 mt-3">
-            Discover Your Perfect <span className="text-[#D4AF37]">Uttarakhand Journey</span>
+            Discover Your Perfect <span className="text-[#D4AF37]">Goa Journey</span>
           </h2>
           <div className="w-24 h-1 bg-[#D4AF37] mx-auto mt-6"></div>
         </div>
@@ -75,7 +75,7 @@ const TourPackages = () => {
                   {/* Floating Badges */}
                   <div className="absolute top-2 left-2 flex gap-1">
                     <span className="bg-[#C9A84C] text-white text-[8px] px-1.5 py-0.5 rounded font-bold uppercase">
-                      {pkg.tripType || "Leisure"}
+                      {pkg.tripType || "Beach"}
                     </span>
                   </div>
 

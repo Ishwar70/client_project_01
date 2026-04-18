@@ -8,30 +8,30 @@ export default function PackagesFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   /* ================= STATE ================= */
-  const [searchTerm, setSearchTerm] = useState(searchParams.get("destinationName") || "");
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [startDate, setStartDate] = useState(searchParams.get("fromDate") || "");
   const [endDate, setEndDate] = useState(searchParams.get("toDate") || "");
   const [tripType, setTripType] = useState(searchParams.get("tripType") || "All Types");
-  const [travellers, setTravellers] = useState(searchParams.get("travellers") || 1);
+  const [noOfPerson, setNoOfPerson] = useState(searchParams.get("noOfPerson") || 1);
 
   /* ================= SYNC WITH URL CHANGES ================= */
   // If user navigates from Home to Filter, we need to update local state
   useEffect(() => {
-    setSearchTerm(searchParams.get("destinationName") || "");
+    setSearchTerm(searchParams.get("search") || "");
     setStartDate(searchParams.get("fromDate") || "");
     setEndDate(searchParams.get("toDate") || "");
     setTripType(searchParams.get("tripType") || "All Types");
-    setTravellers(searchParams.get("travellers") || 1);
+    setNoOfPerson(searchParams.get("noOfPerson") || 1);
   }, [searchParams]);
 
   /* ================= ACTIONS ================= */
   const applyFilters = () => {
     const params = {
-      destinationName: searchTerm,
+      search: searchTerm,
       fromDate: startDate,
       toDate: endDate,
       tripType: tripType === "All Types" ? "" : tripType,
-      travellers: travellers,
+      noOfPerson: noOfPerson,
     };
     
     // Remove empty values to keep URL clean
@@ -47,7 +47,7 @@ export default function PackagesFilter() {
     setStartDate("");
     setEndDate("");
     setTripType("All Types");
-    setTravellers(1);
+    setNoOfPerson(1);
     setSearchParams({});
   };
 
@@ -103,8 +103,8 @@ export default function PackagesFilter() {
             <label className={labelClass}>Travellers</label>
             <select 
               className={inputClass} 
-              value={travellers} 
-              onChange={(e) => setTravellers(e.target.value)}
+              value={noOfPerson} 
+              onChange={(e) => setNoOfPerson(e.target.value)}
             >
                {[1, 2, 3, 4, 5, 6, "7+"].map(n => (
                  <option key={n} value={n}>{n} {n === 1 ? "Person" : "People"}</option>

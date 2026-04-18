@@ -15,13 +15,21 @@ const TourPackages = () => {
     const fetchPackages = async () => {
       try {
         setLoading(true);
+        // Step 1: Fetch larger batch for correlation
         const res = await getAllPackages("limit=50");
         let allData = res?.packages || res?.data || res || [];
         if (!Array.isArray(allData)) allData = [];
 
-        const filtered = allData.filter(pkg => pkg.state?.toLowerCase().includes("uttarakhand"));
+        // Step 2: Define North East correlation (States)
+        const northEastStates = ["sikkim", "arunachal pradesh", "assam", "manipur", "meghalaya", "mizoram", "nagaland", "tripura"];
+        
+        // Step 3: Filter by state
+        const filtered = allData.filter(pkg => {
+          const pkgState = pkg.state?.toLowerCase() || "";
+          return northEastStates.some(state => pkgState.includes(state));
+        });
 
-        console.log("Filtered Uttarakhand Packages:", filtered);
+        console.log("Filtered North East Packages:", filtered);
         setPackages(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching packages:", error);
@@ -50,7 +58,7 @@ const TourPackages = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-gray-900 mt-3">
-            Discover Your Perfect <span className="text-[#D4AF37]">Uttarakhand Journey</span>
+            Discover Your Perfect <span className="text-[#D4AF37]">North East Journey</span>
           </h2>
           <div className="w-24 h-1 bg-[#D4AF37] mx-auto mt-6"></div>
         </div>
@@ -75,7 +83,7 @@ const TourPackages = () => {
                   {/* Floating Badges */}
                   <div className="absolute top-2 left-2 flex gap-1">
                     <span className="bg-[#C9A84C] text-white text-[8px] px-1.5 py-0.5 rounded font-bold uppercase">
-                      {pkg.tripType || "Leisure"}
+                      {pkg.tripType || "Tour"}
                     </span>
                   </div>
 

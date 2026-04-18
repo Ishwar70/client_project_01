@@ -14,13 +14,21 @@ const ExploreDestinations = () => {
     const fetchDestinations = async () => {
       try {
         setLoading(true);
+        // Step 1: Fetch larger set for correlation
         const res = await getAllDestinations({ limit: 50 });
         let allData = res?.destinations || res?.data || res || [];
         if (!Array.isArray(allData)) allData = [];
 
-        const filtered = allData.filter(dest => dest.state?.toLowerCase().includes("uttarakhand"));
+        // Step 2: Define North East correlation
+        const northEastStates = ["sikkim", "arunachal pradesh", "assam", "manipur", "meghalaya", "mizoram", "nagaland", "tripura"];
 
-        console.log("Filtered Uttarakhand Destinations:", filtered);
+        // Step 3: Filter by state
+        const filtered = allData.filter(dest => {
+          const destState = dest.state?.toLowerCase() || "";
+          return northEastStates.some(state => destState.includes(state));
+        });
+
+        console.log("Filtered North East Destinations:", filtered);
         setDestinations(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching destinations:", error);
@@ -38,7 +46,7 @@ const ExploreDestinations = () => {
         {/* Responsive Header */}
         <div className="text-left mb-8 md:mb-12 border-l-4 border-[#C9A84C] pl-4 md:pl-6">
           <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 leading-tight md:leading-none">
-            Discover Your Perfect <span className="text-[#C9A84C] italic">Uttarakhand Journey</span>
+            Discover Your Perfect <span className="text-[#C9A84C] italic">North East Journey</span>
           </h2>
         </div>
 

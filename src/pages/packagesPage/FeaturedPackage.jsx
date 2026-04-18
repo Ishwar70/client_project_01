@@ -11,6 +11,15 @@ export default function FeaturedPackage() {
   const [pkg, setPkg] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const calculateDuration = (from, to) => {
+    if (!from || !to) return "Flexible";
+    const start = new Date(from);
+    const end = new Date(to);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays + 1} Days / ${diffDays} Nights`;
+  };
+
   /* ================= FETCH LATEST PACKAGE ================= */
   useEffect(() => {
     const fetchLatest = async () => {
@@ -102,7 +111,17 @@ export default function FeaturedPackage() {
                   border: `1px solid ${NAVY}`,
                 }}
               >
-                {pkg.duration || "Flexible"}
+                {calculateDuration(pkg.fromDate, pkg.toDate)}
+              </span>
+              
+              <span
+                className="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter"
+                style={{
+                  background: GOLD,
+                  color: "#fff",
+                }}
+              >
+                👥 Max {pkg.noOfPerson || pkg.travellers || 0} People
               </span>
             </div>
 
@@ -112,6 +131,10 @@ export default function FeaturedPackage() {
             >
               {pkg.title}
             </h2>
+            
+            <p className="text-[11px] font-bold uppercase tracking-widest mb-1" style={{ color: GOLD }}>
+               📍 {pkg.city}, {pkg.state}, {pkg.country}
+            </p>
 
             <p className="text-sm text-gray-400 mb-6 italic">
               {pkg.category} Experience
@@ -156,9 +179,7 @@ export default function FeaturedPackage() {
                   Starting From
                 </p>
                 <p className="text-3xl font-bold" style={{ color: NAVY }}>
-                  {pkg.price === "Custom"
-                    ? "Contact Us"
-                    : `₹${pkg.price}`}
+                  ₹{Number(pkg.price || 0).toLocaleString('en-IN')}
                   <span className="text-xs text-gray-400"> / person</span>
                 </p>
               </div>

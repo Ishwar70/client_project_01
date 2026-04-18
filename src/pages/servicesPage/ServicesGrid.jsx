@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAllServices } from "../../services/services.service";
+import { MapPin, Users } from "lucide-react";
 
 const GOLD = "#C9A84C";
 const NAVY = "#1B2B4B";
@@ -90,6 +91,18 @@ export default function ServicesGrid() {
                       {s.title}
                     </h3>
 
+                    {/* Meta Info */}
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#FBF5E8] text-[9px] font-bold text-[#9a7530] uppercase">
+                        <MapPin size={10} />
+                        <span>{s.city || "Various"}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-50 text-[9px] font-bold text-gray-500 uppercase">
+                        <Users size={10} />
+                        <span>{s.noOfPerson || 1}+ People</span>
+                      </div>
+                    </div>
+
                     <p className="text-[12px] text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-2">
                       {s.description}
                     </p>
@@ -112,13 +125,13 @@ export default function ServicesGrid() {
                       </div>
 
                       <button
-                        onClick={() => navigate(`/booking/${s._id}`)}
+                        onClick={() => navigate("/contact")}
                         className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-300 shadow-sm"
                         style={{ background: NAVY, color: GOLD }}
                         onMouseEnter={e => { e.currentTarget.style.background = GOLD; e.currentTarget.style.color = "#fff"; }}
                         onMouseLeave={e => { e.currentTarget.style.background = NAVY; e.currentTarget.style.color = GOLD; }}
                       >
-                        Book
+                        Send Enquiry
                         <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
                           <path d="M3 8h10M9 4l4 4-4 4" />
                         </svg>

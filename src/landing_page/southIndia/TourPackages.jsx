@@ -15,13 +15,21 @@ const TourPackages = () => {
     const fetchPackages = async () => {
       try {
         setLoading(true);
+        // Step 1: Fetch a larger batch to ensure we have enough regional matches
         const res = await getAllPackages("limit=50");
         let allData = res?.packages || res?.data || res || [];
         if (!Array.isArray(allData)) allData = [];
 
-        const filtered = allData.filter(pkg => pkg.state?.toLowerCase().includes("uttarakhand"));
+        // Step 2: Define South India correlation (States)
+        const southIndiaStates = ["kerala", "karnataka", "tamil nadu", "andhra pradesh", "telangana", "puducherry", "lakshadweep"];
+        
+        // Step 3: Filter data by state correlation
+        const filtered = allData.filter(pkg => {
+          const pkgState = pkg.state?.toLowerCase() || "";
+          return southIndiaStates.some(state => pkgState.includes(state));
+        });
 
-        console.log("Filtered Uttarakhand Packages:", filtered);
+        console.log("Filtered South India Packages:", filtered);
         setPackages(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching packages:", error);
@@ -50,7 +58,7 @@ const TourPackages = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-gray-900 mt-3">
-            Discover Your Perfect <span className="text-[#D4AF37]">Uttarakhand Journey</span>
+            Discover Your Perfect <span className="text-[#D4AF37]">South India Journey</span>
           </h2>
           <div className="w-24 h-1 bg-[#D4AF37] mx-auto mt-6"></div>
         </div>

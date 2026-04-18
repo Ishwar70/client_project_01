@@ -61,7 +61,9 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
     p.title?.toLowerCase().includes(search.toLowerCase()) ||
     p.tripType?.toLowerCase().includes(search.toLowerCase()) ||
     p.category?.toLowerCase().includes(search.toLowerCase()) ||
-    p.destinationName?.toLowerCase().includes(search.toLowerCase())
+    p.city?.toLowerCase().includes(search.toLowerCase()) ||
+    p.state?.toLowerCase().includes(search.toLowerCase()) ||
+    p.country?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -124,6 +126,11 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
                     {pkg.tripType || pkg.category}
                   </div>
 
+                  {/* ✅ Active Status Badge */}
+                  <div className={`absolute top-3 right-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase shadow-sm z-10 ${pkg.isActive !== false ? "bg-green-500 text-white" : "bg-gray-400 text-white"}`}>
+                    {pkg.isActive !== false ? "Active" : "Inactive"}
+                  </div>
+
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                     <div className="bg-white/90 p-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -145,15 +152,18 @@ export default function PackageList({ refresh, onEdit, onRefresh }) {
                   {/* ✅ Duration replaced with date (fallback safe) */}
                   <div className="flex items-center gap-2 text-gray-400 text-[11px] mb-2">
                     <Clock size={12} />
-                    {pkg.duration ||
-                      (pkg.fromDate && pkg.toDate
+                    {pkg.fromDate && pkg.toDate
                         ? `${new Date(pkg.fromDate).toLocaleDateString()} - ${new Date(pkg.toDate).toLocaleDateString()}`
-                        : "Flexible")}
+                        : "Flexible"}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-gray-400 text-[11px] mb-1">
+                    <span className="font-bold text-[9px] uppercase tracking-tighter" style={{ color: GOLD }}>👥 {pkg.noOfPerson || 0} Capacity</span>
                   </div>
 
                   {/* ✅ Destination */}
-                  <div className="text-[11px] text-gray-400 mb-4">
-                    📍 {pkg.destinationName || "Unknown"}
+                  <div className="text-[11px] text-gray-400 mb-4 lowercase italic">
+                    📍 {pkg.city ? `${pkg.city}, ${pkg.state}, ${pkg.country}` : "Location not set"}
                   </div>
 
                   {/* Footer */}

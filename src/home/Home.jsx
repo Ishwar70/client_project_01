@@ -1,6 +1,7 @@
 import HomeHero from "../home/HomeHero";
 import MarqueeStrip from "../home/MarqueeStrip";
 import TripPlanner from "../home/TripPlanner";
+import HomeLatestDestinations from "./HomeLatestDestinations";
 import WhyChooseUs from "../home/WhyChooseUs";
 import HomePremiumPackages from "../home/HomePremiumPackages";
 import HomeTestimonials from "../home/HomeTestimonials";
@@ -13,6 +14,7 @@ export default function Home() {
       <HomeHero />
       <MarqueeStrip />
       <TripPlanner />
+      <HomeLatestDestinations />
       <HomeServices/>
       <WhyChooseUs />
       <HomePremiumPackages />

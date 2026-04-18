@@ -33,7 +33,7 @@ const prepareFormData = (data) => {
     } 
     
     // 3. Handle Numbers (Ensure they aren't empty strings)
-    else if (key === "travellers" || key === "rating") {
+    else if (key === "noOfPerson" || key === "rating") {
       if (value !== "" && value !== null) {
         formData.append(key, Number(value));
       }

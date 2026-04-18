@@ -5,7 +5,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 import Home from "./home/Home";
 import Destination from "./destination/Destination";
-import DestinationDetails from "./destination/DestinationDetails";
+import DestinationDetail from "./destination/DestinationDetails";
 import About from "./pages/aboutPage/About";
 import Services from "./pages/servicesPage/Services";
 import Packages from "./pages/packagesPage/Packages";
@@ -39,8 +39,8 @@ function App() {
         {/* 🌐 PUBLIC */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/destinations" element={<Destination />} />
-          <Route path="/destinations/:id" element={<DestinationDetails />} />
+          <Route path="/destinations" element={<Destination/>} />
+          <Route path="/destinations/:id" element={<DestinationDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
 

@@ -36,15 +36,23 @@ export default function DestinationForm({ initialData, onSuccess }) {
 
   const [formData, setFormData] = useState({
     name: "",
+    tagline: "",
     category: "",
+    experience: "",
+    country: "",
+    state: "",
+    city: "",
+    noOfPerson: 0,
     region: "",
     rating: 0,
     altitude: "",
     bestTime: "",
+    numReviews: 0,
     description: "",
     travelDate: "",
     budget: "",
     featured: false,
+    isActive: true,
     image: null,
   });
 
@@ -57,15 +65,23 @@ export default function DestinationForm({ initialData, onSuccess }) {
     if (initialData) {
       setFormData({
         name: initialData.name || "",
+        tagline: initialData.tagline || "",
         category: initialData.category || "",
+        experience: initialData.experience || "",
+        country: initialData.country || "",
+        state: initialData.state || "",
+        city: initialData.city || "",
+        noOfPerson: initialData.noOfPerson || 0,
         region: initialData.region || "",
         rating: initialData.rating || 0,
         altitude: initialData.altitude || "",
         bestTime: initialData.bestTime || "",
+        numReviews: initialData.numReviews || 0,
         description: initialData.description || "",
         travelDate: initialData.travelDate || "",
         budget: initialData.budget || "",
         featured: initialData.featured || false,
+        isActive: initialData.isActive !== undefined ? initialData.isActive : true,
         image: null,
       });
       const img = initialData.image;
@@ -79,9 +95,12 @@ export default function DestinationForm({ initialData, onSuccess }) {
 
   const resetForm = () => {
     setFormData({
-      name: "", category: "", region: "", rating: 0, altitude: "",
-      bestTime: "", description: "", travelDate: "", budget: "",
-      featured: false, image: null,
+      name: "", tagline: "", category: "", experience: "", country: "", state: "", city: "", noOfPerson: 0,
+      region: "", rating: 0, altitude: "",
+      bestTime: "", numReviews: 0, description: "", travelDate: "", budget: "",
+      featured: false, 
+      isActive: true,
+      image: null,
     });
     setPreview(null);
     setError("");
@@ -132,7 +151,6 @@ export default function DestinationForm({ initialData, onSuccess }) {
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       
-      {/* Name */}
       <div>
         <label style={labelStyle}>Destination Name</label>
         <input
@@ -141,62 +159,76 @@ export default function DestinationForm({ initialData, onSuccess }) {
           placeholder="e.g. Kedarnath Temple"
           value={formData.name}
           onChange={(e) => set("name", e.target.value)}
-          onFocus={handleFocus} onBlur={handleBlur}
           required
         />
       </div>
 
-      {/* Category + Region */}
+      <div>
+        <label style={labelStyle}>Tagline / Short Hook</label>
+        <input
+          style={inputStyle}
+          type="text"
+          placeholder="e.g. A hidden sanctuary where nature and luxury converge"
+          value={formData.tagline}
+          onChange={(e) => set("tagline", e.target.value)}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label style={labelStyle}>City</label>
+          <input name="city" value={formData.city} onChange={(e) => set("city", e.target.value)} placeholder="e.g. Manali" style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>State</label>
+          <input name="state" value={formData.state} onChange={(e) => set("state", e.target.value)} placeholder="e.g. Himachal" style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle}>Country</label>
+          <input name="country" value={formData.country} onChange={(e) => set("country", e.target.value)} placeholder="e.g. India" style={inputStyle} />
+        </div>
+      </div>
+
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div>
           <label style={labelStyle}>Category</label>
-          <select
-            style={{ ...inputStyle, cursor: "pointer" }}
-            value={formData.category}
-            onChange={(e) => set("category", e.target.value)}
-            onFocus={handleFocus} onBlur={handleBlur}
-            required
-          >
-            <option value="">Select...</option>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </div>
-        <div>
-          <label style={labelStyle}>Region</label>
           <input
             style={inputStyle}
             type="text"
-            placeholder="e.g. Garhwal"
-            value={formData.region}
-            onChange={(e) => set("region", e.target.value)}
-            onFocus={handleFocus} onBlur={handleBlur}
+            placeholder="e.g. Adventure"
+            value={formData.category}
+            onChange={(e) => set("category", e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>Experience Type</label>
+          <input
+            style={inputStyle}
+            type="text"
+            placeholder="e.g. Spiritual"
+            value={formData.experience}
+            onChange={(e) => set("experience", e.target.value)}
           />
         </div>
       </div>
 
-      {/* Altitude + Best Time */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <label style={labelStyle}>Capacity (People)</label>
+          <input type="number" min="0" style={inputStyle} value={formData.noOfPerson} onChange={(e) => set("noOfPerson", e.target.value)} />
+        </div>
         <div>
           <label style={labelStyle}>Altitude</label>
-          <input
-            style={inputStyle}
-            type="text"
-            placeholder="e.g. 3583m"
-            value={formData.altitude}
-            onChange={(e) => set("altitude", e.target.value)}
-            onFocus={handleFocus} onBlur={handleBlur}
-          />
+          <input style={inputStyle} placeholder="e.g. 3583m" value={formData.altitude} onChange={(e) => set("altitude", e.target.value)} />
         </div>
         <div>
           <label style={labelStyle}>Best Time</label>
-          <input
-            style={inputStyle}
-            type="text"
-            placeholder="e.g. May-Jun"
-            value={formData.bestTime}
-            onChange={(e) => set("bestTime", e.target.value)}
-            onFocus={handleFocus} onBlur={handleBlur}
-          />
+          <input style={inputStyle} placeholder="e.g. May-Jun" value={formData.bestTime} onChange={(e) => set("bestTime", e.target.value)} />
+        </div>
+        <div>
+          <label style={labelStyle}>Review Count</label>
+          <input name="numReviews" type="number" min="0" value={formData.numReviews} onChange={(e) => set("numReviews", e.target.value)} style={inputStyle} />
         </div>
       </div>
 
@@ -268,18 +300,32 @@ export default function DestinationForm({ initialData, onSuccess }) {
         <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleImageChange} />
       </div>
 
-      {/* Featured Toggle */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "5px 0" }}>
-        <input 
-          type="checkbox" 
-          id="featured"
-          checked={formData.featured}
-          onChange={(e) => set("featured", e.target.checked)}
-          style={{ width: 16, height: 16, cursor: "pointer", accentColor: GOLD }}
-        />
-        <label htmlFor="featured" style={{ fontSize: 11, fontWeight: 600, color: NAVY, cursor: "pointer" }}>
-          Feature on Homepage
-        </label>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, padding: "5px 0" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <input 
+            type="checkbox" 
+            id="featured"
+            checked={formData.featured}
+            onChange={(e) => set("featured", e.target.checked)}
+            style={{ width: 16, height: 16, cursor: "pointer", accentColor: GOLD }}
+          />
+          <label htmlFor="featured" style={{ fontSize: 11, fontWeight: 600, color: NAVY, cursor: "pointer" }}>
+            Feature on Homepage
+          </label>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <input 
+            type="checkbox" 
+            id="isActive"
+            checked={formData.isActive}
+            onChange={(e) => set("isActive", e.target.checked)}
+            style={{ width: 16, height: 16, cursor: "pointer", accentColor: GOLD }}
+          />
+          <label htmlFor="isActive" style={{ fontSize: 11, fontWeight: 600, color: NAVY, cursor: "pointer" }}>
+            Destination is Active
+          </label>
+        </div>
       </div>
 
       {/* Error Alert */}

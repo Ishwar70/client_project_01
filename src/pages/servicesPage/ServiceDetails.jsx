@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { MapPin, Users, Layers, Award } from "lucide-react";
 import { getServiceById } from "../../services/services.service";
 
 const GOLD = "#c8a96e";
@@ -38,15 +39,9 @@ export default function ServiceDetails() {
     return () => window.removeEventListener("resize", handleResize);
   }, [id]);
 
-  // Handle the redirect to /booking (Date logic removed)
+  // Handle the redirect to /contact
   const handleBookingRedirect = () => {
-    navigate("/booking", { 
-      state: { 
-        serviceId: id, 
-        price: service.price,
-        title: service.title 
-      } 
-    });
+    navigate("/contact");
   };
 
   if (loading) return <div style={{ padding: "100px", textAlign: "center", color: GOLD }}>Loading...</div>;
@@ -83,6 +78,47 @@ export default function ServiceDetails() {
               {service.title}
             </h1>
           </div>
+        </div>
+      </div>
+
+      {/* ── Quick Info Bar ── */}
+      <div style={{ background: "#FAFAF7", borderBottom: "1px solid #e8e2d0" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "15px 20px", display: "flex", flexWrap: "wrap", gap: "25px", alignItems: "center" }}>
+          
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ background: "#FBF5E8", padding: "8px", borderRadius: "10px" }}>
+              <MapPin size={18} color="#C9A84C" />
+            </div>
+            <div>
+              <p style={{ fontSize: "9px", textTransform: "uppercase", color: "#aaa", fontWeight: "700", letterSpacing: "0.05em", margin: 0 }}>Location</p>
+              <p style={{ fontSize: "13px", fontWeight: "600", color: "#444", margin: 0 }}>{service.city ? `${service.city}, ${service.state}` : "Local & Global"}</p>
+            </div>
+          </div>
+
+          {isDesktop && <div style={{ width: "1px", height: "30px", background: "#e8e2d0" }} />}
+
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ background: "#F0F5FA", padding: "8px", borderRadius: "10px" }}>
+              <Layers size={18} color="#4A90E2" />
+            </div>
+            <div>
+              <p style={{ fontSize: "9px", textTransform: "uppercase", color: "#aaa", fontWeight: "700", letterSpacing: "0.05em", margin: 0 }}>Category</p>
+              <p style={{ fontSize: "13px", fontWeight: "600", color: "#444", margin: 0 }}>{service.category}</p>
+            </div>
+          </div>
+
+          {isDesktop && <div style={{ width: "1px", height: "30px", background: "#e8e2d0" }} />}
+
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ background: "#F5FAF0", padding: "8px", borderRadius: "10px" }}>
+              <Users size={18} color="#67B145" />
+            </div>
+            <div>
+              <p style={{ fontSize: "9px", textTransform: "uppercase", color: "#aaa", fontWeight: "700", letterSpacing: "0.05em", margin: 0 }}>Capacity</p>
+              <p style={{ fontSize: "13px", fontWeight: "600", color: "#444", margin: 0 }}>{service.noOfPerson || 2}+ People</p>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -158,7 +194,7 @@ export default function ServiceDetails() {
             </button>
             
             <p style={{ fontSize: "11px", color: "#aaa", textAlign: "center", marginTop: "15px" }}>
-              * You will be redirected to the secure booking page.
+              * You will be redirected to our enquiry form.
             </p>
           </div>
         </aside>
