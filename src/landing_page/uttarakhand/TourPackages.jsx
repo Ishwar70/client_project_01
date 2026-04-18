@@ -1,88 +1,145 @@
 import React, { useState, useEffect } from 'react';
+import { Star, MapPin, Calendar, Users, ArrowRight, Hotel, UtensilsCrossed, Bus, Compass } from 'lucide-react';
 import BookingModal from "../../components/queryForm/Bookingmodal ";
 import { getAllPackages } from "../../services/package.service";
 
+const GOLD = "#C9A84C";
+
 const TourPackages = () => {
   const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedPkg, setSelectedPkg] = useState("");
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const res = await getAllPackages("?limit=3");
+        setLoading(true);
+        const res = await getAllPackages("search=Uttarakhand&limit=3");
         let data = res?.packages || res?.data || res || [];
-        if (!Array.isArray(data)) data = [];
-        setPackages(data.slice(0, 3));
+        setPackages(Array.isArray(data) ? data.slice(0, 3) : []);
       } catch (error) {
         console.error("Error fetching packages:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchPackages();
   }, []);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedPkg, setSelectedPkg] = useState("");
 
   const openForm = (pkgName) => {
     setSelectedPkg(pkgName);
     setIsOpen(true);
   };
 
+  const getIcon = (item) => {
+    const lower = item.toLowerCase();
+    if (lower.includes('hotel') || lower.includes('stay')) return <Hotel size={10} />;
+    if (lower.includes('breakfast') || lower.includes('dinner') || lower.includes('meal')) return <UtensilsCrossed size={10} />;
+    if (lower.includes('transfer') || lower.includes('sightseeing')) return <Bus size={10} />;
+    return <Compass size={10} />;
+  };
+
   return (
-    <section className="py-10 bg-white font-sans">
-      <div className="container mx-auto px-6">
-        
-        {/* Header Section */}
+    <section className="py-4 bg-white font-sans overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-serif font-bold text-gray-900 mt-3">
             Discover Your Perfect <span className="text-[#D4AF37]">Uttarakhand Journey</span>
           </h2>
           <div className="w-24 h-1 bg-[#D4AF37] mx-auto mt-6"></div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {loading ? (
+            [1, 2, 3].map(i => <div key={i} className="h-64 bg-gray-50 animate-pulse rounded-xl" />)
+          ) : packages.map((pkg) => {
+            const startDate = pkg.fromDate ? new Date(pkg.fromDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : "Dec 20";
 
-        {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {packages.map((pkg) => (
-            <div key={pkg._id || pkg.id || Math.random()} className="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:border-[#D4AF37]/30 transition-all duration-500">
-              
-              {/* Image & Duration Badge */}
-              <div className="relative h-64 overflow-hidden">
-                <img src={pkg.image?.url || pkg.image || "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800"} alt={pkg.title || pkg.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-lg">
-                  <p className="text-[10px] font-black text-gray-900 uppercase tracking-tighter">{pkg.duration || "2N/3D"}</p>
+            return (
+              <div key={pkg._id || Math.random()} className="group bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-[#C9A84C]/40 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+
+                {/* Image Section - Ultra Compact */}
+                <div className="relative h-36 overflow-hidden">
+                  <img
+                    src={pkg.image?.url || pkg.image}
+                    alt={pkg.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                  {/* Floating Badges */}
+                  <div className="absolute top-2 left-2 flex gap-1">
+                    <span className="bg-[#C9A84C] text-white text-[8px] px-1.5 py-0.5 rounded font-bold uppercase">
+                      {pkg.tripType || "Leisure"}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur px-1.5 py-0.5 rounded flex items-center gap-1">
+                    <Star size={8} fill={GOLD} color={GOLD} />
+                    <span className="text-[9px] font-bold text-gray-900">{pkg.rating}</span>
+                  </div>
+
+                  <div className="absolute bottom-2 left-2 flex items-center gap-1 text-white">
+                    <MapPin size={10} className="text-[#C9A84C]" />
+                    <span className="text-[9px] font-medium">{pkg.city}, {pkg.state}</span>
+                  </div>
+                </div>
+
+                {/* Content Section - Tight Spacing */}
+                <div className="p-3 flex flex-col flex-grow">
+                  <h3 className="text-sm font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-[#C9A84C] transition-colors">
+                    {pkg.title}
+                  </h3>
+
+                  {/* Horizontal Amenities Strip */}
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {pkg.includes?.slice(0, 3).map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-1 bg-gray-50 px-1.5 py-0.5 rounded border border-gray-100" title={item}>
+                        <span className="text-[#C9A84C]">{getIcon(item)}</span>
+                        <span className="text-[8px] font-medium text-gray-500 whitespace-nowrap">{item.split(' ')[0]}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Date & Capacity Row */}
+                  <div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-50">
+                    <div className="flex items-center gap-1">
+                      <Calendar size={10} className="text-gray-400" />
+                      <span className="text-[9px] font-bold text-gray-700">{startDate}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users size={10} className="text-gray-400" />
+                      <span className="text-[9px] font-bold text-gray-700">{pkg.noOfPerson} Persons</span>
+                    </div>
+                  </div>
+
+                  {/* Price & Action */}
+                  <div className="mt-auto flex items-center justify-between">
+                    <div>
+                      <p className="text-[7px] text-gray-400 font-bold uppercase tracking-tighter">Total Price</p>
+                      <span className="text-base font-black text-gray-900">₹{pkg.price?.toLocaleString()}</span>
+                    </div>
+
+                    <button
+                      onClick={() => openForm(pkg.title)}
+                      className="bg-gray-900 hover:bg-[#C9A84C] text-white px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all active:scale-95 shadow-md"
+                    >
+                      <span className="text-[9px] font-bold uppercase tracking-wider">Book</span>
+                      <ArrowRight size={10} />
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              {/* Package Details */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#D4AF37] transition-colors">{pkg.title || pkg.name}</h3>
-                
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-gray-500 text-xs font-medium uppercase">Starting at</span>
-                  <span className="text-2xl font-black text-[#D4AF37]">₹{pkg.price || "Contact Us"}</span>
-                  <span className="text-gray-400 text-[10px] uppercase font-bold">/ Person</span>
-                </div>
-
-                <button 
-                  onClick={() => openForm(pkg.title || pkg.name)}
-                  className="w-full py-4 bg-gray-900 text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#D4AF37] transition-all transform active:scale-95"
-                >
-                  Book Now
-                </button>
-
-                <p className="mt-4 text-[9px] text-gray-400 text-center italic leading-tight">
-                  “This price is applicable only for a group of four persons.”
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {/* Centralized Booking Modal */}
-      <BookingModal 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)} 
-        title="Book Tour Package"
-        subtitle={`Inquiry for: ${selectedPkg}`}
+      <BookingModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Package Inquiry"
+        subtitle={selectedPkg}
       />
     </section>
   );
