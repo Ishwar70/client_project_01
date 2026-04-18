@@ -12,7 +12,7 @@ const NorthEast = () => {
       <HeroSection />
       <ExploreDestinations />
       <TourPackages />
-      <ServicesSection/>
+      {/* <ServicesSection/> */}
       <WhyChooseUs/>
       <FAQSection/>
     </div>

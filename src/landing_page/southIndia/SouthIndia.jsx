@@ -2,7 +2,7 @@ import React from 'react';
 import HeroSection from './HeroSection';
 import ExploreDestinations from './ExploreDestinations';
 import TourPackages from './TourPackages';
-import ServicesSection from './ServicesSection';
+// import ServicesSection from './ServicesSection';
 import ChooseSection from './ChooseSection';
 import FAQSection from './FAQSection';
 
@@ -12,7 +12,7 @@ const SouthIndia = () => {
       <HeroSection />
       <ExploreDestinations />
       <TourPackages />
-      <ServicesSection/>
+      {/* <ServicesSection/> */}
       <ChooseSection/>
       <FAQSection/>
     </div>

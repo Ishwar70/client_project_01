@@ -14,11 +14,16 @@ const ExploreDestinations = () => {
     const fetchDestinations = async () => {
       try {
         setLoading(true);
-        const res = await getAllDestinations({ search: "Uttarakhand", limit: 3 });
-        let data = res?.destinations || res?.data || res || [];
-        setDestinations(Array.isArray(data) ? data.slice(0, 3) : []);
+        const res = await getAllDestinations({ limit: 50 });
+        let allData = res?.destinations || res?.data || res || [];
+        if (!Array.isArray(allData)) allData = [];
+
+        const filtered = allData.filter(dest => dest.state?.toLowerCase().includes("uttarakhand"));
+
+        console.log("Filtered Uttarakhand Destinations:", filtered);
+        setDestinations(filtered.slice(0, 3));
       } catch (error) {
-        console.error("Error fetching:", error);
+        console.error("Error fetching destinations:", error);
       } finally {
         setLoading(false);
       }

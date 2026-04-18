@@ -15,9 +15,14 @@ const TourPackages = () => {
     const fetchPackages = async () => {
       try {
         setLoading(true);
-        const res = await getAllPackages("search=Uttarakhand&limit=3");
-        let data = res?.packages || res?.data || res || [];
-        setPackages(Array.isArray(data) ? data.slice(0, 3) : []);
+        const res = await getAllPackages("limit=50");
+        let allData = res?.packages || res?.data || res || [];
+        if (!Array.isArray(allData)) allData = [];
+
+        const filtered = allData.filter(pkg => pkg.state?.toLowerCase().includes("uttarakhand"));
+
+        console.log("Filtered Uttarakhand Packages:", filtered);
+        setPackages(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching packages:", error);
       } finally {

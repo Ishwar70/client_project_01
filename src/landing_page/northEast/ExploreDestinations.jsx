@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Star, Mountain, Calendar, ArrowRight, Gauge } from 'lucide-react';
+import { MapPin, Star, Mountain, Calendar, ArrowRight, Wallet, Users, Compass } from 'lucide-react';
 import { getAllDestinations } from "../../services/destination.service";
 
 const GOLD = "#C9A84C";
@@ -14,10 +14,22 @@ const ExploreDestinations = () => {
     const fetchDestinations = async () => {
       try {
         setLoading(true);
-        const res = await getAllDestinations({ search: "North East", limit: 3 });
-        let data = res?.destinations || res?.data || res || [];
-        if (!Array.isArray(data)) data = [];
-        setDestinations(data.slice(0, 3));
+        // Step 1: Fetch larger set for correlation
+        const res = await getAllDestinations({ limit: 50 });
+        let allData = res?.destinations || res?.data || res || [];
+        if (!Array.isArray(allData)) allData = [];
+
+        // Step 2: Define North East correlation
+        const northEastStates = ["sikkim", "arunachal pradesh", "assam", "manipur", "meghalaya", "mizoram", "nagaland", "tripura"];
+
+        // Step 3: Filter by state
+        const filtered = allData.filter(dest => {
+          const destState = dest.state?.toLowerCase() || "";
+          return northEastStates.some(state => destState.includes(state));
+        });
+
+        console.log("Filtered North East Destinations:", filtered);
+        setDestinations(filtered.slice(0, 3));
       } catch (error) {
         console.error("Error fetching destinations:", error);
       } finally {
@@ -28,96 +40,122 @@ const ExploreDestinations = () => {
   }, []);
 
   return (
-    <section className="py-12 md:py-20 bg-[#FAFAF7] font-sans overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        
-        {/* Simplified Header - Forced One Line */}
-        <div className="text-center md:text-left mb-12 border-l-4 border-[#C9A84C] pl-6">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+    <section className="py-8 md:py-12 bg-[#FDFDFB] font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+
+        {/* Responsive Header */}
+        <div className="text-left mb-8 md:mb-12 border-l-4 border-[#C9A84C] pl-4 md:pl-6">
+          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 leading-tight md:leading-none">
             Discover Your Perfect <span className="text-[#C9A84C] italic">North East Journey</span>
           </h2>
-          <p className="text-xs md:text-sm text-gray-400 mt-2 font-sans tracking-widest uppercase">Handpicked sanctuaries for the modern explorer</p>
         </div>
 
-        {/* Dynamic Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Responsive Grid System */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
             [1, 2, 3].map(i => (
-              <div key={i} className="h-96 bg-gray-100 animate-pulse rounded-3xl" />
+              <div key={i} className="h-[350px] md:h-[400px] bg-gray-100 animate-pulse rounded-xl" />
             ))
           ) : destinations.map((dest) => (
-            <div 
-              key={dest._id || Math.random()} 
+            <div
+              key={dest._id || Math.random()}
               onClick={() => navigate(`/destinations/${dest._id}`)}
-              className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-sm border border-gray-100 hover:shadow-2xl hover:border-[#C9A84C]/20 transition-all duration-500 cursor-pointer"
+              className="group bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-[#C9A84C]/30 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col h-full"
             >
-              {/* Image Section - Compact Height */}
-              <div className="relative h-48 md:h-52 w-full overflow-hidden">
-                <img 
-                  src={dest.image?.url || 'https://images.unsplash.com/photo-1577083165350-16c9f88b4a56?q=80&w=800'} 
-                  alt={dest.name} 
+              {/* Image Section */}
+              <div className="relative h-40 sm:h-44 overflow-hidden">
+                <img
+                  src={dest.image?.url}
+                  alt={dest.name}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                
-                {/* Overlay Badges */}
-                <div className="absolute top-4 left-4">
-                  <span className="bg-[#C9A84C] text-white text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest shadow-lg">
-                    {dest.category || "Destinations"}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+                {/* Floating Tags */}
+                <div className="absolute top-3 left-3 flex flex-col gap-2">
+                  <span className="bg-[#C9A84C] text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-tighter">
+                    {dest.category}
                   </span>
                 </div>
 
-                <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                  <Star size={10} fill={GOLD} color={GOLD} />
-                  <span className="font-bold">{dest.rating || "5.0"}</span>
-                  <span className="text-white/60 font-medium">({dest.numReviews || "120"})</span>
+                <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center">
+                  <div className="flex items-center gap-1.5 text-white">
+                    <MapPin size={12} className="text-[#C9A84C]" />
+                    <span className="text-[10px] font-bold tracking-wide">{dest.city}, {dest.state}</span>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-md border border-white/20 px-2 py-1 rounded-md flex items-center gap-1">
+                    <Star size={10} fill={GOLD} color={GOLD} />
+                    <span className="text-white text-[10px] font-bold">{dest.rating}</span>
+                    <span className="text-white/60 text-[9px]">({dest.numReviews})</span>
+                  </div>
                 </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
 
-              {/* Content Section - Streamlined */}
-              <div className="p-6 flex flex-col flex-grow">
-                <div className="mb-4">
-                  <div className="flex items-center gap-1.5 text-[#C9A84C] text-[10px] font-bold uppercase tracking-widest mb-1.5">
-                    <MapPin size={10} />
-                    {dest.city}, {dest.state}
-                  </div>
-                  <h3 className="text-2xl font-serif font-bold text-gray-900 group-hover:text-[#C9A84C] transition-colors line-clamp-1">
+              {/* Detailed Content Section */}
+              <div className="p-4 flex flex-col flex-grow">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-[#C9A84C] transition-colors leading-tight">
                     {dest.name}
                   </h3>
-                  <p className="text-[10px] text-gray-400 font-medium italic mt-1">
-                    {dest.experience || "A mystic Himalayan experience"}
-                  </p>
                 </div>
 
-                <p className="text-xs text-gray-500 line-clamp-2 mb-6 leading-relaxed font-sans">
+                <div className="flex items-center gap-2 mb-3">
+                  <Compass size={12} className="text-gray-300" />
+                  <span className="text-[10px] font-bold text-[#C9A84C] uppercase italic">{dest.experience}</span>
+                </div>
+
+                <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed mb-4">
                   {dest.description}
                 </p>
 
-                {/* Info Bar - Compact */}
-                <div className="grid grid-cols-3 gap-2 py-3 border-y border-gray-50 mb-6 font-sans">
-                  <div className="flex flex-col items-center border-r border-gray-100">
-                    <Mountain size={12} className="text-gray-300 mb-1" />
-                    <p className="text-[9px] font-bold text-gray-900">{dest.altitude || "N/A"}</p>
+                {/* Data Matrix */}
+                <div className="grid grid-cols-2 gap-y-3 gap-x-4 pt-4 border-t border-gray-50 mt-auto">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gray-50 rounded-lg">
+                      <Mountain size={12} className="text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] text-gray-400 uppercase font-bold">Altitude</p>
+                      <p className="text-[10px] font-bold text-gray-800">{dest.altitude}</p>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-center border-r border-gray-100">
-                    <Calendar size={12} className="text-gray-300 mb-1" />
-                    <p className="text-[9px] font-bold text-gray-900">{dest.bestTime?.split(' ')[0] || "All Year"}</p>
+
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gray-50 rounded-lg">
+                      <Calendar size={12} className="text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] text-gray-400 uppercase font-bold">Best Time</p>
+                      <p className="text-[10px] font-bold text-gray-800">{dest.bestTime}</p>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <Gauge size={12} className="text-gray-300 mb-1" />
-                    <p className="text-[9px] font-black text-[#C9A84C]">₹{dest.budget?.toLocaleString()}</p>
+
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gray-50 rounded-lg">
+                      <Users size={12} className="text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] text-gray-400 uppercase font-bold">Group Size</p>
+                      <p className="text-[10px] font-bold text-gray-800">{dest.noOfPerson} Persons</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-[#C9A84C]/10 rounded-lg">
+                      <Wallet size={12} className="text-[#C9A84C]" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] text-[#C9A84C] uppercase font-bold">Starting Price</p>
+                      <p className="text-[11px] font-black text-gray-900">₹{dest.budget?.toLocaleString()}</p>
+                    </div>
                   </div>
                 </div>
 
-                {/* Action Link */}
-                <div className="mt-auto flex items-center justify-between group/link">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 group-hover/link:text-[#C9A84C] transition-colors">
-                    Explore Sanctuary
-                  </span>
-                  <div className="w-8 h-8 rounded-full bg-gray-900 group-hover/link:bg-[#C9A84C] flex items-center justify-center text-white transition-all transform group-hover/link:translate-x-1">
-                    <ArrowRight size={14} />
-                  </div>
+                {/* Micro Action */}
+                <div className="mt-5 flex items-center justify-between text-[10px] font-black tracking-widest text-gray-900">
+                  <span className="group-hover:translate-x-1 transition-transform">PLAN THIS TRIP</span>
+                  <div className="h-[1px] flex-grow mx-2 md:mx-4 bg-gray-100 group-hover:bg-[#C9A84C]/30 transition-colors" />
+                  <ArrowRight size={14} className="text-[#C9A84C]" />
                 </div>
               </div>
             </div>

@@ -13,7 +13,7 @@ const Goa = () => {
       <HeroSection />
       <ExploreDestinations />
       <TourPackages />
-      <ServicesSection />
+      {/* <ServicesSection /> */}
       <ChooseSection />
       <TestimonialSection />
       <FAQSection />

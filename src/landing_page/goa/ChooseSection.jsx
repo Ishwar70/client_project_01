@@ -1,77 +1,110 @@
 import React from 'react';
+import { Clock, Map, ShieldCheck, Settings, Users, MapPin } from 'lucide-react';
 
-const ChooseSection = () => {
-  const reasons = [
+const CombinedChooseSection = () => {
+  const benefits = [
     {
-      title: "12+ Years in Goa Tourism",
-      desc: "Deep local expertise and trusted relationships with the best hotels, guides, and transport partners across Goa."
+      title: "Vibrant Itineraries",
+      desc: "Perfectly balanced routes covering everything from North Goa's energy to South Goa's peace.",
+      icon: <Clock size={20} />
     },
     {
-      title: "Guaranteed Best Price",
-      desc: "We match or beat any comparable Goa package. No hidden charges — transparent pricing, every time."
+      title: "Beach & Beyond",
+      desc: "Flexible options to explore water sports, colonial heritage, and hidden inland gems.",
+      icon: <Map size={20} />
     },
     {
-      title: "Custom Itineraries",
-      desc: "Every trip is tailored to your group size, budget, and interests — not a copy-paste package."
+      title: "Handpicked Stays",
+      desc: "Verified boutique hotels and luxury villa rentals ensuring a premium Goan holiday.",
+      icon: <ShieldCheck size={20} />
     },
     {
-      title: "24/7 Trip Support",
-      desc: "Our team is reachable round the clock during your trip — whether it's a last-minute change or any emergency."
+      title: "Seamless Transfers",
+      desc: "Private airport transfers and guided sightseeing for a stress-free travel experience.",
+      icon: <Settings size={20} />
     },
     {
-      title: "4.9★ Google Rating",
-      desc: "Thousands of verified happy travellers trust The Trip Trails for their Goa holidays year after year."
+      title: "Ideal for All Vibes",
+      desc: "Specially designed for family fun, romantic honeymoons, or energetic group outings.",
+      icon: <Users size={20} />
     },
     {
-      title: "100% Safe Travel",
-      desc: "Fully vetted drivers, licensed guides, and 24/7 on-trip support so you travel with complete peace of mind."
+      title: "The Best of Goa",
+      desc: "Explore Calangute, Palolem, and Old Goa with our expert-designed tour packages.",
+      icon: <MapPin size={20} />
     }
   ];
 
+  const stats = [
+    { label: "Happy Travelers", value: "25k+" },
+    { label: "Verified Villas", value: "200+" },
+    { label: "Years Experience", value: "12+" }
+  ];
+
   return (
-    <section className="py-10 bg-[#fafafa] font-sans">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
-          
-          <div className="lg:w-1/3 lg:sticky lg:top-24">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6 leading-tight">
-              Why Choose Us <br/><span className="text-[#D4AF37]">The Trip Trails Advantage</span>
-            </h2>
-            <div className="w-24 h-1 bg-[#D4AF37] mb-6"></div>
-            <p className="text-gray-500 leading-relaxed mb-6">
-              When booking your Goa vacation, you want a trusted partner who knows every hidden gem along the coastline. Over the past decade, we have built trusted relationships to ensure you get the perfect beach getaway.
-            </p>
-            <button className="hidden lg:block w-full py-4 bg-[#D4AF37] hover:bg-black text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-colors shadow-lg">
-              Talk to an Expert
-            </button>
-          </div>
-
-          <div className="lg:w-2/3">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {reasons.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#D4AF37]/30 transition-all duration-300 group"
-                >
-                  <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-full flex items-center justify-center mb-6 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-white transition-colors">
-                    <span className="font-black text-lg">0{index + 1}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <button className="lg:hidden mt-8 w-full py-4 bg-[#D4AF37] hover:bg-black text-white font-bold uppercase tracking-widest text-xs rounded-xl transition-colors shadow-lg">
-              Talk to an Expert
-            </button>
-          </div>
-
+    <section className="py-10 bg-[#fcfcfc] font-sans">
+      <div className="max-w-6xl mx-auto px-6">
+        
+        {/* Compact Header */}
+        <div className="mb-8 border-l-4 border-[#D4AF37] pl-5">
+          <h2 className="text-3xl font-bold text-gray-900 leading-tight">
+            Why Choose <span className="text-[#D4AF37]">The Trip Trails</span>
+          </h2>
+          <p className="text-gray-500 text-sm mt-1 max-w-2xl leading-snug">
+            Premium Goa tour packages designed for excitement, luxury, and coastal relaxation.
+          </p>
         </div>
+
+        {/* Tight 3-Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          {benefits.map((item, index) => (
+            <div 
+              key={index} 
+              className="group p-5 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-[#D4AF37]/30 transition-all duration-200"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-amber-50 text-[#D4AF37] rounded-lg group-hover:bg-[#D4AF37] group-hover:text-white transition-colors shadow-inner">
+                  {item.icon}
+                </div>
+                <h3 className="font-bold text-gray-800 text-sm tracking-tight">
+                  {item.title}
+                </h3>
+              </div>
+              <p className="text-gray-500 text-[11px] leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* 3D Dynamic Stats Bar - Gold & White */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {stats.map((stat, i) => (
+            <div 
+              key={i} 
+              className="relative group bg-white rounded-2xl p-[1px] shadow-[6px_6px_12px_#e5e5e5,-6px_-6px_12px_#ffffff] hover:shadow-[8px_8px_16px_#d1d1d1,-8px_-8px_16px_#ffffff] transition-all"
+            >
+              {/* Golden Border Glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#D4AF37] via-transparent to-[#D4AF37] opacity-10 group-hover:opacity-30 rounded-2xl transition-opacity"></div>
+              
+              <div className="relative bg-white rounded-2xl py-5 flex flex-col items-center justify-center overflow-hidden">
+                {/* 3D Glass Gloss Effect */}
+                <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent z-10"></div>
+                
+                <span className="text-3xl font-black bg-gradient-to-b from-[#D4AF37] to-[#B8962E] bg-clip-text text-transparent drop-shadow-[1px_1px_1px_rgba(0,0,0,0.1)]">
+                  {stat.value}
+                </span>
+                <span className="text-[#D4AF37] text-[9px] font-bold uppercase tracking-[0.2em] mt-1">
+                  {stat.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   );
 };
 
-export default ChooseSection;
+export default CombinedChooseSection;
