@@ -31,6 +31,11 @@ import SouthIndia from "./landing_page/southIndia/SouthIndia";
 import NorthEast from "./landing_page/northEast/NorthEast";
 import Andaman from "./landing_page/andaman/Andaman";
 import Goa from "./landing_page/goa/Goa";
+import PrivacyPolicy from "./PrivacyPolicy/PrivacyPolicy";
+import TermsAndConditions from "./PrivacyPolicy/TermsAndConditions";
+import CancellationPolicy from "./PrivacyPolicy/CancellationPolicy";
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -62,6 +67,10 @@ function App() {
           <Route path="/north-east-india-tour-packages" element={<NorthEast />} />
           <Route path="/andaman-tour-packages" element={<Andaman />} />
           <Route path="/goa-tour-packages" element={<Goa />} />
+
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/cancellation-policy" element={<CancellationPolicy />} />
         </Route>
 
         {/* 🔐 AUTH */}
