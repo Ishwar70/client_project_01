@@ -149,9 +149,9 @@ export default function Footer() {
               All Rights Reserved.
             </p>
             <div className="flex gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-              <a href="#" className="hover:text-[#BFA13B] transition-colors">Privacy</a>
-              <a href="#" className="hover:text-[#BFA13B] transition-colors">Terms</a>
-              <a href="#" className="hover:text-[#BFA13B] transition-colors">Sitemap</a>
+              <a href="/privacy-policy" className="hover:text-[#BFA13B] transition-colors">Privacy Policy</a>
+              <a href="/terms-and-conditions" className="hover:text-[#BFA13B] transition-colors">Terms and Conditions</a>
+              <a href="/cancellation-policy" className="hover:text-[#BFA13B] transition-colors">Cancellation Policy</a>
             </div>
           </div>
         </div>
