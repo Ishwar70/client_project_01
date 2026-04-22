@@ -25,9 +25,9 @@ const GradBtn = ({ children, className = "", loading, ...p }) => (
 );
 
 const Field = ({ label, icon, error, children }) => (
-  <div className="flex flex-col gap-0.5 sm:gap-1 w-full">
+  <div className="flex flex-col gap-0.5 w-full">
     {label && (
-      <label className="flex items-center gap-1.5 text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-stone-400 ml-0.5">
+      <label className="flex items-center gap-1 text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-stone-400 ml-0.5">
         <span className="text-stone-500 opacity-70 text-[10px] sm:text-[12px]">{icon}</span>
         {label}
       </label>
@@ -38,7 +38,7 @@ const Field = ({ label, icon, error, children }) => (
 );
 
 const inputCls =
-  "w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-stone-200 bg-white/70 " +
+  "form-input-compact w-full px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-stone-200 bg-white/70 " +
   "focus:border-[#BFA13B] focus:ring-4 focus:ring-[#BFA13B]/10 focus:bg-white " +
   "outline-none transition-all duration-300 text-sm text-stone-800 placeholder:text-stone-300 " +
   "hover:border-stone-300 font-sans appearance-none";
@@ -96,6 +96,28 @@ export default function EnquiryForm({
 
   return (
     <section className="w-full max-w-2xl mx-auto py-2 sm:py-8 px-4">
+      {/* Mobile-specific height reduction style */}
+      <style>{`
+        @media (max-width: 640px) {
+          .form-input-compact {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            font-size: 13px !important;
+          }
+          .mobile-container {
+            padding-bottom: 1.5rem !important;
+            padding-top: 1rem !important;
+          }
+          .mobile-header {
+            padding-top: 1.25rem !important;
+            padding-bottom: 0.75rem !important;
+          }
+          .mobile-spacing {
+            gap: 0.75rem !important;
+          }
+        }
+      `}</style>
+
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
       <div
@@ -105,14 +127,14 @@ export default function EnquiryForm({
         <div className="h-1 w-full z-10" style={{ background: `linear-gradient(to right, ${GOLD}, ${DARK}, ${GOLD})` }} />
 
         {/* Header */}
-        <div className="px-4 sm:px-6 pt-5 sm:pt-10 pb-3 sm:pb-4 text-center relative z-10" style={{ background: `linear-gradient(160deg, ${LIGHT} 0%, white 100%)` }}>
+        <div className="mobile-header px-4 sm:px-6 pt-5 sm:pt-10 pb-3 sm:pb-4 text-center relative z-10" style={{ background: `linear-gradient(160deg, ${LIGHT} 0%, white 100%)` }}>
           <h2 className="text-xl sm:text-3xl font-bold text-stone-800 tracking-tight leading-tight">{title}</h2>
           <Ornament />
-          <p className="text-stone-500 text-[11px] sm:text-sm mt-1.5 sm:mt-3 font-sans max-w-[240px] sm:max-w-sm mx-auto">{subtitle}</p>
+          <p className="text-stone-500 text-[11px] sm:text-sm mt-1 sm:mt-3 font-sans max-w-[240px] sm:max-w-sm mx-auto">{subtitle}</p>
         </div>
 
         {/* Form Body */}
-        <div className="px-5 sm:px-12 pb-6 sm:pb-12 pt-3 sm:pt-6 z-10" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        <div className="mobile-container px-5 sm:px-12 pb-6 sm:pb-12 pt-3 sm:pt-6 z-10" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           {submitted ? (
             <div className="flex flex-col items-center justify-center py-6 sm:py-10 text-center animate-in fade-in zoom-in duration-500">
               <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white shadow-lg text-xl sm:text-2xl mb-4" style={{ background: `linear-gradient(135deg, ${GOLD}, ${DARK})` }}>✓</div>
@@ -121,8 +143,8 @@ export default function EnquiryForm({
               <button onClick={() => setSubmitted(false)} className="mt-4 text-[10px] uppercase tracking-widest text-[#BFA13B] font-bold border-b border-[#BFA13B]">Send Another</button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5">
+            <form onSubmit={handleSubmit} className="mobile-spacing flex flex-col gap-3 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                 <Field label="Full Name" icon="👤" error={errors.name}>
                   <input type="text" name="name" placeholder="John Doe" value={form.name} onChange={change} className={inputCls} />
                 </Field>
@@ -135,7 +157,7 @@ export default function EnquiryForm({
                 <input type="email" name="email" placeholder="you@example.com" value={form.email} onChange={change} className={inputCls} />
               </Field>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                 <Field label="Destination" icon="📍" error={errors.place}>
                   <input type="text" name="place" placeholder="Where to?" value={form.place} onChange={change} className={inputCls} />
                 </Field>
@@ -148,9 +170,6 @@ export default function EnquiryForm({
                       <select name="passengers" value={form.passengers} onChange={change} className={inputCls}>
                         {PASSENGER_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
                       </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-stone-400">
-                        <svg className="fill-current h-3 w-3" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                      </div>
                     </div>
                   </Field>
                 </div>
@@ -159,17 +178,17 @@ export default function EnquiryForm({
               <Field label="Special Requests" icon="💬">
                 <textarea 
                   name="message" 
-                  rows="2" 
-                  placeholder="Tell us more about your preferences..." 
+                  rows="1" 
+                  placeholder="Tell us more..." 
                   value={form.message} 
                   onChange={change} 
-                  className={`${inputCls} resize-none`} 
+                  className={`${inputCls} resize-none min-h-[45px]`} 
                 />
               </Field>
 
               {errors.submit && <p className="text-center text-red-500 text-[10px] font-bold">{errors.submit}</p>}
 
-              <GradBtn type="submit" loading={loading} className="w-full py-3.5 sm:py-4 rounded-xl text-white font-bold uppercase tracking-widest text-xs sm:text-sm shadow-lg mt-1 sm:mt-2">
+              <GradBtn type="submit" loading={loading} className="w-full py-3.5 sm:py-4 rounded-xl text-white font-bold uppercase tracking-widest text-xs sm:text-sm shadow-lg mt-1">
                 {submitLabel}
               </GradBtn>
             </form>
